@@ -36,6 +36,7 @@ export interface IconElement extends CardElementBase {
   type: 'icon';
   name: string;
   size?: number;
+  src?: string;
 }
 
 export type CardElement = TextElement | ImageElement | IconElement;
@@ -45,6 +46,8 @@ export interface CardLayoutSchema {
   width: number;
   height: number;
   background: string;
+  backgroundImage?: string;
+  backgroundType?: 'color' | 'image';
   borderRadius?: number;
   padding?: number;
   elements: CardElement[];
@@ -56,3 +59,11 @@ export interface BindingContext {
 }
 
 export const schemaVersion: '0.1.0';
+
+export interface ScaleCardLayoutOptions {
+  targetWidth: number;
+  targetHeight?: number;
+  round?: (value: number) => number;
+}
+
+export function scaleCardLayout(schema: CardLayoutSchema, options: ScaleCardLayoutOptions): CardLayoutSchema;

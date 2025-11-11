@@ -48,7 +48,15 @@ const createResizeHandler =
         width: props.schema.width + 'px',
         height: props.schema.height + 'px',
         borderRadius: (props.schema.borderRadius ?? 24) + 'px',
-        background: props.schema.background
+        background:
+          props.schema.backgroundType === 'image'
+            ? props.schema.background || '#000000'
+            : props.schema.background,
+        backgroundImage:
+          props.schema.backgroundType === 'image' && props.schema.backgroundImage ? `url(${props.schema.backgroundImage})` : undefined,
+        backgroundSize: props.schema.backgroundType === 'image' ? 'cover' : undefined,
+        backgroundRepeat: props.schema.backgroundType === 'image' ? 'no-repeat' : undefined,
+        backgroundPosition: props.schema.backgroundType === 'image' ? 'center' : undefined
       }"
     >
       <Vue3DraggableResizable
@@ -82,7 +90,10 @@ const createResizeHandler =
         </template>
         <template v-else>
           <div class="card-element card-element--icon">
-            <span class="icon-dot" :style="props.elementStyle(element.style)" />
+            <template v-if="element.src">
+              <img class="icon-image" :src="element.src" :alt="element.id" />
+            </template>
+            <span v-else class="icon-dot" :style="props.elementStyle(element.style)" />
           </div>
         </template>
       </Vue3DraggableResizable>
@@ -142,5 +153,11 @@ const createResizeHandler =
   display: inline-block;
   width: 100%;
   height: 100%;
+}
+
+.icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 </style>

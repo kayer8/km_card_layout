@@ -176,6 +176,7 @@ const createDefaultSchema = (): CardLayoutSchema => {
     height: 360,
     borderRadius: 32,
     background: 'radial-gradient(circle at 20% 20%, #1e1a21, #080809 80%)',
+    backgroundType: 'color',
     padding: 40,
     metadata: {
       template: 'black-gold',
@@ -353,6 +354,26 @@ export const useCardDesigner = () => {
     }
   }
 
+  const setBackgroundType = (type: 'color' | 'image') => {
+    cardSchema.backgroundType = type
+    if (type !== 'image') {
+      cardSchema.backgroundImage = undefined
+    } else if (!cardSchema.backgroundImage) {
+      cardSchema.backgroundImage = ''
+    }
+  }
+
+  const setBackgroundValue = (value: string) => {
+    cardSchema.background = value || '#111111'
+    cardSchema.backgroundType = 'color'
+  }
+
+  const setBackgroundImage = (value: string) => {
+    const trimmed = value?.trim()
+    cardSchema.backgroundImage = trimmed || undefined
+    cardSchema.backgroundType = trimmed ? 'image' : 'color'
+  }
+
   return {
     bindingContext,
     bindingEntries,
@@ -370,7 +391,10 @@ export const useCardDesigner = () => {
     addElement,
     removeActiveElement,
     resetSchema,
-    copySchema
+    copySchema,
+    setBackgroundType,
+    setBackgroundValue,
+    setBackgroundImage
   }
 }
 

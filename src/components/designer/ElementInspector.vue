@@ -10,6 +10,7 @@ const props = defineProps<{
 }>()
 
 const isTextElement = computed(() => props.element?.type === 'text')
+const isIconElement = computed(() => props.element?.type === 'icon')
 
 const mutate = (mutator: (draft: CardElement) => void) => {
   if (!props.element) return
@@ -69,6 +70,18 @@ const styleProxy = (field: string, fallback: string | number) =>
     get: () => (props.element?.style?.[field] ?? fallback) as string | number,
     set: (value: string | number | null) => updateStyleField(field, value)
   })
+
+const iconSrcValue = computed({
+  get: () => (props.element?.type === 'icon' ? props.element.src ?? '' : ''),
+  set: (value: string) => {
+    if (!props.element || props.element.type !== 'icon') return
+    mutate((draft) => {
+      if (draft.type === 'icon') {
+        draft.src = value || undefined
+      }
+    })
+  }
+})
 
 const xModel = rectProxy('x')
 const yModel = rectProxy('y')
@@ -162,6 +175,12 @@ const applyStyleText = () => {
         </t-form-item>
         <t-form-item label="字重">
           <t-input v-model="fontWeightValue" placeholder="bold / 600" />
+        </t-form-item>
+      </template>
+
+      <template v-if="isIconElement">
+        <t-form-item label="图标图片">
+          <t-input v-model="iconSrcValue" placeholder="https://example.com/icon.png" clearable />
         </t-form-item>
       </template>
 

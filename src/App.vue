@@ -2,6 +2,7 @@
 import DesignerHeader from './components/designer/DesignerHeader.vue'
 import CardStage from './components/designer/CardStage.vue'
 import SchemaPreview from './components/designer/SchemaPreview.vue'
+import CanvasSettingsPanel from './components/designer/CanvasSettingsPanel.vue'
 import ElementListPanel from './components/designer/ElementListPanel.vue'
 import ElementInspector from './components/designer/ElementInspector.vue'
 import BindingDataPanel from './components/designer/BindingDataPanel.vue'
@@ -23,7 +24,10 @@ const {
   resetSchema,
   copySchema,
   bindingEntries,
-  mutateElement
+  mutateElement,
+  setBackgroundType,
+  setBackgroundValue,
+  setBackgroundImage
 } = useCardDesigner()
 </script>
 
@@ -54,6 +58,15 @@ const {
       </section>
 
       <aside class="control-panel">
+        <CanvasSettingsPanel
+          :background-type="cardSchema.backgroundType ?? 'color'"
+          :background="cardSchema.background"
+          :background-image="cardSchema.backgroundImage"
+          @update:type="setBackgroundType"
+          @update:background="setBackgroundValue"
+          @update:image="setBackgroundImage"
+        />
+
         <ElementListPanel
           :elements="cardSchema.elements"
           :active-element-id="activeElementId"
