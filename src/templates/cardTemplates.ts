@@ -167,7 +167,7 @@ const blackGoldSchema: CardLayoutSchema = {
 const crimsonWaveSchema: CardLayoutSchema = {
   id: 'kuanmai-crimson-wave',
   width: 686,
-  height: 360,
+  height: 420,
   background: 'linear-gradient(180deg, #fdfdfd 0%, #f7f7f7 60%, #f25340 100%)',
   backgroundType: 'image',
   padding: 40,
@@ -263,7 +263,7 @@ const crimsonWaveSchema: CardLayoutSchema = {
 const blueCitySchema: CardLayoutSchema = {
   id: 'kuanmai-blue-city',
   width: 686,
-  height: 360,
+  height: 420,
   background: 'linear-gradient(120deg, #f7f9ff 0%, #eff3ff 60%)',
   backgroundType: 'color',
   padding: 48,
