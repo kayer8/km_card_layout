@@ -1,6 +1,8 @@
 import { computed, reactive, ref } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import type { CardElement, CardElementStyle, CardElementType, CardLayoutSchema } from '@km/card-schema'
+import type { CardTemplate } from '../templates/cardTemplates'
+import { builtinTemplates } from '../templates/cardTemplates'
 
 export interface UserProfile {
   company: string
@@ -30,163 +32,13 @@ const pxStyleFields = new Set([
   'height'
 ])
 
-const createDefaultSchema = (): CardLayoutSchema => {
-  const elements: CardElement[] = [
-    {
-      id: 'company',
-      type: 'text',
-      x: 40,
-      y: 32,
-      width: 360,
-      height: 32,
-      binding: 'user.company',
-      style: {
-        fontSize: 18,
-        color: '#E2B96F',
-        letterSpacing: 1,
-        fontWeight: 500
-      }
-    },
-    {
-      id: 'name',
-      type: 'text',
-      x: 40,
-      y: 86,
-      width: 280,
-      height: 60,
-      binding: 'user.name',
-      style: {
-        fontSize: 36,
-        color: '#FFFFFF',
-        fontWeight: 700
-      }
-    },
-    {
-      id: 'title',
-      type: 'text',
-      x: 40,
-      y: 148,
-      width: 220,
-      height: 32,
-      binding: 'user.title',
-      style: {
-        fontSize: 20,
-        color: '#CFD5EF',
-        fontWeight: 500
-      }
-    },
-    {
-      id: 'phone-dot',
-      type: 'icon',
-      name: 'dot',
-      x: 40,
-      y: 206,
-      width: 12,
-      height: 12,
-      style: {
-        backgroundColor: '#E2B96F',
-        borderRadius: '50%'
-      }
-    },
-    {
-      id: 'phone',
-      type: 'text',
-      x: 60,
-      y: 192,
-      width: 300,
-      height: 32,
-      binding: 'user.phone',
-      style: {
-        fontSize: 18,
-        color: '#FFFFFF'
-      }
-    },
-    {
-      id: 'email-dot',
-      type: 'icon',
-      name: 'dot',
-      x: 40,
-      y: 244,
-      width: 12,
-      height: 12,
-      style: {
-        backgroundColor: '#E2B96F',
-        borderRadius: '50%'
-      }
-    },
-    {
-      id: 'email',
-      type: 'text',
-      x: 60,
-      y: 230,
-      width: 320,
-      height: 32,
-      binding: 'user.email',
-      style: {
-        fontSize: 18,
-        color: '#FFFFFF'
-      }
-    },
-    {
-      id: 'address-dot',
-      type: 'icon',
-      name: 'dot',
-      x: 40,
-      y: 282,
-      width: 12,
-      height: 12,
-      style: {
-        backgroundColor: '#E2B96F',
-        borderRadius: '50%'
-      }
-    },
-    {
-      id: 'address',
-      type: 'text',
-      x: 60,
-      y: 268,
-      width: 420,
-      height: 40,
-      binding: 'user.address',
-      style: {
-        fontSize: 16,
-        color: '#CFD5EF',
-        lineHeight: 24
-      }
-    },
-    {
-      id: 'avatar',
-      type: 'image',
-      x: 480,
-      y: 80,
-      width: 150,
-      height: 150,
-      binding: 'user.avatar',
-      style: {
-        borderRadius: '50%',
-        border: '6px solid rgba(0, 0, 0, 0.35)',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.45)'
-      }
-    }
-  ]
-
-  return {
-    id: 'kuanmai-black-gold',
-    width: 686,
-    height: 360,
-    borderRadius: 32,
-    background: 'radial-gradient(circle at 20% 20%, #1e1a21, #080809 80%)',
-    backgroundType: 'color',
-    padding: 40,
-    metadata: {
-      template: 'black-gold',
-      version: '1.0.0'
-    },
-    elements
-  }
-}
+const cloneSchema = (schema: CardLayoutSchema): CardLayoutSchema =>
+  JSON.parse(JSON.stringify(schema)) as CardLayoutSchema
 
 export const useCardDesigner = () => {
+  const templateStore = reactive<CardTemplate[]>(builtinTemplates.map((template) => ({ ...template, schema: cloneSchema(template.schema) })))
+  const selectedTemplateId = ref(templateStore[0]?.id ?? '')
+
   const bindingContext = reactive<{ user: UserProfile }>({
     user: {
       company: '合肥魅客网络有限公司',
@@ -199,7 +51,8 @@ export const useCardDesigner = () => {
     }
   })
 
-  const cardSchema = reactive<CardLayoutSchema>(createDefaultSchema())
+  const initialSchema = templateStore[0]?.schema ?? { id: 'empty', width: 686, height: 360, background: '#111', borderRadius: 32, padding: 32, elements: [] }
+  const cardSchema = reactive<CardLayoutSchema>(cloneSchema(initialSchema))
   const activeElementId = ref(cardSchema.elements[0]?.id ?? '')
   const copyState = ref<'idle' | 'copied'>('idle')
 
@@ -329,16 +182,32 @@ export const useCardDesigner = () => {
     activeElementId.value = fallback?.id ?? ''
   }
 
-  const resetSchema = () => {
-    const next = createDefaultSchema()
+  const applySchema = (schema: CardLayoutSchema) => {
+    const next = cloneSchema(schema)
     cardSchema.id = next.id
     cardSchema.width = next.width
     cardSchema.height = next.height
     cardSchema.background = next.background
+    cardSchema.backgroundType = next.backgroundType
+    cardSchema.backgroundImage = next.backgroundImage
     cardSchema.borderRadius = next.borderRadius
     cardSchema.metadata = next.metadata
     cardSchema.elements.splice(0, cardSchema.elements.length, ...next.elements.map((element) => ({ ...element })))
     activeElementId.value = cardSchema.elements[0]?.id ?? ''
+  }
+
+  const selectTemplate = (templateId: string) => {
+    const template = templateStore.find((item) => item.id === templateId)
+    if (!template) return
+    selectedTemplateId.value = templateId
+    applySchema(template.schema)
+  }
+
+  const resetSchema = () => {
+    const template = templateStore.find((item) => item.id === selectedTemplateId.value)
+    if (template) {
+      applySchema(template.schema)
+    }
   }
 
   const copySchema = async () => {
@@ -374,10 +243,31 @@ export const useCardDesigner = () => {
     cardSchema.backgroundType = trimmed ? 'image' : 'color'
   }
 
+  const createTemplate = (name: string) => {
+    const trimmedName = name.trim()
+    if (!trimmedName) {
+      MessagePlugin.warning('模板名称不能为空')
+      return null
+    }
+    const id = `template-${Date.now().toString(36)}`
+    const newTemplate: CardTemplate = {
+      id,
+      name: trimmedName,
+      description: '自定义模板',
+      schema: cloneSchema(cardSchema)
+    }
+    templateStore.push(newTemplate)
+    selectedTemplateId.value = id
+    MessagePlugin.success('模板已保存')
+    return newTemplate
+  }
+
   return {
     bindingContext,
     bindingEntries,
     cardSchema,
+    templates: templateStore,
+    selectedTemplateId,
     copyState,
     activeElementId,
     activeElement,
@@ -391,6 +281,8 @@ export const useCardDesigner = () => {
     addElement,
     removeActiveElement,
     resetSchema,
+    selectTemplate,
+    createTemplate,
     copySchema,
     setBackgroundType,
     setBackgroundValue,
