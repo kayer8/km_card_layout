@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from 'vue'
+﻿import { computed, reactive, ref } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import type { CardElement, CardElementStyle, CardElementType, CardLayoutSchema } from '@km/card-schema'
 import type { CardTemplate } from '../templates/cardTemplates'
@@ -51,11 +51,14 @@ export const useCardDesigner = () => {
     }
   })
 
-  const initialSchema = templateStore[0]?.schema ?? { id: 'empty', width: 686, height: 360, background: '#111', borderRadius: 32, padding: 32, elements: [] }
+  const initialSchema = templateStore[0]!.schema;
+  
+  console.log(initialSchema,'initialSchemainitialSchema');
+  
   const cardSchema = reactive<CardLayoutSchema>(cloneSchema(initialSchema))
   const activeElementId = ref(cardSchema.elements[0]?.id ?? '')
   const copyState = ref<'idle' | 'copied'>('idle')
-
+  
   const activeElement = computed(() => cardSchema.elements.find((element) => element.id === activeElementId.value))
   const serializedSchema = computed(() => JSON.stringify(cardSchema, null, 2))
   const bindingEntries = computed(() => Object.entries(bindingContext.user))
