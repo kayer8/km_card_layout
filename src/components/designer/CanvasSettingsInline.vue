@@ -39,7 +39,7 @@ const handleFontColorChange = (data: string | number) => {
 
 <template>
   <div class="canvas-settings-inline">
-    <span class="label">背景</span>
+    <span class="label" style="flex-shrink: 0;">背景</span>
     <t-radio-group
       :value="props.backgroundType"
       size="small"
@@ -69,7 +69,7 @@ const handleFontColorChange = (data: string | number) => {
   </div>
 
   <div class="color-settings">
-    <span class="label">根字体颜色</span>
+    <span class="label" style="flex-shrink: 0;">根字体颜色</span>
     <t-input
       :value="props.fontColor"
       placeholder="#FFFFFF"
