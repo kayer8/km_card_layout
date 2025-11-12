@@ -1,9 +1,0 @@
-{
-  "name": "@km/card-layout-miniprogram",
-  "version": "0.1.0",
-  "description": "Card layout renderer as a WeChat mini program component",
-  "private": true,
-  "files": [
-    "miniprogram"
-  ]
-}
