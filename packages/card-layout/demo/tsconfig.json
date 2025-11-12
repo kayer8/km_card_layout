@@ -13,7 +13,7 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@km/card-layout": ["../src"],
+      "km-card-layout-h5-component": ["../src"],
       "km-card-schema": ["../../card-schema"]
     }
   },

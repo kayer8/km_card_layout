@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import CardLayout from '@km/card-layout';
+import CardLayout from 'km-card-layout-h5-component';
 
 const layout = {
   id: 'kuanmai-black-gold',

@@ -1,6 +1,6 @@
 {
-  "name": "km-card-layout-component",
-  "version": "0.1.0",
+  "name": "km-card-layout-h5-component",
+  "version": "0.1.1",
   "description": "Responsive business card layout component for Vue 3",
   "type": "module",
   "main": "./dist/card-layout.umd.cjs",
@@ -21,11 +21,7 @@
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly --outDir dist/types",
     "typecheck": "vue-tsc --noEmit",
     "release": "pnpm run typecheck && pnpm run build && npm publish --access public",
-    "prepublishOnly": "pnpm run build",
-    "demo:install": "pnpm install --dir demo",
-    "demo:dev": "pnpm --dir demo dev",
-    "demo:build": "pnpm --dir demo build",
-    "demo:preview": "pnpm --dir demo preview"
+    "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
     "vue": "^3.3.0",
