@@ -1,3 +1,0 @@
-﻿<view class="page">
-  <card-layout layout="{{layout}}" data="{{cardData}}" />
-</view>
