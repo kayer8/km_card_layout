@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 const props = defineProps<{
   backgroundType: 'color' | 'image'
   background: string
@@ -68,7 +68,7 @@ const handleFontColorChange = (value: string | number) => {
       placeholder="#FFFFFF"
       size="small"
       class="settings-input"
-      @change="handleFontColorChange"
+      @input="handleFontColorChange"
     />
   </div>
 </template>
@@ -82,7 +82,8 @@ const handleFontColorChange = (value: string | number) => {
 
 .label {
   font-size: 0.9rem;
-  color: #c7cad6;
+  color: #4A5568;
+  font-weight: 500;
 }
 
 .settings-input {
@@ -93,5 +94,9 @@ const handleFontColorChange = (value: string | number) => {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.color-settings .settings-input {
+  min-width: 160px;
 }
 </style>

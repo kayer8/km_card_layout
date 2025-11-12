@@ -122,15 +122,16 @@ const {
 <style scoped>
   .designer-page {
     min-height: 100vh;
-    padding: 32px;
-    background: radial-gradient(circle at top, #1a1b20, #050506 70%);
-    color: #f6f7fb;
+    padding: 48px;
+    background: linear-gradient(135deg, #E9EFF7 0%, #F7FAFC 100%);
+    font-family: 'Noto Sans', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    color: #1A202C;
   }
 
   .designer-body {
     display: grid;
-    grid-template-columns: 260px minmax(0, 1fr) 360px;
-    gap: 24px;
+    grid-template-columns: 280px minmax(0, 1fr) 360px;
+    gap: 28px;
   }
 
   .sidebar {
@@ -139,52 +140,53 @@ const {
     gap: 20px;
   }
 
+  .sidebar,
   .canvas-panel {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 24px;
     padding: 24px;
-    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(43, 108, 176, 0.1);
+    border: 1px solid rgba(66, 153, 225, 0.08);
   }
 
   .panel-title {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
 
   .panel-title h2,
   .panel-title h3 {
     margin: 0;
-    color: #f6f7fb;
+    color: #1A202C;
   }
 
   .panel-title p {
     margin: 4px 0 0;
-    color: #9ba2bc;
-    font-size: 0.9rem;
+    color: #4A5568;
+    font-size: 0.92rem;
   }
 
   .panel-block :deep(.t-form__label) {
-    color: #dfe3f4;
+    color: #2F3A4F;
   }
 
   .panel-block :deep(.t-tag) {
-    color: #f6f7fb;
+    color: #2B6CB0;
   }
 
   .panel-block :deep(.t-input),
   .panel-block :deep(.t-input-number) {
-    color: #121212;
+    color: #1A202C;
   }
 
   .panel-block {
     padding: 20px;
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(12px);
+    border: 1px solid rgba(66, 153, 225, 0.12);
+    background: #FFFFFF;
+    box-shadow: inset 0 0 0 1px rgba(233, 239, 247, 0.6);
   }
 
   .schema-toggle {
@@ -219,7 +221,7 @@ const {
 
   @media (max-width: 768px) {
     .designer-page {
-      padding: 16px;
+      padding: 24px;
     }
   }
 </style>

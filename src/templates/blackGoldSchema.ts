@@ -4,7 +4,7 @@ export const blackGoldSchema: CardLayoutSchema = {
   id: 'kuanmai-black-gold',
   width: 686,
   height: 420,
-  background: 'radial-gradient(circle at 20% 20%, #1e1a21, #080809 80%)',
+  background: '#333',
   backgroundType: 'color',
   padding: 40,
   fontColor: '#ffffff',
@@ -147,9 +147,7 @@ export const blackGoldSchema: CardLayoutSchema = {
       height: 160,
       binding: 'user.avatar',
       style: {
-        borderRadius: '50%',
-        border: '6px solid rgba(0, 0, 0, 0.35)',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.45)',
+        borderRadius: '50%'
       },
     },
   ],

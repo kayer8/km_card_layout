@@ -106,14 +106,15 @@ const createResizeHandler =
 .card-stage {
   padding: 20px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(66, 153, 225, 0.15);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(233, 239, 247, 0.6);
 }
 
 .card-stage__inner {
   position: relative;
   margin: 0 auto;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 32px rgba(43, 108, 176, 0.15);
   border-radius: inherit;
   overflow: hidden;
 }

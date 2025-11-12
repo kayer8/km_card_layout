@@ -55,7 +55,7 @@ const handleTemplateChange = (value: string | number) => {
           :value="template.id"
         >
           {{ template.name }}
-          <small v-if="template.description" class="template-desc"> — {{ template.description }}</small>
+          <small v-if="template.description" class="template-desc">�� {{ template.description }}</small>
         </t-option>
       </t-select>
       <t-button class="header-btn create-btn" size="medium" variant="outline" @click="openCreateDialog">
@@ -93,24 +93,26 @@ const handleTemplateChange = (value: string | number) => {
   display: inline-flex;
   padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(43, 108, 176, 0.2);
   font-size: 0.85rem;
-  color: #c7cad6;
+  color: #2B6CB0;
+  background: rgba(43, 108, 176, 0.08);
   margin: 0 0 8px;
 }
 
 .designer-header h1 {
   margin: 0;
   font-size: 2rem;
+  color: #1A202C;
 }
 
 .muted {
   margin: 4px 0 0;
-  color: #9ba2bc;
+  color: #4A5568;
 }
 
 .template-desc {
-  color: #9ba2bc;
+  color: #4A5568;
   font-size: 0.75rem;
 }
 
@@ -123,35 +125,35 @@ const handleTemplateChange = (value: string | number) => {
 
 .header-btn {
   min-width: 110px;
+  font-weight: 500;
 }
 
 .create-btn {
-  border-color: rgba(255, 255, 255, 0.35);
-  color: #f6f7fb;
+  border-color: rgba(43, 108, 176, 0.35);
+  color: #2B6CB0;
 }
 
 .create-btn:hover {
-  border-color: #f5c271;
-  color: #f5c271;
+  border-color: #2B6CB0;
 }
 
 .reset-btn {
-  border-color: rgba(129, 229, 207, 0.6);
-  color: #81e5cf;
+  border-color: rgba(74, 85, 104, 0.35);
+  color: #4A5568;
 }
 
 .reset-btn:hover {
-  border-color: #4fe2bb;
-  color: #4fe2bb;
+  border-color: #4A5568;
+  color: #2D3748;
 }
 
 .copy-btn {
-  background: linear-gradient(120deg, #f5c271, #f2945f);
+  background: linear-gradient(120deg, #3B82F6, #2B6CB0);
   border: none;
 }
 
 .copy-btn.t-button--primary:hover {
-  background: linear-gradient(120deg, #ffdb8a, #ffb17c);
+  background: linear-gradient(120deg, #63A4FF, #2C5282);
 }
 
 @media (max-width: 768px) {
