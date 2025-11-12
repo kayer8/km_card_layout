@@ -36,7 +36,12 @@ const cloneSchema = (schema: CardLayoutSchema): CardLayoutSchema =>
   JSON.parse(JSON.stringify(schema)) as CardLayoutSchema
 
 export const useCardDesigner = () => {
-  const templateStore = reactive<CardTemplate[]>(builtinTemplates.map((template) => ({ ...template, schema: cloneSchema(template.schema) })))
+  const templateStore = reactive<CardTemplate[]>(
+    builtinTemplates.map((template) => ({ ...template, schema: cloneSchema(template.schema) }))
+  )
+  if (!templateStore.length) {
+    throw new Error('至少需要一个卡片模板')
+  }
   const selectedTemplateId = ref(templateStore[0]?.id ?? '')
 
   const bindingContext = reactive<{ user: UserProfile }>({
@@ -51,10 +56,11 @@ export const useCardDesigner = () => {
     }
   })
 
-  const initialSchema = templateStore[0]!.schema;
-  
-  console.log(initialSchema,'initialSchemainitialSchema');
-  
+  const initialTemplate = templateStore[0]
+  if (!initialTemplate) {
+    throw new Error('未找到默认模板')
+  }
+  const initialSchema = initialTemplate.schema
   const cardSchema = reactive<CardLayoutSchema>(cloneSchema(initialSchema))
   if (!cardSchema.fontColor) {
     cardSchema.fontColor = '#ffffff'
@@ -62,7 +68,9 @@ export const useCardDesigner = () => {
   const activeElementId = ref(cardSchema.elements[0]?.id ?? '')
   const copyState = ref<'idle' | 'copied'>('idle')
   
-  const activeElement = computed(() => cardSchema.elements.find((element) => element.id === activeElementId.value))
+  const activeElement = computed(() =>
+    cardSchema.elements.find((element: CardElement) => element.id === activeElementId.value)
+  )
   const serializedSchema = computed(() => JSON.stringify(cardSchema, null, 2))
   const bindingEntries = computed(() => Object.entries(bindingContext.user))
 
@@ -81,7 +89,7 @@ export const useCardDesigner = () => {
 
   const resolveBinding = (binding?: string): string | number | undefined => {
     if (!binding) return undefined
-    return binding.split('.').reduce<unknown>((acc, key) => {
+    return binding.split('.').reduce<any>((acc, key) => {
       if (acc && typeof acc === 'object') {
         return (acc as Record<string, unknown>)[key]
       }
@@ -105,7 +113,7 @@ export const useCardDesigner = () => {
   }
 
   const mutateElement = (id: string, mutator: (element: CardElement) => void) => {
-    const target = cardSchema.elements.find((element) => element.id === id)
+    const target = cardSchema.elements.find((element: CardElement) => element.id === id)
     if (!target) return
     mutator(target)
   }
@@ -181,7 +189,9 @@ export const useCardDesigner = () => {
 
   const removeActiveElement = () => {
     if (!activeElement.value) return
-    const index = cardSchema.elements.findIndex((element) => element.id === activeElement.value?.id)
+    const index = cardSchema.elements.findIndex(
+      (element: CardElement) => element.id === activeElement.value?.id
+    )
     if (index === -1) return
     cardSchema.elements.splice(index, 1)
     const fallback = cardSchema.elements[index - 1] ?? cardSchema.elements[index] ?? cardSchema.elements[0]
@@ -196,10 +206,14 @@ export const useCardDesigner = () => {
     cardSchema.background = next.background
     cardSchema.backgroundType = next.backgroundType
     cardSchema.backgroundImage = next.backgroundImage
-    cardSchema.fontColor = next.fontColor ?? '#ffffff'
+    cardSchema.fontColor = next.fontColor || '#ffffff'
     cardSchema.borderRadius = next.borderRadius
     cardSchema.metadata = next.metadata
-    cardSchema.elements.splice(0, cardSchema.elements.length, ...next.elements.map((element) => ({ ...element })))
+    cardSchema.elements.splice(
+      0,
+      cardSchema.elements.length,
+      ...next.elements.map((element: CardElement) => ({ ...element }))
+    )
     activeElementId.value = cardSchema.elements[0]?.id ?? ''
   }
 
@@ -250,9 +264,31 @@ export const useCardDesigner = () => {
     cardSchema.backgroundType = trimmed ? 'image' : 'color'
   }
 
-  const setFontColor = (value: string) => {
-    const normalized = value?.trim()
-    cardSchema.fontColor = normalized || '#ffffff'
+  type FontColorPayload = string | { value: string; syncChildren?: boolean }
+
+  const setFontColor = (payload: FontColorPayload) => {
+    const rawValue = typeof payload === 'string' ? payload : payload?.value
+    const shouldSync = typeof payload === 'string' ? true : payload?.syncChildren !== false
+    const previousColor = cardSchema.fontColor ?? '#ffffff'
+    const nextColor = (rawValue ?? '').toString() || '#ffffff'
+    cardSchema.fontColor = nextColor
+
+    if (nextColor === previousColor) {
+      return
+    }
+
+    if (shouldSync) {
+      cardSchema.elements.forEach((element: CardElement) => {
+        const elementColor =
+          typeof element.style?.color === 'string' ? element.style.color : undefined
+        if (elementColor && elementColor === previousColor) {
+          if (!element.style) {
+            element.style = {}
+          }
+          element.style.color = nextColor
+        }
+      })
+    }
   }
 
   const createTemplate = (name: string) => {

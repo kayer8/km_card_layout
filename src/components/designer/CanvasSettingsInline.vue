@@ -10,7 +10,10 @@ const emit = defineEmits<{
   (e: 'update:type', type: 'color' | 'image'): void
   (e: 'update:background', value: string): void
   (e: 'update:image', value: string): void
-  (e: 'update:fontColor', value: string): void
+  (
+    e: 'update:fontColor',
+    payload: string | { value: string; syncChildren?: boolean }
+  ): void
 }>()
 
 const handleTypeChange = (value: string | number) => {
@@ -25,8 +28,12 @@ const handleImageChange = (value: string | number) => {
   emit('update:image', String(value ?? ''))
 }
 
-const handleFontColorChange = (value: string | number) => {
-  emit('update:fontColor', String(value ?? ''))
+const handleFontColorChange = (data: string | number) => {
+  const normalized = typeof data === 'number' ? String(data) : (data ?? '').toString()
+  emit('update:fontColor', {
+    value: normalized,
+    syncChildren: true
+  })
 }
 </script>
 
@@ -68,7 +75,7 @@ const handleFontColorChange = (value: string | number) => {
       placeholder="#FFFFFF"
       size="small"
       class="settings-input"
-      @input="handleFontColorChange"
+      @change="handleFontColorChange"
     />
   </div>
 </template>

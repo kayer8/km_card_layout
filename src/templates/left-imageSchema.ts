@@ -1,4 +1,6 @@
-export const leftAvatar = {
+import type { CardLayoutSchema } from 'km-card-schema';
+
+export const leftAvatar: CardLayoutSchema = {
   "id": "kuanmai-left-avatar",
   "width": 686,
   "height": 420,
