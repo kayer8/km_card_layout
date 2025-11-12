@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
-      "@km/card-layout": fileURLToPath(new URL("../src", import.meta.url))
+      "km-card-layout-h5-component": fileURLToPath(new URL("../src", import.meta.url))
     }
   },
   server: {

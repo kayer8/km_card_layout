@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
+import type { CardElement, CardElementStyle, CardLayoutSchema } from '@km/card-schema'
 
 type DragPayload = { x: number; y: number }
 type ResizePayload = { x: number; y: number; w: number; h: number }
@@ -56,7 +56,8 @@ const createResizeHandler =
           props.schema.backgroundType === 'image' && props.schema.backgroundImage ? `url(${props.schema.backgroundImage})` : undefined,
         backgroundSize: props.schema.backgroundType === 'image' ? 'cover' : undefined,
         backgroundRepeat: props.schema.backgroundType === 'image' ? 'no-repeat' : undefined,
-        backgroundPosition: props.schema.backgroundType === 'image' ? 'center' : undefined
+        backgroundPosition: props.schema.backgroundType === 'image' ? 'center' : undefined,
+        color: props.schema.fontColor || '#fff'
       }"
     >
       <Vue3DraggableResizable
@@ -118,7 +119,7 @@ const createResizeHandler =
 }
 
 .draggable-node {
-  color: #fff;
+  color: inherit;
 }
 
 .draggable-node.is-active {

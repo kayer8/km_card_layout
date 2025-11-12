@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/demo/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "CardLayout Demo",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#050505"
+  }
+}

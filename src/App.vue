@@ -33,7 +33,8 @@ const {
   mutateElement,
   setBackgroundType,
   setBackgroundValue,
-  setBackgroundImage
+  setBackgroundImage,
+  setFontColor
 } = useCardDesigner()
 </script>
 
@@ -71,9 +72,11 @@ const {
             :background-type="cardSchema.backgroundType ?? 'color'"
             :background="cardSchema.background"
             :background-image="cardSchema.backgroundImage"
+            :font-color="cardSchema.fontColor"
             @update:type="setBackgroundType"
             @update:background="setBackgroundValue"
             @update:image="setBackgroundImage"
+            @update:font-color="setFontColor"
           />
         </div>
 

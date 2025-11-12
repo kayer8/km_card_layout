@@ -1,13 +1,4 @@
-<template>
-  <div style="width:calc(100vw - 40px);padding:20px">
-    <CardLayout :layout="layout"  :data="cardData"  />
-  </div>
-</template>
-
-<script setup lang="ts">
-import CardLayout from 'km-card-layout-h5-component';
-
-const layout = {
+export const leftAvatar = {
   "id": "kuanmai-left-avatar",
   "width": 686,
   "height": 420,
@@ -160,16 +151,3 @@ const layout = {
   ],
   "backgroundImage": "https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_01.png"
 }
-
-const cardData = {
-  user: {
-    company: '合肥魅客网络有限公司',
-    name: '名片君',
-    title: '销售经理',
-    phone: '189****4399',
-    email: 'km@kuanmai.com',
-    address: '上海市静安区天目西路企业中心第一座15F',
-    avatar: 'https://picsum.photos/160/160?random=1',
-  },
-};
-</script>

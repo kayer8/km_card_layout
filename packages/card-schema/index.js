@@ -68,6 +68,7 @@ export const scaleCardLayout = (schema, options = {}) => {
     ...schema,
     width: roundValue(targetWidth, round),
     height: roundValue(targetHeight ?? schema.height * heightScale, round),
+    fontColor: schema.fontColor,
     borderRadius:
       typeof schema.borderRadius === 'number'
         ? roundValue(schema.borderRadius * widthScale, round)

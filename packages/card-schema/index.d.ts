@@ -48,6 +48,7 @@ export interface CardLayoutSchema {
   background: string;
   backgroundImage?: string;
   backgroundType?: 'color' | 'image';
+  fontColor?: string;
   borderRadius?: number;
   padding?: number;
   elements: CardElement[];

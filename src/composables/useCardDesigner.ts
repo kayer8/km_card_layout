@@ -1,6 +1,6 @@
 ﻿import { computed, reactive, ref } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
-import type { CardElement, CardElementStyle, CardElementType, CardLayoutSchema } from 'km-card-schema'
+import type { CardElement, CardElementStyle, CardElementType, CardLayoutSchema } from 'km-card-schema';
 import type { CardTemplate } from '../templates/cardTemplates'
 import { builtinTemplates } from '../templates/cardTemplates'
 
@@ -56,6 +56,9 @@ export const useCardDesigner = () => {
   console.log(initialSchema,'initialSchemainitialSchema');
   
   const cardSchema = reactive<CardLayoutSchema>(cloneSchema(initialSchema))
+  if (!cardSchema.fontColor) {
+    cardSchema.fontColor = '#ffffff'
+  }
   const activeElementId = ref(cardSchema.elements[0]?.id ?? '')
   const copyState = ref<'idle' | 'copied'>('idle')
   
@@ -193,6 +196,7 @@ export const useCardDesigner = () => {
     cardSchema.background = next.background
     cardSchema.backgroundType = next.backgroundType
     cardSchema.backgroundImage = next.backgroundImage
+    cardSchema.fontColor = next.fontColor ?? '#ffffff'
     cardSchema.borderRadius = next.borderRadius
     cardSchema.metadata = next.metadata
     cardSchema.elements.splice(0, cardSchema.elements.length, ...next.elements.map((element) => ({ ...element })))
@@ -246,6 +250,11 @@ export const useCardDesigner = () => {
     cardSchema.backgroundType = trimmed ? 'image' : 'color'
   }
 
+  const setFontColor = (value: string) => {
+    const normalized = value?.trim()
+    cardSchema.fontColor = normalized || '#ffffff'
+  }
+
   const createTemplate = (name: string) => {
     const trimmedName = name.trim()
     if (!trimmedName) {
@@ -289,7 +298,8 @@ export const useCardDesigner = () => {
     copySchema,
     setBackgroundType,
     setBackgroundValue,
-    setBackgroundImage
+    setBackgroundImage,
+    setFontColor
   }
 }
 

@@ -125,7 +125,7 @@ const cardStyle = computed<CSSProperties>(() => {
     borderRadius: createCssValue(layout.borderRadius),
     padding: createCssValue(layout.padding),
     boxSizing: "border-box",
-    color: "#fff"
+    color: layout.fontColor || "#fff"
   }
 
   if (layout.backgroundType === "image" && layout.backgroundImage) {
@@ -206,7 +206,6 @@ const renderedElements = computed<RenderedElement[]>(() => {
 .km-card-layout {
   position: relative;
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
   transition: width 0.2s ease, height 0.2s ease;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }

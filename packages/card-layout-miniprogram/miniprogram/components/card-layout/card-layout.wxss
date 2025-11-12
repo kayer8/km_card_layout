@@ -1,0 +1,28 @@
+.km-card-layout {
+  position: relative;
+  border-radius: 32rpx;
+  overflow: hidden;
+  box-shadow: 0 30rpx 80rpx rgba(0, 0, 0, 0.4);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.km-card-element {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  color: inherit;
+  white-space: pre-line;
+}
+
+.km-card-element__text {
+  line-height: 1.2;
+}
+
+.km-card-element__image {
+  object-fit: cover;
+}
+
+.km-card-element__icon {
+  justify-content: center;
+}

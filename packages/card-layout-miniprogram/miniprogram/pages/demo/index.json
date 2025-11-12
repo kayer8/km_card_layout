@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "Mini CardLayout",
+  "usingComponents": {
+    "card-layout": "/components/card-layout/card-layout"
+  }
+}

@@ -3,12 +3,14 @@ const props = defineProps<{
   backgroundType: 'color' | 'image'
   background: string
   backgroundImage?: string
+  fontColor?: string
 }>()
 
 const emit = defineEmits<{
   (e: 'update:type', type: 'color' | 'image'): void
   (e: 'update:background', value: string): void
   (e: 'update:image', value: string): void
+  (e: 'update:fontColor', value: string): void
 }>()
 
 const handleTypeChange = (value: string | number) => {
@@ -21,6 +23,10 @@ const handleBackgroundChange = (value: string | number) => {
 
 const handleImageChange = (value: string | number) => {
   emit('update:image', String(value ?? ''))
+}
+
+const handleFontColorChange = (value: string | number) => {
+  emit('update:fontColor', String(value ?? ''))
 }
 </script>
 
@@ -54,13 +60,24 @@ const handleImageChange = (value: string | number) => {
       @change="handleImageChange"
     />
   </div>
+
+  <div class="color-settings">
+    <span class="label">根字体颜色</span>
+    <t-input
+      :value="props.fontColor"
+      placeholder="#FFFFFF"
+      size="small"
+      class="settings-input"
+      @change="handleFontColorChange"
+    />
+  </div>
 </template>
 
 <style scoped>
 .canvas-settings-inline {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 }
 
 .label {
@@ -69,6 +86,12 @@ const handleImageChange = (value: string | number) => {
 }
 
 .settings-input {
-  min-width: 200px;
+  min-width: 180px;
+}
+
+.color-settings {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 </style>

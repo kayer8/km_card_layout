@@ -1,0 +1,6 @@
+<view class="demo">
+  <view class="panel">
+    <view class="panel-title">CardLayout ×é¼þÑÝÊ¾</view>
+    <card-layout layout="{{layout}}" data="{{data}}"></card-layout>
+  </view>
+</view>
