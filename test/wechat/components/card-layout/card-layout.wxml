@@ -1,0 +1,15 @@
+﻿<view class="card-layout" style="{{containerStyle}}">
+  <block wx:for="{{elements}}" wx:key="id">
+    <text wx:if="item.type === 'text'" class="element element-text" style="{{item.style}}">{{item.content}}</text>
+    <image
+      wx:elif="item.type === 'image'"
+      class="element element-image"
+      style="{{item.style}}"
+      src="{{item.src || item.content}}"
+      mode="aspectFill"
+    />
+    <view wx:else class="element element-icon" style="{{item.style}}">
+      <text>{{item.content}}</text>
+    </view>
+  </block>
+</view>

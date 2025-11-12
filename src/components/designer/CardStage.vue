@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-import type { CardElement, CardElementStyle, CardLayoutSchema } from '@km/card-schema'
+import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
 
 type DragPayload = { x: number; y: number }
 type ResizePayload = { x: number; y: number; w: number; h: number }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardElement, CardElementType } from '@km/card-schema'
+import type { CardElement, CardElementType } from 'km-card-schema'
 
 const props = defineProps<{
   elements: CardElement[]

@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { CardElement } from '@km/card-schema'
+import type { CardElement } from 'km-card-schema'
 
 const props = defineProps<{
   element?: CardElement

@@ -1,4 +1,4 @@
-﻿import type { CardLayoutSchema } from '@km/card-schema';
+﻿import type { CardLayoutSchema } from 'km-card-schema';
 
 export interface CardTemplate {
   id: string;

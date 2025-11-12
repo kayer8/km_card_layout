@@ -1,0 +1,5 @@
+﻿{
+  "usingComponents": {
+    "card-layout": "/components/card-layout/card-layout"
+  }
+}

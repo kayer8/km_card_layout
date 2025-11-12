@@ -1,5 +1,5 @@
-﻿{
-  "name": "@km/card-schema",
+{
+  "name": "km-card-schema",
   "version": "0.1.0",
   "description": "Shared business card layout schema definitions",
   "type": "module",
@@ -8,5 +8,8 @@
   "files": [
     "index.js",
     "index.d.ts"
-  ]
+  ],
+  "scripts": {
+    "release": "npm publish --access public "
+  }
 }

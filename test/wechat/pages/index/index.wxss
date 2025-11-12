@@ -1,0 +1,10 @@
+﻿.page {
+  min-height: 100vh;
+  padding: 24rpx;
+  display: flex;
+  justify-content: center;
+}
+
+card-layout {
+  width: 100%;
+}

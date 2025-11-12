@@ -1,0 +1,22 @@
+﻿{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ES2020", "DOM"],
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@km/card-schema": ["../../packages/card-schema"]
+    }
+  },
+  "include": ["src/**/*", "env.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

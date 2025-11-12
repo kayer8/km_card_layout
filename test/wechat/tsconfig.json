@@ -1,0 +1,12 @@
+﻿{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "es5", "scripthost"],
+    "types": ["miniprogram-api-typings"],
+    "experimentalDecorators": true,
+    "strict": false,
+    "allowJs": false,
+    "module": "esnext"
+  },
+  "include": ["./**/*.ts"]
+}

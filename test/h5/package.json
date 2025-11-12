@@ -1,0 +1,21 @@
+{
+  "name": "km-card-h5",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.0",
+    "tdesign-vue-next": "^1.17.2",
+    "@km/card-schema": "file:../../packages/card-schema"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.2",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.1"
+  }
+}

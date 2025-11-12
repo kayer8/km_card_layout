@@ -1,6 +1,6 @@
 ﻿import { computed, reactive, ref } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
-import type { CardElement, CardElementStyle, CardElementType, CardLayoutSchema } from '@km/card-schema'
+import type { CardElement, CardElementStyle, CardElementType, CardLayoutSchema } from 'km-card-schema'
 import type { CardTemplate } from '../templates/cardTemplates'
 import { builtinTemplates } from '../templates/cardTemplates'
 

@@ -1,0 +1,27 @@
+﻿.card-layout {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.element {
+  position: absolute;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+.element-text {
+  font-weight: 500;
+}
+
+.element-image {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.element-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
