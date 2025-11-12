@@ -63,6 +63,8 @@ const createResizeHandler =
       <Vue3DraggableResizable
         v-for="element in props.schema.elements"
         :key="element.id"
+        :initW="element.width"
+        :initH="element.height"
         v-model:x="element.x"
         v-model:y="element.y"
         v-model:w="element.width"
@@ -71,8 +73,6 @@ const createResizeHandler =
         :lock-aspect-ratio="element.type === 'image'"
         :resizable="element.type !== 'icon'"
         :draggable="true"
-        :min-w="element.type === 'icon' ? 8 : 40"
-        :min-h="element.type === 'icon' ? 8 : 24"
         :active="props.activeElementId === element.id"
         :class="['draggable-node', { 'is-active': props.activeElementId === element.id }]"
         @activated="emit('activate-element', element.id)"
