@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "Demo",
   "usingComponents": {
-    "demo-card": "/miniprogram_dist/components/demo-card/index"
+    "card-layout": "/miniprogram_dist/components/card-layout/index"
   }
 }

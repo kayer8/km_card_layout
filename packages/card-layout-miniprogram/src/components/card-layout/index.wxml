@@ -1,0 +1,23 @@
+﻿<view class="clm-card-layout" style="{{containerStyle}}">
+  <block wx:for="{{elements}}" wx:key="id">
+    <image
+      wx:if="{{item.type === 'image'}}"
+      class="clm-card-element clm-card-element--image"
+      style="{{item.style}}"
+      src="{{item.src}}"
+      mode="aspectFill"
+    />
+    <view
+      wx:elif="{{item.type === 'icon'}}"
+      class="clm-card-element clm-card-element--icon"
+      style="{{item.style}}"
+    ></view>
+    <view
+      wx:else
+      class="clm-card-element clm-card-element--text"
+      style="{{item.style}}"
+    >
+      {{item.content}}
+    </view>
+  </block>
+</view>

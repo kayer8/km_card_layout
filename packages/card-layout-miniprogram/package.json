@@ -1,6 +1,6 @@
 {
   "name": "km-card-layout-miniprogram",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "",
   "main": "miniprogram_dist/index.js",
   "miniprogram": "miniprogram_dist",
@@ -18,7 +18,8 @@
     "build": "gulp build --gulpfile script/gulpfile.js --cwd ./",
     "build:lib": "gulp build:lib --gulpfile script/gulpfile.js --cwd ./",
     "build:demo": "gulp build:demo --gulpfile script/gulpfile.js --cwd ./",
-    "clean": "gulp clean --gulpfile script/gulpfile.js --cwd ./"
+    "clean": "gulp clean --gulpfile script/gulpfile.js --cwd ./",
+    "release": "pnpm run build && npm publish --access public"
   },
   "author": "km",
   "devDependencies": {

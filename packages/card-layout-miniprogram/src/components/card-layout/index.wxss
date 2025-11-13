@@ -1,0 +1,28 @@
+﻿.clm-card-layout {
+  position: relative;
+  border-radius: 32rpx;
+  overflow: hidden;
+  color: #f6f7fb;
+  font-family: 'PingFang SC', 'Microsoft Yahei', sans-serif;
+}
+
+.clm-card-element {
+  position: absolute;
+  box-sizing: border-box;
+  color: inherit;
+}
+
+.clm-card-element--text {
+  display: flex;
+  align-items: center;
+}
+
+.clm-card-element--image {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.clm-card-element--icon {
+  border-radius: 50%;
+}
