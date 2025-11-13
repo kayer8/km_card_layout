@@ -1,0 +1,19 @@
+{
+  "description": "TDesign miniprogram starter demo",
+  "appid": "touristappid",
+  "projectname": "km-card-layout-miniprogram-demo",
+  "compileType": "miniProgram",
+  "miniprogramRoot": "./",
+  "libVersion": "3.5.0",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true
+  },
+  "condition": {}
+}

@@ -1,0 +1,5 @@
+<view class="page">
+  <demo-card title="TDesign Miniprogram Starter" description="{{description}}">
+    <view class="slot-tip">Add your playground here.</view>
+  </demo-card>
+</view>

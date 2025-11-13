@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es5", "dom"],
+    "rootDir": "src",
+    "outDir": "miniprogram_dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "types": ["miniprogram-api-typings"]
+  },
+  "include": ["src/**/*.ts"]
+}

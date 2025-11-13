@@ -1,0 +1,31 @@
+{
+  "name": "km-card-layout-miniprogram",
+  "version": "0.1.0",
+  "description": "",
+  "main": "miniprogram_dist/index.js",
+  "miniprogram": "miniprogram_dist",
+  "keywords": [
+    "miniprogram",
+    "starter"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "gulp dev --gulpfile script/gulpfile.js --cwd ./",
+    "build": "gulp build --gulpfile script/gulpfile.js --cwd ./",
+    "build:lib": "gulp build:lib --gulpfile script/gulpfile.js --cwd ./",
+    "build:demo": "gulp build:demo --gulpfile script/gulpfile.js --cwd ./",
+    "clean": "gulp clean --gulpfile script/gulpfile.js --cwd ./"
+  },
+  "author": "km",
+  "devDependencies": {
+    "del": "^6.1.1",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "miniprogram-api-typings": "^4.0.0",
+    "typescript": "~5.4.5"
+  }
+}

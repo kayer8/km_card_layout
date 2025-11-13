@@ -1,0 +1,9 @@
+.page {
+  padding: 48rpx;
+}
+
+.slot-tip {
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: #0052d9;
+}

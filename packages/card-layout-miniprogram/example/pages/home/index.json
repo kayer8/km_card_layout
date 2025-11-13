@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "Demo",
+  "usingComponents": {
+    "demo-card": "/miniprogram_dist/components/demo-card/index"
+  }
+}

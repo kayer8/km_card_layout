@@ -1,0 +1,9 @@
+{
+  "desc": "TDesign starter demo sitemap",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+<view class="demo-card">
+  <view class="demo-card__title">{{title}}</view>
+  <view class="demo-card__description">{{description}}</view>
+  <slot></slot>
+</view>
