@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      km-card-layout-h5-component:
+        specifier: ^0.1.2
+        version: 0.1.2(vue@3.5.24(typescript@5.6.3))
       vue:
         specifier: ^3.5.0
         version: 3.5.24(typescript@5.6.3)
@@ -351,6 +354,14 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  km-card-layout-h5-component@0.1.2:
+    resolution: {integrity: sha512-RV4LmQyKBsi+oVJHwuIlOJBrSmiNidLcHYE+F+wR03dqSJdqgj80NsPNQLYkp9Nj57wh5m3IGkr5IKh/cOGVsw==}
+    peerDependencies:
+      vue: ^3.3.0
+
+  km-card-schema@0.1.0:
+    resolution: {integrity: sha512-JQlMsbi7UobyXP+zA8BxgcR7Q8lGhVRRlpGSVtQnW7gjv8Jh+n6jd3gWJG6ilHxxg3QiCpBuOGoSJ0iXvo8qvQ==}
+
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
@@ -666,6 +677,13 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  km-card-layout-h5-component@0.1.2(vue@3.5.24(typescript@5.6.3)):
+    dependencies:
+      km-card-schema: 0.1.0
+      vue: 3.5.24(typescript@5.6.3)
+
+  km-card-schema@0.1.0: {}
 
   magic-string@0.30.21:
     dependencies:
