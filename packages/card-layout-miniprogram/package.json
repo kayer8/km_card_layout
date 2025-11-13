@@ -1,6 +1,6 @@
 {
   "name": "km-card-layout-miniprogram",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "main": "miniprogram_dist/index.js",
   "miniprogram": "miniprogram_dist",

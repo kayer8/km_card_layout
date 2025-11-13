@@ -18,6 +18,38 @@ const formatLengthValue = (value: string | number | undefined): string | undefin
 
 const toKebabCase = (key: string) => key.replace(/([A-Z])/g, '-$1').toLowerCase()
 
+const LENGTH_STYLE_KEYS = new Set([
+  'fontSize',
+  'lineHeight',
+  'letterSpacing',
+  'borderRadius',
+  'padding',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'gap',
+  'width',
+  'height',
+  'top',
+  'left',
+  'right',
+  'bottom'
+])
+
+const formatStyleEntryValue = (key: string, value: string | number | undefined): string | undefined => {
+  if (value === undefined || value === null) return undefined
+  if (typeof value === 'number' && LENGTH_STYLE_KEYS.has(key)) {
+    return `${value}rpx`
+  }
+  return typeof value === 'number' ? String(value) : value
+}
+
 const resolveBinding = (binding: string | undefined, data: LayoutData) => {
   if (!binding) return undefined
   return binding.split('.').reduce<any>((acc, key) => {
@@ -97,7 +129,7 @@ Component({
         for (let i = 0; i < styleEntries.length; i += 1) {
           const key = styleEntries[i]
           const value = (element.style as Record<string, string | number | undefined>)[key]
-          const formatted = typeof value === 'number' ? `${value}rpx` : value
+          const formatted = formatStyleEntryValue(key, value)
           if (formatted !== undefined) {
             styles.push(`${toKebabCase(key)}:${formatted}`)
           }
