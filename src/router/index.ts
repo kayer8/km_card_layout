@@ -4,6 +4,7 @@ import StylesListPage from '../pages/StylesListPage.vue'
 import BackgroundListPage from '../pages/BackgroundListPage.vue'
 import ElementsListPage from '../pages/ElementsListPage.vue'
 import StyleDesignerPage from '../pages/StyleDesignerPage.vue'
+import StyleManagePage from '../pages/StyleManagePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,9 +44,20 @@ const router = createRouter({
       ]
     },
     {
-      path: '/style-designer',
+      path: '/styles/:id/design',
       name: 'style-designer',
-      component: StyleDesignerPage
+      component: StyleDesignerPage,
+      meta: {
+        menuKey: 'styles'
+      }
+    },
+    {
+      path: '/styles/:id/manage',
+      name: 'style-manage',
+      component: StyleManagePage,
+      meta: {
+        menuKey: 'styles'
+      }
     }
   ]
 })

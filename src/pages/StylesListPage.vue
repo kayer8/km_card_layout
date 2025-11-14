@@ -2,70 +2,55 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-type Status = 'published' | 'draft' | 'pending'
-
 interface TableRow {
   id: string
   name: string
   description: string
-  owner: string
-  updatedAt: string
-  status: Status
-}
-
-const statusMap: Record<Status, { label: string; theme: 'success' | 'warning' | 'default' }> = {
-  published: { label: '已发布', theme: 'success' },
-  draft: { label: '草稿', theme: 'default' },
-  pending: { label: '待发布', theme: 'warning' }
 }
 
 const tableData: TableRow[] = [
   {
     id: 'style-1',
     name: '企业蓝名片',
-    description: '品牌主色 + 默认文案排布',
-    owner: '张小北',
-    updatedAt: '2025-11-10 18:32',
-    status: 'published'
+    description: '品牌主色 + 默认文案排布'
   },
   {
     id: 'style-2',
     name: '科技暗夜',
-    description: '深色渐变 + 霓虹细节',
-    owner: '王语',
-    updatedAt: '2025-11-09 09:21',
-    status: 'draft'
+    description: '深色渐变 + 霓虹细节'
   },
   {
     id: 'style-3',
     name: '活动快闪',
-    description: '明亮配色 + 活动二维码',
-    owner: 'Winnie',
-    updatedAt: '2025-11-05 14:08',
-    status: 'pending'
+    description: '明亮配色 + 活动二维码'
   }
 ]
 
 const columns = computed(() => [
-  { colKey: 'name', title: '名称', width: 220, ellipsis: true },
+  { colKey: 'name', title: '名称', width: 240, ellipsis: true },
   { colKey: 'description', title: '描述', ellipsis: true },
-  { colKey: 'owner', title: '维护人', width: 120 },
-  { colKey: 'updatedAt', title: '更新时间', width: 180 },
-  { colKey: 'status', title: '状态', width: 120, align: 'center' }
+  { colKey: 'actions', title: '操作', width: 200, align: 'center' }
 ])
 
 const router = useRouter()
-const toDesigner = () => {
-  router.push({ name: 'style-designer' })
+const pushWithFallback = (name: string, row?: TableRow) => {
+  const target = row ?? tableData[0]
+  if (!target) return
+  router.push({ name, params: { id: target.id } })
 }
-const resolveStatus = (status: Status) => statusMap[status]
+
+const toDesigner = (row?: TableRow) => pushWithFallback('style-designer', row)
+const toManage = (row?: TableRow) => pushWithFallback('style-manage', row)
 </script>
 
 <template>
   <section class="page">
     <header class="page__header">
       <h1>样式管理</h1>
-      <t-button theme="primary">新建样式</t-button>
+      <div class="header-actions">
+        <t-button variant="outline" @click="toManage()">管理</t-button>
+        <t-button theme="primary">新建样式</t-button>
+      </div>
     </header>
 
     <div class="card">
@@ -84,15 +69,16 @@ const resolveStatus = (status: Status) => statusMap[status]
         table-layout="auto"
       >
         <template #name="{ row }">
-          <t-link theme="primary" @click="toDesigner">
+          <t-link theme="primary" @click="toDesigner(row)">
             {{ row.name }}
           </t-link>
         </template>
 
-        <template #status="{ row }">
-          <t-tag :theme="resolveStatus(row.status).theme" variant="light">
-            {{ resolveStatus(row.status).label }}
-          </t-tag>
+        <template #actions="{ row }">
+          <div class="table-actions">
+            <t-button size="small" variant="outline" @click="toDesigner(row)">设计</t-button>
+            <t-button size="small" theme="primary" @click="toManage(row)">管理</t-button>
+          </div>
         </template>
       </t-table>
     </div>
@@ -117,6 +103,11 @@ const resolveStatus = (status: Status) => statusMap[status]
     margin: 0;
   }
 
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+
   .card {
     background: #fff;
     border-radius: 24px;
@@ -138,9 +129,16 @@ const resolveStatus = (status: Status) => statusMap[status]
     color: #64748b;
   }
 
+  .table-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
   @media (max-width: 768px) {
     .page__header {
       flex-direction: column;
+      align-items: flex-start;
     }
 
     .card {

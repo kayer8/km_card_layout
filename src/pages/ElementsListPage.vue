@@ -1,66 +1,76 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-type Status = 'published' | 'draft' | 'pending'
+import { computed, reactive, ref } from 'vue'
 
 interface TableRow {
   id: string
   name: string
-  description: string
-  owner: string
-  updatedAt: string
-  status: Status
+  binding: string
+  type: '内置' | '特殊'
 }
 
-const statusMap: Record<Status, { label: string; theme: 'success' | 'warning' | 'default' }> = {
-  published: { label: '已发布', theme: 'success' },
-  draft: { label: '草稿', theme: 'default' },
-  pending: { label: '待发布', theme: 'warning' }
-}
-
-const tableData: TableRow[] = [
+const tableData = reactive<TableRow[]>([
   {
     id: 'el-1',
     name: '默认头像',
-    description: '占位头像 320x320',
-    owner: 'Cici',
-    updatedAt: '2025-11-09 11:45',
-    status: 'published'
+    binding: 'user.avatar',
+    type: '内置'
   },
   {
     id: 'el-2',
     name: '企业徽标',
-    description: 'SVG 标准版本',
-    owner: 'Cici',
-    updatedAt: '2025-11-04 08:52',
-    status: 'published'
+    binding: 'brand.logo',
+    type: '内置'
   },
   {
     id: 'el-3',
     name: '客服二维码',
-    description: '微信客服入口',
-    owner: 'Ivy',
-    updatedAt: '2025-11-03 17:36',
-    status: 'draft'
+    binding: 'brand.qr',
+    type: '特殊'
   }
-]
+])
 
 const columns = computed(() => [
   { colKey: 'name', title: '名称', width: 200 },
-  { colKey: 'description', title: '元素说明', ellipsis: true },
-  { colKey: 'owner', title: '维护人', width: 120 },
-  { colKey: 'updatedAt', title: '更新时间', width: 180 },
-  { colKey: 'status', title: '状态', width: 120, align: 'center' }
+  { colKey: 'binding', title: '绑定属性', ellipsis: true },
+  { colKey: 'type', title: '类型', width: 120, align: 'center' }
 ])
 
-const resolveStatus = (status: Status) => statusMap[status]
+const dialogVisible = ref(false)
+const newElement = reactive<{ name: string; binding: string; type: '内置' | '特殊' }>({
+  name: '',
+  binding: '',
+  type: '内置'
+})
+
+const resetDialog = () => {
+  newElement.name = ''
+  newElement.binding = ''
+  newElement.type = '内置'
+}
+
+const createId = () => `el-${Math.random().toString(36).slice(2, 8)}`
+const showDialog = () => {
+  resetDialog()
+  dialogVisible.value = true
+}
+
+const submitElement = () => {
+  if (!newElement.name.trim() || !newElement.binding.trim()) return
+  tableData.push({
+    id: createId(),
+    name: newElement.name.trim(),
+    binding: newElement.binding.trim(),
+    type: newElement.type
+  })
+  dialogVisible.value = false
+}
 </script>
 
 <template>
   <section class="page">
     <header class="page__header">
       <h1>内置元素管理</h1>
-      <t-button theme="primary">新增元素</t-button>
+      <t-button theme="primary" @click="showDialog">新增元素</t-button>
     </header>
 
     <div class="card">
@@ -78,13 +88,39 @@ const resolveStatus = (status: Status) => statusMap[status]
         hover
         table-layout="auto"
       >
-        <template #status="{ row }">
-          <t-tag :theme="resolveStatus(row.status).theme" variant="light">
-            {{ resolveStatus(row.status).label }}
+        <template #binding="{ row }">
+          <code class="binding">{{ row.binding }}</code>
+        </template>
+        <template #type="{ row }">
+          <t-tag :theme="row.type === '内置' ? 'primary' : 'warning'" variant="light">
+            {{ row.type }}
           </t-tag>
         </template>
       </t-table>
     </div>
+
+    <t-dialog v-model:visible="dialogVisible" header="新增内置元素" width="480px" @closed="resetDialog">
+      <div class="dialog-form">
+        <label>名称</label>
+        <t-input v-model="newElement.name" placeholder="例如：职位、电话" />
+
+        <label>绑定属性</label>
+        <t-input v-model="newElement.binding" placeholder="例如：user.title" />
+
+        <label>类型</label>
+        <t-radio-group v-model="newElement.type">
+          <t-radio value="内置">内置</t-radio>
+          <t-radio value="特殊">特殊</t-radio>
+        </t-radio-group>
+      </div>
+
+      <template #footer>
+        <t-button variant="outline" @click="dialogVisible = false">取消</t-button>
+        <t-button theme="primary" :disabled="!newElement.name || !newElement.binding" @click="submitElement">
+          确认创建
+        </t-button>
+      </template>
+    </t-dialog>
   </section>
 </template>
 
@@ -127,9 +163,28 @@ const resolveStatus = (status: Status) => statusMap[status]
     color: #64748b;
   }
 
+  .binding {
+    background: rgba(90, 107, 255, 0.08);
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+  }
+
+  .dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dialog-form label {
+    font-size: 0.9rem;
+    color: #4a5568;
+  }
+
   @media (max-width: 768px) {
     .page__header {
       flex-direction: column;
+      align-items: flex-start;
     }
 
     .card {
