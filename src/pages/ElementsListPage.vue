@@ -77,7 +77,7 @@ const submitElement = () => {
       <header class="card__header">
         <div>
           <h3>素材列表</h3>
-          <p>{{ tableData.length }} 个素材 · 支持批量同步</p>
+          <p>{{ tableData.length }} 个素材</p>
         </div>
       </header>
 

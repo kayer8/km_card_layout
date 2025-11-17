@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 import type { CardElement, CardLayoutSchema } from 'km-card-schema'
 
-export type DragPayload = { x: number; y: number }
+export type DragPayload = { x: number; y: number; w?: number; h?: number }
 export type SpacingLine = { start: number; end: number; pos: number }
 export type GuidesState = { vertical: number[]; horizontal: number[]; spacingV: SpacingLine[]; spacingH: SpacingLine[] }
 
@@ -64,16 +64,17 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
     guideLines.vertical.splice(0, guideLines.vertical.length)
     guideLines.horizontal.splice(0, guideLines.horizontal.length)
 
-    const width = element.width ?? 0
-    const height = element.height ?? 0
+    const width = payload.w ?? element.width ?? 0
+    const height = payload.h ?? element.height ?? 0
+    const currentElement: CardElement = { ...element, x: payload.x, y: payload.y, width, height }
 
-    const left = payload.x
-    const centerX = payload.x + width / 2
-    const right = payload.x + width
+    const left = currentElement.x
+    const centerX = currentElement.x + width / 2
+    const right = currentElement.x + width
 
-    const top = payload.y
-    const middleY = payload.y + height / 2
-    const bottom = payload.y + height
+    const top = currentElement.y
+    const middleY = currentElement.y + height / 2
+    const bottom = currentElement.y + height
 
     const snapCenterX = snapLine(centerX, targets.vertical)
     const snapLeft = snapLine(left, targets.vertical)
@@ -96,34 +97,34 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
 
     // 等距提示
     const leftNeighbor = getVisibleElements()
-      .filter((el) => el.id !== element.id && overlapsY(el, element) && (el.x + (el.width ?? 0)) <= left)
+      .filter((el) => el.id !== element.id && overlapsY(el, currentElement) && (el.x + (el.width ?? 0)) <= left)
       .sort((a, b) => (b.x + (b.width ?? 0)) - (a.x + (a.width ?? 0)))[0]
     const rightNeighbor = getVisibleElements()
-      .filter((el) => el.id !== element.id && overlapsY(el, element) && el.x >= right)
+      .filter((el) => el.id !== element.id && overlapsY(el, currentElement) && el.x >= right)
       .sort((a, b) => a.x - b.x)[0]
 
     if (leftNeighbor && rightNeighbor) {
       const gapL = left - (leftNeighbor.x + (leftNeighbor.width ?? 0))
       const gapR = rightNeighbor.x - right
       if (Math.abs(gapL - gapR) <= spacingThreshold) {
-        const yMid = payload.y + height / 2
+        const yMid = currentElement.y + height / 2
         guideLines.spacingH.push({ start: leftNeighbor.x + (leftNeighbor.width ?? 0), end: left, pos: yMid })
         guideLines.spacingH.push({ start: right, end: rightNeighbor.x, pos: yMid })
       }
     }
 
     const topNeighbor = getVisibleElements()
-      .filter((el) => el.id !== element.id && overlapsX(el, element) && (el.y + (el.height ?? 0)) <= top)
+      .filter((el) => el.id !== element.id && overlapsX(el, currentElement) && (el.y + (el.height ?? 0)) <= top)
       .sort((a, b) => (b.y + (b.height ?? 0)) - (a.y + (a.height ?? 0)))[0]
     const bottomNeighbor = getVisibleElements()
-      .filter((el) => el.id !== element.id && overlapsX(el, element) && el.y >= bottom)
+      .filter((el) => el.id !== element.id && overlapsX(el, currentElement) && el.y >= bottom)
       .sort((a, b) => a.y - b.y)[0]
 
     if (topNeighbor && bottomNeighbor) {
       const gapT = top - (topNeighbor.y + (topNeighbor.height ?? 0))
       const gapB = bottomNeighbor.y - bottom
       if (Math.abs(gapT - gapB) <= spacingThreshold) {
-        const xMid = payload.x + width / 2
+        const xMid = currentElement.x + width / 2
         guideLines.spacingV.push({ start: topNeighbor.y + (topNeighbor.height ?? 0), end: top, pos: xMid })
         guideLines.spacingV.push({ start: bottom, end: bottomNeighbor.y, pos: xMid })
       }
@@ -133,8 +134,8 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
   // 计算吸附后的目标坐标
   const applySnap = (element: CardElement, payload: DragPayload) => {
     const targets = getAlignmentTargets(element.id)
-    const width = element.width ?? 0
-    const height = element.height ?? 0
+    const width = payload.w ?? element.width ?? 0
+    const height = payload.h ?? element.height ?? 0
     const left = payload.x
     const centerX = payload.x + width / 2
     const right = payload.x + width

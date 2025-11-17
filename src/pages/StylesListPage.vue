@@ -56,7 +56,7 @@ const toManage = (row?: TableRow) => pushWithFallback('style-manage', row)
       <header class="card__header">
         <div>
           <h3>当前样式</h3>
-          <p>{{ tableData.length }} 个样式 · 最近更新实时同步</p>
+          <p>{{ tableData.length }} 个样式 </p>
         </div>
       </header>
 

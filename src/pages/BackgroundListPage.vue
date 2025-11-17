@@ -97,7 +97,7 @@ const submitBackground = () => {
       <header class="card__header">
         <div>
           <h3>背景素材列表</h3>
-          <p>{{ tableData.length }} 条记录 · 支持预览与替换</p>
+          <p>{{ tableData.length }} 条记录 </p>
         </div>
       </header>
 

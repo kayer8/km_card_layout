@@ -4,7 +4,7 @@ import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
 import { useGuides, type DragPayload } from './useGuides'
 
-type ResizePayload = { x: number; y: number; w: number; h: number }
+type ResizePayload = DragPayload & { w: number; h: number }
 
 const props = withDefaults(
   defineProps<{
@@ -53,6 +53,7 @@ const createResizeHandler =
       w: payload.w,
       h: payload.h
     })
+    clearGuides()
   }
 
 const handleDragging = (elementId: string, payload: DragPayload) => {
@@ -65,7 +66,7 @@ const handleDragging = (elementId: string, payload: DragPayload) => {
 const handleDragEnd = (elementId: string, payload: DragPayload) => {
   const element = props.schema.elements.find((item) => item.id === elementId)
   if (element) {
-    // 释放时刷新一次辅助线，便于立即可视化对齐点
+    // Refresh guides on release so alignments stay visible before clearing
     computeGuides(element, payload)
   }
   const shouldSnap = element && props.enableSnap && (props.snapOnRelease || snapKeyPressed.value)
@@ -80,6 +81,12 @@ const handleDragEnd = (elementId: string, payload: DragPayload) => {
   }
 
   clearGuides()
+}
+
+const handleResizing = (elementId: string, payload: ResizePayload) => {
+  const element = props.schema.elements.find((item) => item.id === elementId)
+  if (!element) return
+  computeGuides(element, payload)
 }
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -167,6 +174,8 @@ onBeforeUnmount(() => {
         :class="['draggable-node', { 'is-active': props.activeElementId === element.id }]"
         @drag-start="clearGuides"
         @dragging="handleDragging(element.id, $event)"
+        @resize-start="clearGuides"
+        @resizing="handleResizing(element.id, $event)"
         @activated="emit('activate-element', element.id)"
         @drag-end="handleDragEnd(element.id, $event)"
         @resize-end="createResizeHandler(element.id)"
