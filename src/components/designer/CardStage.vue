@@ -120,15 +120,11 @@ onBeforeUnmount(() => {
         width: props.schema.width + 'px',
         height: props.schema.height + 'px',
         borderRadius: (props.schema.borderRadius ?? 24) + 'px',
-        background:
-          props.schema.backgroundType === 'image'
-            ? props.schema.background || '#000000'
-            : props.schema.background,
-        backgroundImage:
-          props.schema.backgroundType === 'image' && props.schema.backgroundImage ? `url(${props.schema.backgroundImage})` : undefined,
-        backgroundSize: props.schema.backgroundType === 'image' ? 'cover' : undefined,
-        backgroundRepeat: props.schema.backgroundType === 'image' ? 'no-repeat' : undefined,
-        backgroundPosition: props.schema.backgroundType === 'image' ? 'center' : undefined,
+        background: '#000000',
+        backgroundImage: props.schema.backgroundImage ? `url(${props.schema.backgroundImage})` : undefined,
+        backgroundSize: props.schema.backgroundImage ? 'cover' : undefined,
+        backgroundRepeat: props.schema.backgroundImage ? 'no-repeat' : undefined,
+        backgroundPosition: props.schema.backgroundImage ? 'center' : undefined,
         color: props.schema.fontColor || '#fff'
       }"
     >

@@ -2,8 +2,6 @@ const layout = {
   "id": "kuanmai-left-avatar",
   "width": 686,
   "height": 420,
-  "background": "radial-gradient(circle at 20% 20%, #1e1a21, #080809 80%)",
-  "backgroundType": "image",
   "padding": 40,
   "fontColor": "#333333",
   "metadata": {

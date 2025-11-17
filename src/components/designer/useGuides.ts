@@ -14,6 +14,7 @@ export interface GuidesOptions {
 export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: GuidesOptions) => {
   const guideLines = reactive<GuidesState>({ vertical: [], horizontal: [], spacingV: [], spacingH: [] })
   const getVisibleElements = () => schema.elements.filter((element) => element.visible !== false)
+  const normalize = (value: number) => Math.round(value) // 保持与组件内部取整一致，避免 1-2px 偏移
 
   const clearGuides = () => {
     guideLines.vertical.splice(0, guideLines.vertical.length)
@@ -80,17 +81,17 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
     const snapLeft = snapLine(left, targets.vertical)
     const snapRight = snapLine(right, targets.vertical)
 
-    if (snapCenterX !== null) verticalMatches.push(snapCenterX)
-    else if (snapLeft !== null) verticalMatches.push(snapLeft)
-    else if (snapRight !== null) verticalMatches.push(snapRight)
+    if (snapCenterX !== null) verticalMatches.push(normalize(snapCenterX))
+    else if (snapLeft !== null) verticalMatches.push(normalize(snapLeft))
+    else if (snapRight !== null) verticalMatches.push(normalize(snapRight))
 
     const snapMiddleY = snapLine(middleY, targets.horizontal)
     const snapTop = snapLine(top, targets.horizontal)
     const snapBottom = snapLine(bottom, targets.horizontal)
 
-    if (snapMiddleY !== null) horizontalMatches.push(snapMiddleY)
-    else if (snapTop !== null) horizontalMatches.push(snapTop)
-    else if (snapBottom !== null) horizontalMatches.push(snapBottom)
+    if (snapMiddleY !== null) horizontalMatches.push(normalize(snapMiddleY))
+    else if (snapTop !== null) horizontalMatches.push(normalize(snapTop))
+    else if (snapBottom !== null) horizontalMatches.push(normalize(snapBottom))
 
     guideLines.vertical.push(...verticalMatches)
     guideLines.horizontal.push(...horizontalMatches)
@@ -161,7 +162,7 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
     else if (snapTop !== null) nextY = snapTop
     else if (snapBottom !== null) nextY = snapBottom - height
 
-    return { x: nextX, y: nextY }
+    return { x: normalize(nextX), y: normalize(nextY) }
   }
 
   return {

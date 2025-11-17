@@ -4,8 +4,6 @@ export const blackGoldSchema: CardLayoutSchema = {
   id: 'kuanmai-black-gold',
   width: 686,
   height: 420,
-  background: '#333',
-  backgroundType: 'color',
   padding: 40,
   fontColor: '#ffffff',
   metadata: {

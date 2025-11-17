@@ -50,8 +50,6 @@ export const createLayoutStore = (initialTemplates: CardTemplate[] = builtinTemp
     resetSchema,
     createTemplate: layoutManager.createTemplate,
     resolveBinding: layoutData.resolveBinding,
-    setBackgroundType: layoutManager.setBackgroundType,
-    setBackgroundValue: layoutManager.setBackgroundValue,
     setBackgroundImage: layoutManager.setBackgroundImage,
     setFontColor: layoutManager.setFontColor
   }

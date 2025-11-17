@@ -81,5 +81,8 @@ export const scaleCardLayout = (schema, options = {}) => {
     elements: scaledElements
   }
 
+  delete scaledSchema.background
+  delete scaledSchema.backgroundType
+
   return scaledSchema
 }

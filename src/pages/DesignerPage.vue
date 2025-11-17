@@ -3,11 +3,33 @@ import { ref } from 'vue'
 import DesignerHeader from '../components/designer/DesignerHeader.vue'
 import CardStage from '../components/designer/CardStage.vue'
 import SchemaPreview from '../components/designer/SchemaPreview.vue'
-import CanvasSettingsInline from '../components/designer/CanvasSettingsInline.vue'
 import ElementListPanel from '../components/designer/ElementListPanel.vue'
 import ElementInspector from '../components/designer/ElementInspector.vue'
 import BindingDataPanel from '../components/designer/BindingDataPanel.vue'
 import { useCardDesigner } from '../composables/useCardDesigner'
+
+const backgroundOptions = [
+  {
+    label: '星空紫',
+    value:
+      'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=60'
+  },
+  {
+    label: '渐变蓝',
+    value:
+      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60'
+  },
+  {
+    label: '商务黑',
+    value:
+      'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=60'
+  },
+  {
+    label: '雪山',
+    value:
+      'https://images.unsplash.com/photo-1508264165352-258859e62245?auto=format&fit=crop&w=900&q=60'
+  }
+]
 
 const schemaExpanded = ref(false)
 const {
@@ -31,11 +53,12 @@ const {
   copySchema,
   bindingEntries,
   mutateElement,
-  setBackgroundType,
-  setBackgroundValue,
-  setBackgroundImage,
-  setFontColor
+  setBackgroundImage
 } = useCardDesigner()
+
+const handleBackgroundChange = (value: string) => {
+  setBackgroundImage(value)
+}
 </script>
 
 <template>
@@ -44,10 +67,13 @@ const {
       :copy-state="copyState"
       :templates="templates"
       :selected-template-id="selectedTemplateId"
+      :background-options="backgroundOptions"
+      :selected-background="cardSchema.backgroundImage || ''"
       @copy="copySchema"
       @select-template="selectTemplate"
       @create-template="createTemplate"
       @reset-template="resetSchema"
+      @select-background="handleBackgroundChange"
     />
 
     <main class="designer-body">
@@ -68,16 +94,6 @@ const {
             <h2>卡片画布</h2>
             <p>使用拖拽与缩放快速完成布局与尺寸调整</p>
           </div>
-          <CanvasSettingsInline
-            :background-type="cardSchema.backgroundType ?? 'color'"
-            :background="cardSchema.background"
-            :background-image="cardSchema.backgroundImage"
-            :font-color="cardSchema.fontColor"
-            @update:type="setBackgroundType"
-            @update:background="setBackgroundValue"
-            @update:image="setBackgroundImage"
-            @update:font-color="setFontColor"
-          />
         </div>
 
         <div class="card-stage-wrapper">

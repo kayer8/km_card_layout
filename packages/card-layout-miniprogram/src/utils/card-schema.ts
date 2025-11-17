@@ -40,8 +40,6 @@ export interface CardLayoutSchema {
   id: string
   width: number
   height: number
-  background?: string
-  backgroundType?: 'color' | 'image'
   backgroundImage?: string
   borderRadius?: number
   padding?: number
@@ -128,7 +126,7 @@ export const scaleCardLayout = (schema: CardLayoutSchema, options: ScaleOptions)
     scaleElement(element, widthScale, heightScale, round)
   )
 
-  return {
+  const scaled = {
     ...schema,
     width: roundValue(targetWidth, round),
     height: roundValue(targetHeight ?? schema.height * heightScale, round),
@@ -143,4 +141,9 @@ export const scaleCardLayout = (schema: CardLayoutSchema, options: ScaleOptions)
     metadata: schema.metadata ? { ...schema.metadata } : undefined,
     elements: scaledElements
   }
+
+  delete (scaled as any).background
+  delete (scaled as any).backgroundType
+
+  return scaled
 }

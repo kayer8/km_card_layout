@@ -121,14 +121,14 @@ const cardStyle = computed<CSSProperties>(() => {
   const style: CSSProperties = {
     width: `${layout.width}px`,
     height: `${layout.height}px`,
-    background: layout.background || "#111",
+    background: "#111",
     borderRadius: createCssValue(layout.borderRadius),
     padding: createCssValue(layout.padding),
     boxSizing: "border-box",
     color: layout.fontColor || "#fff"
   }
 
-  if (layout.backgroundType === "image" && layout.backgroundImage) {
+  if (layout.backgroundImage) {
     style.backgroundImage = `url(${layout.backgroundImage})`
     style.backgroundSize = "cover"
     style.backgroundRepeat = "no-repeat"

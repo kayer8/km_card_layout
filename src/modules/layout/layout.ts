@@ -50,8 +50,6 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
     cardSchema.id = next.id
     cardSchema.width = next.width
     cardSchema.height = next.height
-    cardSchema.background = next.background
-    cardSchema.backgroundType = next.backgroundType
     cardSchema.backgroundImage = next.backgroundImage
     cardSchema.fontColor = next.fontColor || '#ffffff'
     cardSchema.borderRadius = next.borderRadius
@@ -96,25 +94,9 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
     return newTemplate
   }
 
-  // 同步 canvas 背景模式（纯色/图片）
-  const setBackgroundType = (type: 'color' | 'image') => {
-    cardSchema.backgroundType = type
-    if (type !== 'image') {
-      cardSchema.backgroundImage = undefined
-    } else if (!cardSchema.backgroundImage) {
-      cardSchema.backgroundImage = ''
-    }
-  }
-
-  const setBackgroundValue = (value: string) => {
-    cardSchema.background = value || '#111111'
-    cardSchema.backgroundType = 'color'
-  }
-
   const setBackgroundImage = (value: string) => {
     const trimmed = value?.trim()
     cardSchema.backgroundImage = trimmed || undefined
-    cardSchema.backgroundType = trimmed ? 'image' : 'color'
   }
 
   const setFontColor = (payload: FontColorPayload) => {
@@ -151,8 +133,6 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
     selectTemplate,
     resetSchema,
     createTemplate,
-    setBackgroundType,
-    setBackgroundValue,
     setBackgroundImage,
     setFontColor
   }

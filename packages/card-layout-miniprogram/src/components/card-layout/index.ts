@@ -102,12 +102,12 @@ Component({
       const baseStyle: string[] = [
         `width:${formatLengthValue(layout.width) || '0rpx'}`,
         `height:${formatLengthValue(layout.height) || '0rpx'}`,
-        `background:${layout.background || '#111'}`,
+        `background:#111`,
         `border-radius:${formatLengthValue(layout.borderRadius) || '0rpx'}`,
         `box-sizing:border-box`
       ]
 
-      if (layout.backgroundType === 'image' && layout.backgroundImage) {
+      if (layout.backgroundImage) {
         baseStyle.push(
           `background-image:url(${layout.backgroundImage})`,
           'background-size:cover',

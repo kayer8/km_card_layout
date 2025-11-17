@@ -4,8 +4,6 @@ export const crimsonWaveSchema: CardLayoutSchema = {
   id: 'kuanmai-crimson-wave',
   width: 686,
   height: 420,
-  background: 'linear-gradient(180deg, #fdfdfd 0%, #f7f7f7 60%, #f25340 100%)',
-  backgroundType: 'image',
   padding: 40,
   fontColor: '#2b2b2b',
   metadata: {

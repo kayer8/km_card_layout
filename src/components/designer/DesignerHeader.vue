@@ -6,6 +6,8 @@ const props = defineProps<{
   copyState: 'idle' | 'copied'
   templates: CardTemplate[]
   selectedTemplateId: string
+  backgroundOptions?: { label: string; value: string }[]
+  selectedBackground?: string
 }>()
 
 const emit = defineEmits<{
@@ -13,6 +15,7 @@ const emit = defineEmits<{
   (e: 'select-template', id: string): void
   (e: 'create-template', name: string): void
   (e: 'reset-template'): void
+  (e: 'select-background', value: string): void
 }>()
 
 const createDialogVisible = ref(false)
@@ -31,6 +34,11 @@ const handleConfirmCreate = () => {
 
 const handleTemplateChange = (value: string | number) => {
   emit('select-template', String(value))
+}
+
+const handleBackgroundChange = (value: string | number) => {
+  const normalized = value == null ? '' : String(value)
+  emit('select-background', normalized)
 }
 </script>
 
@@ -58,6 +66,14 @@ const handleTemplateChange = (value: string | number) => {
           <small v-if="template.description" class="template-desc">�� {{ template.description }}</small>
         </t-option>
       </t-select>
+      <t-select
+        :value="props.selectedBackground"
+        :options="props.backgroundOptions || []"
+        placeholder="背景"
+        clearable
+        style="width: 180px"
+        @change="handleBackgroundChange"
+      />
       <t-button class="header-btn create-btn" size="medium" variant="outline" @click="openCreateDialog">
         保存模板
       </t-button>

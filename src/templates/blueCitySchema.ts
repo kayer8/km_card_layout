@@ -4,8 +4,6 @@ export const blueCitySchema: CardLayoutSchema = {
   id: 'kuanmai-blue-city',
   width: 686,
   height: 420,
-  background: 'linear-gradient(120deg, #f7f9ff 0%, #eff3ff 60%)',
-  backgroundType: 'color',
   padding: 48,
   fontColor: '#1B2B65',
   metadata: {

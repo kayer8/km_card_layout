@@ -23,8 +23,6 @@ export const useCardDesigner = () => {
     selectTemplate,
     createTemplate: rawCreateTemplate,
     resolveBinding,
-    setBackgroundType,
-    setBackgroundValue,
     setBackgroundImage,
     setFontColor
   } = layoutStore
@@ -87,8 +85,6 @@ export const useCardDesigner = () => {
     selectTemplate,
     createTemplate,
     copySchema,
-    setBackgroundType,
-    setBackgroundValue,
     setBackgroundImage,
     setFontColor: setFontColorWithSync
   }
