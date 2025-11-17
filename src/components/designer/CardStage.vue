@@ -1,25 +1,37 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
+import { useGuides, type DragPayload } from './useGuides'
 
-type DragPayload = { x: number; y: number }
 type ResizePayload = { x: number; y: number; w: number; h: number }
 
-const props = defineProps<{
-  schema: CardLayoutSchema
-  activeElementId: string
-  elementStyle: (style?: CardElementStyle) => Record<string, string | number>
-  getElementPreview: (element: CardElement) => string
-}>()
+const props = withDefaults(
+  defineProps<{
+    schema: CardLayoutSchema
+    activeElementId: string
+    elementStyle: (style?: CardElementStyle) => Record<string, string | number>
+    getElementPreview: (element: CardElement) => string
+    enableSnap?: boolean
+    snapHotkey?: string
+    snapOnRelease?: boolean
+  }>(),
+  {
+    enableSnap: true,
+    snapHotkey: 'Shift',
+    snapOnRelease: true
+  }
+)
 
 const emit = defineEmits<{
   (e: 'activate-element', id: string): void
   (e: 'drag-end', payload: { id: string; x: number; y: number }): void
-  (
-    e: 'resize-end',
-    payload: { id: string; x: number; y: number; w: number; h: number }
-  ): void
+  (e: 'resize-end', payload: { id: string; x: number; y: number; w: number; h: number }): void
 }>()
+
+// 对齐/辅助线与吸附计算独立封装，减少组件内耦合
+const { guideLines, clearGuides, computeGuides, applySnap } = useGuides({ schema: props.schema })
+const snapKeyPressed = ref(false)
 
 const createDragHandler =
   (elementId: string) =>
@@ -38,6 +50,55 @@ const createResizeHandler =
       h: payload.h
     })
   }
+
+const handleDragging = (elementId: string, payload: DragPayload) => {
+  const element = props.schema.elements.find((item) => item.id === elementId)
+  if (!element) return
+  // 拖动中仅更新辅助线，不做吸附
+  computeGuides(element, payload)
+}
+
+const handleDragEnd = (elementId: string, payload: DragPayload) => {
+  const element = props.schema.elements.find((item) => item.id === elementId)
+  if (element) {
+    // 释放时刷新一次辅助线，便于立即可视化对齐点
+    computeGuides(element, payload)
+  }
+  const shouldSnap = element && props.enableSnap && (props.snapOnRelease || snapKeyPressed.value)
+
+  if (element && shouldSnap) {
+    const snapped = applySnap(element, payload)
+    element.x = snapped.x
+    element.y = snapped.y
+    createDragHandler(elementId)(snapped)
+  } else {
+    createDragHandler(elementId)(payload)
+  }
+
+  clearGuides()
+}
+
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key.toLowerCase() === (props.snapHotkey || '').toLowerCase()) {
+    snapKeyPressed.value = true
+  }
+}
+
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (event.key.toLowerCase() === (props.snapHotkey || '').toLowerCase()) {
+    snapKeyPressed.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keyup', handleKeyUp)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+  window.removeEventListener('keyup', handleKeyUp)
+})
 </script>
 
 <template>
@@ -60,6 +121,31 @@ const createResizeHandler =
         color: props.schema.fontColor || '#fff'
       }"
     >
+      <span
+        v-for="line in guideLines.vertical"
+        :key="'vertical-' + line"
+        class="guide-line guide-line--vertical"
+        :style="{ left: line + 'px' }"
+      />
+      <span
+        v-for="line in guideLines.horizontal"
+        :key="'horizontal-' + line"
+        class="guide-line guide-line--horizontal"
+        :style="{ top: line + 'px' }"
+      />
+      <span
+        v-for="(line, idx) in guideLines.spacingV"
+        :key="'spacing-v-' + idx"
+        class="guide-line guide-line--vertical guide-line--spacing"
+        :style="{ left: line.pos + 'px', top: line.start + 'px', height: line.end - line.start + 'px' }"
+      />
+      <span
+        v-for="(line, idx) in guideLines.spacingH"
+        :key="'spacing-h-' + idx"
+        class="guide-line guide-line--horizontal guide-line--spacing"
+        :style="{ top: line.pos + 'px', left: line.start + 'px', width: line.end - line.start + 'px' }"
+      />
+
       <Vue3DraggableResizable
         v-for="element in props.schema.elements"
         :key="element.id"
@@ -75,8 +161,10 @@ const createResizeHandler =
         :draggable="true"
         :active="props.activeElementId === element.id"
         :class="['draggable-node', { 'is-active': props.activeElementId === element.id }]"
+        @drag-start="clearGuides"
+        @dragging="handleDragging(element.id, $event)"
         @activated="emit('activate-element', element.id)"
-        @drag-end="createDragHandler(element.id)"
+        @drag-end="handleDragEnd(element.id, $event)"
         @resize-end="createResizeHandler(element.id)"
       >
         <template v-if="element.type === 'text'">
@@ -161,5 +249,28 @@ const createResizeHandler =
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.guide-line {
+  position: absolute;
+  background: rgba(90, 107, 255, 0.8);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.guide-line--vertical {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.guide-line--horizontal {
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.guide-line--spacing {
+  background: rgba(245, 108, 108, 0.9);
 }
 </style>

@@ -48,7 +48,6 @@ const toManage = (row?: TableRow) => pushWithFallback('style-manage', row)
     <header class="page__header">
       <h1>样式管理</h1>
       <div class="header-actions">
-        <t-button variant="outline" @click="toManage()">管理</t-button>
         <t-button theme="primary">新建样式</t-button>
       </div>
     </header>
