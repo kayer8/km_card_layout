@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { CardElement } from 'km-card-schema'
 
@@ -20,6 +20,7 @@ const mutate = (mutator: (draft: CardElement) => void) => {
 const updateRect = (field: 'x' | 'y' | 'width' | 'height', value: string | number | null) => {
   const numericValue = typeof value === 'number' ? value : Number(value ?? 0)
   mutate((draft) => {
+    // fall back to 0 when input is invalid
     ;(draft as any)[field] = Number.isNaN(numericValue) ? 0 : numericValue
   })
 }
@@ -70,6 +71,14 @@ const styleProxy = (field: string, fallback: string | number) =>
     get: () => (props.element?.style?.[field] ?? fallback) as string | number,
     set: (value: string | number | null) => updateStyleField(field, value)
   })
+
+const visibleValue = computed({
+  get: () => (props.element ? props.element.visible !== false : true),
+  set: (value: boolean) =>
+    mutate((draft) => {
+      draft.visible = value
+    })
+})
 
 const iconSrcValue = computed({
   get: () => (props.element?.type === 'icon' ? props.element.src ?? '' : ''),
@@ -148,11 +157,15 @@ const applyStyleText = () => {
         <t-input v-model="bindingValue" placeholder="user.name" clearable />
       </t-form-item>
 
-      <t-form-item label="内容兜底">
+      <t-form-item label="显示">
+        <t-switch v-model="visibleValue" />
+      </t-form-item>
+
+      <t-form-item label="内容回退">
         <t-input v-model="contentValue" placeholder="没有绑定时展示" />
       </t-form-item>
 
-      <t-form-item label="坐标">
+      <t-form-item label="位置">
         <t-space>
           <t-input-number v-model:value="xModel" size="small" :min="0" :max="props.cardWidth" />
           <t-input-number v-model:value="yModel" size="small" :min="0" :max="props.cardHeight" />
@@ -173,7 +186,7 @@ const applyStyleText = () => {
         <t-form-item label="颜色">
           <t-input v-model="colorValue" placeholder="#FFFFFF" />
         </t-form-item>
-        <t-form-item label="字重">
+        <t-form-item label="粗细">
           <t-input v-model="fontWeightValue" placeholder="bold / 600" />
         </t-form-item>
       </template>

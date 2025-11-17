@@ -158,7 +158,9 @@ interface RenderedElement {
 
 const renderedElements = computed<RenderedElement[]>(() => {
   const layout = normalizedLayout.value
-  return (layout.elements || []).map((element: CardElement) => {
+  return (layout.elements || [])
+    .filter((element) => element.visible !== false)
+    .map((element: CardElement) => {
     const style: CSSProperties = {
       left: createCssValue(element.x),
       top: createCssValue(element.y),

@@ -24,6 +24,7 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
         y: 300,
         width: 260,
         height: 36,
+        visible: true,
         content: '示例文本',
         style: {
           fontSize: 18,
@@ -38,6 +39,7 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
         y: 80,
         width: 120,
         height: 120,
+        visible: true,
         binding: 'user.avatar',
         style: {
           borderRadius: '16px',
@@ -53,6 +55,7 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
         y: 320,
         width: 14,
         height: 14,
+        visible: true,
         style: {
           backgroundColor: '#2B6CB0',
           borderRadius: '50%'

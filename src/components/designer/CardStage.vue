@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
 import { useGuides, type DragPayload } from './useGuides'
@@ -28,6 +28,10 @@ const emit = defineEmits<{
   (e: 'drag-end', payload: { id: string; x: number; y: number }): void
   (e: 'resize-end', payload: { id: string; x: number; y: number; w: number; h: number }): void
 }>()
+
+const visibleElements = computed(() =>
+  props.schema.elements.filter((element) => element.visible !== false)
+)
 
 // 对齐/辅助线与吸附计算独立封装，减少组件内耦合
 const { guideLines, clearGuides, computeGuides, applySnap } = useGuides({ schema: props.schema })
@@ -147,7 +151,7 @@ onBeforeUnmount(() => {
       />
 
       <Vue3DraggableResizable
-        v-for="element in props.schema.elements"
+        v-for="element in visibleElements"
         :key="element.id"
         :initW="element.width"
         :initH="element.height"

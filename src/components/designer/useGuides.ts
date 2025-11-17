@@ -13,6 +13,7 @@ export interface GuidesOptions {
 
 export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: GuidesOptions) => {
   const guideLines = reactive<GuidesState>({ vertical: [], horizontal: [], spacingV: [], spacingH: [] })
+  const getVisibleElements = () => schema.elements.filter((element) => element.visible !== false)
 
   const clearGuides = () => {
     guideLines.vertical.splice(0, guideLines.vertical.length)
@@ -24,7 +25,7 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
   const getAlignmentTargets = (elementId: string) => {
     const vertical = [0, schema.width / 2, schema.width]
     const horizontal = [0, schema.height / 2, schema.height]
-    schema.elements.forEach((element) => {
+    getVisibleElements().forEach((element) => {
       if (element.id === elementId) return
       const width = element.width ?? 0
       const height = element.height ?? 0
@@ -94,10 +95,10 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
     guideLines.horizontal.push(...horizontalMatches)
 
     // 等距提示
-    const leftNeighbor = schema.elements
+    const leftNeighbor = getVisibleElements()
       .filter((el) => el.id !== element.id && overlapsY(el, element) && (el.x + (el.width ?? 0)) <= left)
       .sort((a, b) => (b.x + (b.width ?? 0)) - (a.x + (a.width ?? 0)))[0]
-    const rightNeighbor = schema.elements
+    const rightNeighbor = getVisibleElements()
       .filter((el) => el.id !== element.id && overlapsY(el, element) && el.x >= right)
       .sort((a, b) => a.x - b.x)[0]
 
@@ -111,10 +112,10 @@ export const useGuides = ({ schema, snapThreshold = 6, spacingThreshold = 3 }: G
       }
     }
 
-    const topNeighbor = schema.elements
+    const topNeighbor = getVisibleElements()
       .filter((el) => el.id !== element.id && overlapsX(el, element) && (el.y + (el.height ?? 0)) <= top)
       .sort((a, b) => (b.y + (b.height ?? 0)) - (a.y + (a.height ?? 0)))[0]
-    const bottomNeighbor = schema.elements
+    const bottomNeighbor = getVisibleElements()
       .filter((el) => el.id !== element.id && overlapsX(el, element) && el.y >= bottom)
       .sort((a, b) => a.y - b.y)[0]
 

@@ -115,7 +115,9 @@ Component({
         )
       }
 
-      const rendered: RenderElement[] = (layout.elements || []).map((element: CardElement) => {
+      const rendered: RenderElement[] = (layout.elements || [])
+        .filter((element) => element.visible !== false)
+        .map((element: CardElement) => {
         const styles: string[] = [
           `left:${formatLengthValue(element.x) || '0rpx'}`,
           `top:${formatLengthValue(element.y) || '0rpx'}`

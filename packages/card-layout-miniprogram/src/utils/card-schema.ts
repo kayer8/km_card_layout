@@ -11,6 +11,10 @@ export interface CardElementBase {
   height?: number
   rotation?: number
   zIndex?: number
+  /**
+   * Whether the element is visible. Defaults to true when omitted.
+   */
+  visible?: boolean
   binding?: string
   content?: string
   style?: CardElementStyle
