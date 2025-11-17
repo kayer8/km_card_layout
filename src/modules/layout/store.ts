@@ -46,6 +46,7 @@ export const createLayoutStore = (initialTemplates: CardTemplate[] = builtinTemp
     handleResizeEnd: elementController.handleResizeEnd,
     addElement: elementList.addElement,
     removeActiveElement: elementList.removeActiveElement,
+    setElementVisibility: elementList.setElementVisibility,
     selectTemplate,
     resetSchema,
     createTemplate: layoutManager.createTemplate,

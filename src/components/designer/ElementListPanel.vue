@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import type { CardElement, CardElementType } from 'km-card-schema'
+import type { CardElement } from 'km-card-schema'
 
 const props = defineProps<{
   elements: CardElement[]
   activeElementId: string
-  hasActive: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'select', id: string): void
-  (e: 'add', type: CardElementType): void
-  (e: 'remove'): void
+  (e: 'toggle-visible', payload: { id: string; visible: boolean }): void
 }>()
 </script>
 
@@ -33,15 +31,13 @@ const emit = defineEmits<{
       >
         <strong>{{ element.id }}</strong>
         <span>{{ element.type }}</span>
+        <t-switch
+          style="width:50px"
+          :value="element.visible !== false"
+          size="medium"
+          @change="(val) => emit('toggle-visible', { id: element.id, visible: Boolean(val) })"
+        />
       </button>
-    </div>
-    <div class="panel-actions">
-      <t-button size="small" variant="outline" @click="emit('add', 'text')">新增文本</t-button>
-      <t-button size="small" variant="outline" @click="emit('add', 'icon')">新增图标</t-button>
-      <t-button size="small" variant="outline" @click="emit('add', 'image')">新增图片</t-button>
-      <t-button size="small" theme="danger" variant="outline" :disabled="!props.hasActive" @click="emit('remove')">
-        删除选中
-      </t-button>
     </div>
   </section>
 </template>
@@ -64,6 +60,10 @@ const emit = defineEmits<{
   cursor: pointer;
   text-align: left;
   transition: border 0.2s, background 0.2s;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px;
 }
 
 .element-chip.active {

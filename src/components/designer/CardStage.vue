@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style scoped>
+<style >
 .card-stage {
   padding: 20px;
   border-radius: 20px;
@@ -214,6 +214,7 @@ onBeforeUnmount(() => {
   box-shadow: 0 12px 32px rgba(43, 108, 176, 0.15);
   border-radius: inherit;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .draggable-node {
@@ -224,6 +225,10 @@ onBeforeUnmount(() => {
   z-index: 3;
 }
 
+.draggable-node.is-active.active{
+  box-shadow: 0 0 4px #1da9ff;
+  border-color: transparent;
+}
 .card-element {
   width: 100%;
   height: 100%;
@@ -235,6 +240,7 @@ onBeforeUnmount(() => {
 
 .card-element--text {
   font-weight: 500;
+  user-select: none;
 }
 
 .card-element--image img {
@@ -282,4 +288,6 @@ onBeforeUnmount(() => {
 .guide-line--spacing {
   background: rgba(245, 108, 108, 0.9);
 }
+
 </style>
+

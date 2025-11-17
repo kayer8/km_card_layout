@@ -79,6 +79,16 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
     setActiveElement(fallback?.id ?? '')
   }
 
+  const setElementVisibility = (id: string, visible: boolean) => {
+    const target = cardSchema.elements.find((element) => element.id === id)
+    if (!target) return
+    target.visible = visible
+    if (!visible && activeElementId.value === id) {
+      const next = cardSchema.elements.find((el) => el.visible !== false && el.id !== id)
+      setActiveElement(next?.id ?? '')
+    }
+  }
+
   // 外部替换 schema 时需要重新同步激活项
   const syncActiveElement = () => {
     setActiveElement(cardSchema.elements[0]?.id ?? '')
@@ -89,6 +99,7 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
     setActiveElement,
     addElement,
     removeActiveElement,
+    setElementVisibility,
     syncActiveElement
   }
 }

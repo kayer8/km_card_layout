@@ -49,8 +49,6 @@ const {
   setActiveElement,
   handleDragEnd,
   handleResizeEnd,
-  addElement,
-  removeActiveElement,
   resetSchema,
   selectTemplate,
   createTemplate,
@@ -58,7 +56,8 @@ const {
   bindingEntries,
   mutateElement,
   setBackgroundImage,
-  setFontColor
+  setFontColor,
+  setElementVisibility
 } = useCardDesigner()
 
 const handleBackgroundChange = (value: string) => {
@@ -67,6 +66,10 @@ const handleBackgroundChange = (value: string) => {
   if (option?.fontColor) {
     setFontColor({ value: option.fontColor, syncChildren: true })
   }
+}
+
+const handleToggleElement = (payload: { id: string; visible: boolean }) => {
+  setElementVisibility(payload.id, payload.visible)
 }
 
 onMounted(() => {
@@ -97,10 +100,8 @@ onMounted(() => {
         <ElementListPanel
           :elements="cardSchema.elements"
           :active-element-id="activeElementId"
-          :has-active="Boolean(activeElement)"
           @select="setActiveElement"
-          @add="addElement"
-          @remove="removeActiveElement"
+          @toggle-visible="handleToggleElement"
         />
       </aside>
 

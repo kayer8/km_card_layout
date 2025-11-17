@@ -24,7 +24,8 @@ export const useCardDesigner = () => {
     createTemplate: rawCreateTemplate,
     resolveBinding,
     setBackgroundImage,
-    setFontColor
+    setFontColor,
+    setElementVisibility
   } = layoutStore
 
   const copyState = ref<'idle' | 'copied'>('idle')
@@ -86,7 +87,8 @@ export const useCardDesigner = () => {
     createTemplate,
     copySchema,
     setBackgroundImage,
-    setFontColor: setFontColorWithSync
+    setFontColor: setFontColorWithSync,
+    setElementVisibility
   }
 }
 
