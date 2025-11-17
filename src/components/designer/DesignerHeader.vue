@@ -6,7 +6,7 @@ const props = defineProps<{
   copyState: 'idle' | 'copied'
   templates: CardTemplate[]
   selectedTemplateId: string
-  backgroundOptions?: { label: string; value: string }[]
+  backgroundOptions?: { label: string; value: string; fontColor?: string }[]
   selectedBackground?: string
 }>()
 

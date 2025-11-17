@@ -103,26 +103,19 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
     // 支持同步子元素颜色，保持整体视觉一致
     const rawValue = typeof payload === 'string' ? payload : payload?.value
     const shouldSync = typeof payload === 'string' ? true : payload?.syncChildren !== false
-    const previousColor = cardSchema.fontColor ?? '#ffffff'
     const nextColor = (rawValue ?? '').toString() || '#ffffff'
     cardSchema.fontColor = nextColor
 
-    if (nextColor === previousColor) {
-      return
-    }
+    if (!shouldSync) return
 
-    if (shouldSync) {
-      cardSchema.elements.forEach((element: CardElement) => {
-        const elementColor =
-          typeof element.style?.color === 'string' ? element.style.color : undefined
-        if (elementColor && elementColor === previousColor) {
-          if (!element.style) {
-            element.style = {}
-          }
-          element.style.color = nextColor
-        }
-      })
-    }
+    cardSchema.elements.forEach((element: CardElement) => {
+      if (!element.style) element.style = {}
+      // 文本/图标强制同步颜色，避免旧颜色残留
+      element.style.color = nextColor
+      if (element.type === 'icon') {
+        element.style.backgroundColor = nextColor
+      }
+    })
   }
 
   return {

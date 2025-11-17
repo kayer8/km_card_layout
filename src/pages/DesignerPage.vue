@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import DesignerHeader from '../components/designer/DesignerHeader.vue'
 import CardStage from '../components/designer/CardStage.vue'
 import SchemaPreview from '../components/designer/SchemaPreview.vue'
@@ -11,21 +11,25 @@ import { useCardDesigner } from '../composables/useCardDesigner'
 const backgroundOptions = [
   {
     label: '星空紫',
+    fontColor: '#ffffff',
     value:
       'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=60'
   },
   {
     label: '渐变蓝',
+    fontColor: '#ffffff',
     value:
       'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60'
   },
   {
     label: '商务黑',
+    fontColor: '#666',
     value:
       'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=60'
   },
   {
     label: '雪山',
+    fontColor: '#1a1a1a',
     value:
       'https://images.unsplash.com/photo-1508264165352-258859e62245?auto=format&fit=crop&w=900&q=60'
   }
@@ -53,12 +57,24 @@ const {
   copySchema,
   bindingEntries,
   mutateElement,
-  setBackgroundImage
+  setBackgroundImage,
+  setFontColor
 } = useCardDesigner()
 
 const handleBackgroundChange = (value: string) => {
+  const option = backgroundOptions.find((item) => item.value === value)
   setBackgroundImage(value)
+  if (option?.fontColor) {
+    setFontColor({ value: option.fontColor, syncChildren: true })
+  }
 }
+
+onMounted(() => {
+  if (!cardSchema.backgroundImage && backgroundOptions.length) {
+    const first = backgroundOptions[0]
+    handleBackgroundChange(first!.value)
+  }
+})
 </script>
 
 <template>
