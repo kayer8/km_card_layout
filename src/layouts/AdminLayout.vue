@@ -30,15 +30,15 @@ const handleMenuChange = (value: MenuValue) => {
         <div class="brand">
           <span class="brand__logo">KM</span>
           <div>
-            <p class="brand__name">KM Card Studio</p>
-            <p class="brand__desc">名片体验中心</p>
+            <p class="brand__name">KM Card Layout</p>
+            <p class="brand__desc">名片布局管理</p>
           </div>
         </div>
 
         <t-menu :value="activeMenu" theme="light" @change="handleMenuChange">
           <t-menu-item value="styles">样式管理</t-menu-item>
           <t-menu-item value="background">背景管理</t-menu-item>
-          <t-menu-item value="elements">内置元素管理</t-menu-item>
+          <t-menu-item value="elements">元素管理</t-menu-item>
         </t-menu>
       </t-aside>
 

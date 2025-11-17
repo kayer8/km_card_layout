@@ -69,7 +69,7 @@ const submitElement = () => {
 <template>
   <section class="page">
     <header class="page__header">
-      <h1>内置元素管理</h1>
+      <h1>元素管理</h1>
       <t-button theme="primary" @click="showDialog">新增元素</t-button>
     </header>
 
