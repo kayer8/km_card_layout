@@ -3,6 +3,53 @@ import type { CardElement, CardElementType, CardLayoutSchema } from 'km-card-sch
 
 const createElementId = (type: CardElementType) => `${type}-${Math.random().toString(36).slice(2, 7)}`
 
+type ElementBuilderContext = { id: string; baseX: number; cardWidth: number }
+
+const elementBuilders: Record<CardElementType, (ctx: ElementBuilderContext) => CardElement> = {
+  text: ({ id, baseX }) => ({
+    id,
+    type: 'text',
+    x: baseX,
+    y: 300,
+    width: 260,
+    height: 36,
+    visible: true,
+    content: '示例文本',
+    style: {
+      fontSize: 18,
+      color: '#1A202C'
+    }
+  }),
+  image: ({ id, cardWidth }) => ({
+    id,
+    type: 'image',
+    x: cardWidth - 200,
+    y: 80,
+    width: 120,
+    height: 120,
+    visible: true,
+    binding: 'user.avatar',
+    style: {
+      borderRadius: '16px',
+      border: '4px solid rgba(255, 255, 255, 0.12)'
+    }
+  }),
+  icon: ({ id, baseX }) => ({
+    id,
+    type: 'icon',
+    name: 'dot',
+    x: baseX,
+    y: 320,
+    width: 14,
+    height: 14,
+    visible: true,
+    style: {
+      backgroundColor: '#2B6CB0',
+      borderRadius: '50%'
+    }
+  })
+}
+
 // 元素列表控制器：负责当前激活项及增删逻辑
 export const createElementListController = (cardSchema: CardLayoutSchema) => {
   const activeElementId = ref(cardSchema.elements[0]?.id ?? '')
@@ -14,54 +61,8 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
   const addElement = (type: CardElementType) => {
     const id = createElementId(type)
     const baseX = 40 + cardSchema.elements.length * 4
-
-    let element: CardElement
-    if (type === 'text') {
-      element = {
-        id,
-        type,
-        x: baseX,
-        y: 300,
-        width: 260,
-        height: 36,
-        visible: true,
-        content: '示例文本',
-        style: {
-          fontSize: 18,
-          color: '#1A202C'
-        }
-      }
-    } else if (type === 'image') {
-      element = {
-        id,
-        type,
-        x: cardSchema.width - 200,
-        y: 80,
-        width: 120,
-        height: 120,
-        visible: true,
-        binding: 'user.avatar',
-        style: {
-          borderRadius: '16px',
-          border: '4px solid rgba(255, 255, 255, 0.12)'
-        }
-      }
-    } else {
-      element = {
-        id,
-        type,
-        name: 'dot',
-        x: baseX,
-        y: 320,
-        width: 14,
-        height: 14,
-        visible: true,
-        style: {
-          backgroundColor: '#2B6CB0',
-          borderRadius: '50%'
-        }
-      }
-    }
+    const builder = elementBuilders[type]
+    const element = builder({ id, baseX, cardWidth: cardSchema.width })
 
     cardSchema.elements.push(element)
     setActiveElement(id)
