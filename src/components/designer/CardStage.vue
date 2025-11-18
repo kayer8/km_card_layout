@@ -194,6 +194,8 @@ watch(
         :key="element.id"
         :initW="element.width"
         :initH="element.height"
+        :minW="0"
+        :minH="0"
         v-model:x="element.x"
         v-model:y="element.y"
         v-model:w="element.width"

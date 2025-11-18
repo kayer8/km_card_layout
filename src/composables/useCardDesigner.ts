@@ -1,11 +1,17 @@
-import { computed, ref } from 'vue'
-import { MessagePlugin } from 'tdesign-vue-next'
-import type { CardTemplate } from '../templates/cardTemplates'
-import { createLayoutStore, type FontColorPayload } from '../modules/layout/store'
-import { createElementPreviewResolver, createElementStyleFormatter } from '../modules/layout/rendering'
+import { computed, ref } from 'vue';
+import { MessagePlugin } from 'tdesign-vue-next';
+import type { CardTemplate } from '../templates/cardTemplates';
+import {
+  createLayoutStore,
+  type FontColorPayload,
+} from '../modules/layout/store';
+import {
+  createElementPreviewResolver,
+  createElementStyleFormatter,
+} from '../modules/layout/rendering';
 
 export const useCardDesigner = () => {
-  const layoutStore = createLayoutStore()
+  const layoutStore = createLayoutStore();
   const {
     bindingContext,
     bindingEntries,
@@ -25,44 +31,43 @@ export const useCardDesigner = () => {
     resolveBinding,
     setBackgroundImage,
     setFontColor,
-    setElementVisibility
-  } = layoutStore
+    setElementVisibility,
+  } = layoutStore;
 
-  const copyState = ref<'idle' | 'copied'>('idle')
-  const serializedSchema = computed(() => JSON.stringify(cardSchema, null, 2))
+  const copyState = ref<'idle' | 'copied'>('idle');
+  const serializedSchema = computed(() => JSON.stringify(cardSchema, null, 2));
   const activeElement = computed(() =>
-    cardSchema.elements.find((element) => element.id === activeElementId.value)
-  )
-
-  const elementStyle = createElementStyleFormatter()
-  const getElementPreview = createElementPreviewResolver(resolveBinding)
+    cardSchema.elements.find(element => element.id === activeElementId.value)
+  );
+  const elementStyle = createElementStyleFormatter();
+  const getElementPreview = createElementPreviewResolver(resolveBinding);
 
   const copySchema = async () => {
     try {
-      await navigator.clipboard.writeText(serializedSchema.value)
-      copyState.value = 'copied'
-      MessagePlugin.success('布局 JSON 已复制')
+      await navigator.clipboard.writeText(serializedSchema.value);
+      copyState.value = 'copied';
+      MessagePlugin.success('布局 JSON 已复制');
       window.setTimeout(() => {
-        copyState.value = 'idle'
-      }, 1600)
+        copyState.value = 'idle';
+      }, 1600);
     } catch (error) {
-      MessagePlugin.error('复制失败，请手动复制')
+      MessagePlugin.error('复制失败，请手动复制');
     }
-  }
+  };
 
   const createTemplate = (name: string): CardTemplate | null => {
-    const template = rawCreateTemplate(name)
+    const template = rawCreateTemplate(name);
     if (!template) {
-      MessagePlugin.warning('模板名称不能为空')
-      return null
+      MessagePlugin.warning('模板名称不能为空');
+      return null;
     }
-    MessagePlugin.success('模板已保存')
-    return template
-  }
+    MessagePlugin.success('模板已保存');
+    return template;
+  };
 
   const setFontColorWithSync = (payload: FontColorPayload) => {
-    setFontColor(payload)
-  }
+    setFontColor(payload);
+  };
 
   return {
     bindingContext,
@@ -88,8 +93,8 @@ export const useCardDesigner = () => {
     copySchema,
     setBackgroundImage,
     setFontColor: setFontColorWithSync,
-    setElementVisibility
-  }
-}
+    setElementVisibility,
+  };
+};
 
-export type UseCardDesignerReturn = ReturnType<typeof useCardDesigner>
+export type UseCardDesignerReturn = ReturnType<typeof useCardDesigner>;

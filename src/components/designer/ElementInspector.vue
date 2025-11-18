@@ -27,7 +27,7 @@ const isIconElement = computed(() => props.element?.type === 'icon')
 
 
 const mutate = (mutator: (draft: CardElement) => void) => {
-
+  
   if (!props.element) return
 
   props.mutateElement(props.element.id, mutator)
@@ -172,8 +172,6 @@ const widthModel = rectProxy('width')
 
 const heightModel = rectProxy('height')
 
-
-
 const fontSizeValue = styleProxy('fontSize', 18)
 const colorValue = styleProxy('color', '#FFFFFF')
 const textAlignValue = styleProxy('textAlign', 'left')
@@ -313,7 +311,7 @@ const applyStyleText = () => {
 
       <t-form-item label="绑定字段">
 
-        <t-input v-model="bindingValue" placeholder="user.name" clearable />
+        <t-input v-model="bindingValue" placeholder="user.name" clearable readonly disabled />
 
       </t-form-item>
 
@@ -340,9 +338,9 @@ const applyStyleText = () => {
 
         <t-space>
 
-          <t-input-number v-model:value="widthModel" size="small" :min="10" :max="props.cardWidth" />
+          <t-input-number v-model:value="widthModel" size="small" :min="0" :max="props.cardWidth" />
 
-          <t-input-number v-model:value="heightModel" size="small" :min="10" :max="props.cardHeight" />
+          <t-input-number v-model:value="heightModel" size="small" :min="0" :max="props.cardHeight" />
 
         </t-space>
 
