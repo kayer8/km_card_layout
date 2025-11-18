@@ -175,10 +175,35 @@ const heightModel = rectProxy('height')
 
 
 const fontSizeValue = styleProxy('fontSize', 18)
-
 const colorValue = styleProxy('color', '#FFFFFF')
+const textAlignValue = styleProxy('textAlign', 'left')
 
-const fontWeightValue = styleProxy('fontWeight', 'bold')
+const isBold = computed(() => {
+  const weight = props.element?.style?.fontWeight
+  if (typeof weight === 'number') {
+    return weight >= 600
+  }
+  return weight === 'bold' || weight === '600' || weight === '700'
+})
+
+const isItalic = computed(() => props.element?.style?.fontStyle === 'italic')
+const isUnderline = computed(() => props.element?.style?.textDecoration === 'underline')
+
+const toggleBold = () => {
+  updateStyleField('fontWeight', isBold.value ? 'normal' : 'bold')
+}
+
+const toggleItalic = () => {
+  updateStyleField('fontStyle', isItalic.value ? undefined : 'italic')
+}
+
+const toggleUnderline = () => {
+  updateStyleField('textDecoration', isUnderline.value ? undefined : 'underline')
+}
+
+const setTextAlign = (align: 'left' | 'center' | 'right') => {
+  updateStyleField('textAlign', align)
+}
 
 
 
@@ -326,25 +351,80 @@ const applyStyleText = () => {
 
 
       <template v-if="isTextElement">
-
-        <t-form-item label="字号">
-
-          <t-input-number v-model:value="fontSizeValue" size="small" :min="12" :max="64" />
-
+        <t-form-item label="字体样式">
+          <div class="text-style-panel">
+            <div class="style-row">
+              <div class="style-group">
+                <span class="style-label">字号</span>
+                <t-input-number v-model:value="fontSizeValue" size="small" :min="12" :max="64" />
+              </div>
+              <div class="style-group">
+                <span class="style-label">文字色</span>
+                <t-color-picker
+                  v-model="colorValue"
+                  size="small"
+                  :popup-props="{ placement: 'bottom' }"
+                  :show-primary-color-preview="false"
+                />
+              </div>
+              <div class="style-buttons">
+                <t-button
+                  size="small"
+                  variant="outline"
+                  :theme="isBold ? 'primary' : 'default'"
+                  @click="toggleBold"
+                >
+                  B
+                </t-button>
+                <t-button
+                  size="small"
+                  variant="outline"
+                  :theme="isItalic ? 'primary' : 'default'"
+                  @click="toggleItalic"
+                >
+                  I
+                </t-button>
+                <t-button
+                  size="small"
+                  variant="outline"
+                  :theme="isUnderline ? 'primary' : 'default'"
+                  @click="toggleUnderline"
+                >
+                  U
+                </t-button>
+              </div>
+            </div>
+            <div class="style-row align-row">
+              <span class="style-label">对齐</span>
+              <div class="style-buttons">
+                <t-button
+                  size="small"
+                  variant="outline"
+                  :theme="textAlignValue === 'left' ? 'primary' : 'default'"
+                  @click="setTextAlign('left')"
+                >
+                  左
+                </t-button>
+                <t-button
+                  size="small"
+                  variant="outline"
+                  :theme="textAlignValue === 'center' ? 'primary' : 'default'"
+                  @click="setTextAlign('center')"
+                >
+                  中
+                </t-button>
+                <t-button
+                  size="small"
+                  variant="outline"
+                  :theme="textAlignValue === 'right' ? 'primary' : 'default'"
+                  @click="setTextAlign('right')"
+                >
+                  右
+                </t-button>
+              </div>
+            </div>
+          </div>
         </t-form-item>
-
-        <t-form-item label="颜色">
-
-          <t-input v-model="colorValue" placeholder="#FFFFFF" />
-
-        </t-form-item>
-
-        <t-form-item label="粗细">
-
-          <t-input v-model="fontWeightValue" placeholder="bold / 600" />
-
-        </t-form-item>
-
       </template>
 
 
@@ -428,6 +508,62 @@ const applyStyleText = () => {
   font-size: 0.8rem;
 
   color: #ff8a8a;
+
+}
+
+.text-style-panel {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+}
+
+.style-row {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+.style-group {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+}
+
+.style-label {
+
+  font-size: 0.9rem;
+
+  color: #4a5568;
+
+}
+
+.style-buttons {
+
+  display: flex;
+
+  gap: 8px;
+
+  align-items: center;
+
+}
+
+.align-row .style-label {
+
+  width: 36px;
 
 }
 
