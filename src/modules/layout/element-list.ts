@@ -14,7 +14,7 @@ const elementBuilders: Record<CardElementType, (ctx: ElementBuilderContext) => C
     width: 260,
     height: 36,
     visible: true,
-    content: '示例文本',
+    binding: 'user.name',
     style: {
       fontSize: 18,
       color: '#1A202C'

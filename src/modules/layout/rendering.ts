@@ -1,7 +1,5 @@
 import type { CardElement, CardElementStyle } from 'km-card-schema'
 
-const FALLBACK_AVATAR = 'https://i.pravatar.cc/240?u=km-card'
-
 const defaultPxStyleFields = new Set([
   'fontSize',
   'lineHeight',
@@ -34,19 +32,11 @@ export const createElementStyleFormatter =
   }
 
 export const createElementPreviewResolver =
-  (
-    bindingResolver: (binding?: string) => string | number | undefined,
-    fallback: string = FALLBACK_AVATAR
-  ) =>
+  (bindingResolver: (binding?: string) => string | number | undefined) =>
   (element: CardElement): string => {
     const boundValue = bindingResolver(element.binding)
     if (boundValue === undefined || boundValue === null || boundValue === '') {
-      if (element.type === 'image') {
-        return element.content || fallback
-      }
-      return element.content ?? ''
+      return ''
     }
     return String(boundValue)
   }
-
-export const getFallbackAvatar = () => FALLBACK_AVATAR

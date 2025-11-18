@@ -45,11 +45,10 @@ export const blueCitySchema: CardLayoutSchema = {
       y: 60,
       width: 186,
       height: 240,
+      binding: 'user.avatar',
       style: {
         borderRadius: 24,
       },
-      content:
-        'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=60',
     },
     {
       id: 'phone',

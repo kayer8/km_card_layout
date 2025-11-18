@@ -17,7 +17,7 @@
       class="clm-card-element clm-card-element--text"
       style="{{item.style}}"
     >
-      {{item.content}}
+      {{item.text}}
     </view>
   </block>
 </view>

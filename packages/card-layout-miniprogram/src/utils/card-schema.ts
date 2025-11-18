@@ -16,7 +16,6 @@ export interface CardElementBase {
    */
   visible?: boolean
   binding?: string
-  content?: string
   style?: CardElementStyle
 }
 

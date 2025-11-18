@@ -18,7 +18,6 @@ export interface CardElementBase {
    */
   visible?: boolean;
   binding?: BindingPath;
-  content?: string;
   style?: CardElementStyle;
 }
 

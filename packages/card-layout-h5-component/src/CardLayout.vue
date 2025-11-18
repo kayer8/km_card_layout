@@ -19,7 +19,7 @@
           class="km-card-element km-card-element--text"
           :style="element.style"
         >
-          {{ element.content }}
+          {{ element.text }}
         </div>
       </template>
     </div>
@@ -151,8 +151,8 @@ interface RenderedElement {
   id: string
   type: CardElement["type"]
   style: CSSProperties
-  content: string
-  src: string
+  text: string
+  src?: string
   alt?: string
 }
 
@@ -175,22 +175,17 @@ const renderedElements = computed<RenderedElement[]>(() => {
         typeof value === "number" ? `${value}px` : value ?? undefined
     })
 
-    const boundValue = resolveBinding(element.binding)
-    const content =
-      typeof boundValue === "string" || typeof boundValue === "number"
-        ? String(boundValue)
-        : element.content ?? ""
+        const boundValue = resolveBinding(element.binding)
+    const text =
+      typeof boundValue === "string" || typeof boundValue === "number" ? String(boundValue) : ""
 
     return {
       id: element.id,
       type: element.type,
       style,
-      content,
+      text,
       src:
-        element.type === "image"
-          ? (typeof boundValue === "string" && boundValue) ||
-            (typeof element.content === "string" ? element.content : "")
-          : "",
+        element.type === "image" && typeof boundValue === "string" && boundValue ? boundValue : undefined,
       alt: element.type === "image" ? element.alt : undefined
     }
   })

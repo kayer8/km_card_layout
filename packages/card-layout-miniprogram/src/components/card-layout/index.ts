@@ -6,7 +6,7 @@ interface RenderElement {
   id: string
   type: CardElement['type']
   style: string
-  content: string
+  text: string
   src?: string
 }
 
@@ -141,18 +141,14 @@ Component({
         const textual =
           typeof boundValue === 'string' || typeof boundValue === 'number'
             ? String(boundValue)
-            : element.content ?? ''
+            : ''
 
         return {
           id: element.id,
           type: element.type,
           style: styles.join(';'),
-          content: textual,
-          src:
-            element.type === 'image'
-              ? (typeof boundValue === 'string' && boundValue) ||
-                (typeof element.content === 'string' ? element.content : '')
-              : undefined
+          text: textual,
+          src: element.type === 'image' && typeof boundValue === 'string' && boundValue ? boundValue : undefined
         }
       })
 
