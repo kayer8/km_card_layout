@@ -175,6 +175,17 @@ const renderedElements = computed<RenderedElement[]>(() => {
         typeof value === "number" ? `${value}px` : value ?? undefined
     })
 
+    if (element.type === "text") {
+      const align = element.style?.textAlign
+      const justify =
+        align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start"
+      style.textAlign = align
+      style.justifyContent = justify
+      if (!("lineHeight" in (element.style ?? {}))) {
+        style.lineHeight = "1.3"
+      }
+    }
+
         const boundValue = resolveBinding(element.binding)
     const text =
       typeof boundValue === "string" || typeof boundValue === "number" ? String(boundValue) : ""
@@ -213,11 +224,12 @@ const renderedElements = computed<RenderedElement[]>(() => {
   color: inherit;
   white-space: pre-line;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .km-card-element--text {
-  line-height: 1.2;
+  display: block;
+  line-height: 1.3;
 }
 
 .km-card-element--image {

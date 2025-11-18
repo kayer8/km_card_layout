@@ -33,6 +33,11 @@ const visibleElements = computed(() =>
   props.schema.elements.filter((element) => element.visible !== false)
 )
 
+const snapEnabled = ref(props.enableSnap !== false)
+const toggleSnap = () => {
+  snapEnabled.value = !snapEnabled.value
+}
+
 // 对齐/辅助线与吸附计算独立封装，减少组件内耦合
 const { guideLines, clearGuides, computeGuides, applySnap } = useGuides({ schema: props.schema })
 const snapKeyPressed = ref(false)
@@ -69,7 +74,8 @@ const handleDragEnd = (elementId: string, payload: DragPayload) => {
     // Refresh guides on release so alignments stay visible before clearing
     computeGuides(element, payload)
   }
-  const shouldSnap = element && props.enableSnap && (props.snapOnRelease || snapKeyPressed.value)
+  const shouldSnap =
+    element && props.enableSnap && snapEnabled.value && (props.snapOnRelease || snapKeyPressed.value)
 
   if (element && shouldSnap) {
     const snapped = applySnap(element, payload)
@@ -114,6 +120,11 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="card-stage">
+    <div class="snap-toggle">
+      <t-button size="small" variant="outline" :theme="snapEnabled ? 'primary' : 'default'" @click="toggleSnap">
+        吸附：{{ snapEnabled ? '开' : '关' }}
+      </t-button>
+    </div>
     <div
       class="card-stage__inner"
       :style="{
@@ -206,6 +217,14 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(66, 153, 225, 0.15);
   background: #ffffff;
   box-shadow: inset 0 0 0 1px rgba(233, 239, 247, 0.6);
+  position: relative;
+}
+
+.snap-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
 }
 
 .card-stage__inner {
@@ -233,14 +252,16 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   font-family: 'Segoe UI', 'PingFang SC', sans-serif;
 }
 
 .card-element--text {
+  display: block;
   font-weight: 500;
   user-select: none;
+  line-height: 1.3;
 }
 
 .card-element--image img {

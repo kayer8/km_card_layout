@@ -17,7 +17,8 @@ const elementBuilders: Record<CardElementType, (ctx: ElementBuilderContext) => C
     binding: 'user.name',
     style: {
       fontSize: 18,
-      color: '#1A202C'
+      color: '#1A202C',
+      lineHeight: 1.3
     }
   }),
   image: ({ id, cardWidth }) => ({

@@ -137,6 +137,17 @@ Component({
           }
         }
 
+        if (element.type === 'text') {
+          const align = element.style?.textAlign
+          const justify = align === 'center' ? 'center' : align === 'right' ? 'flex-end' : 'flex-start'
+          if (align) styles.push(`text-align:${align}`)
+          styles.push(`justify-content:${justify}`)
+          const hasLineHeight = !!(element.style && 'lineHeight' in element.style)
+          if (!hasLineHeight) {
+            styles.push('line-height:1.3')
+          }
+        }
+
         const boundValue = resolveBinding(element.binding, this.data.data as LayoutData)
         const textual =
           typeof boundValue === 'string' || typeof boundValue === 'number'
