@@ -230,6 +230,7 @@ const renderedElements = computed<RenderedElement[]>(() => {
 .km-card-element--text {
   display: block;
   line-height: 1.3;
+  overflow: hidden;
 }
 
 .km-card-element--image {

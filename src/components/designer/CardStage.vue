@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
 import { useGuides, type DragPayload } from './useGuides'
@@ -32,6 +32,20 @@ const emit = defineEmits<{
 const visibleElements = computed(() =>
   props.schema.elements.filter((element) => element.visible !== false)
 )
+
+const ensureTextMinHeights = () => {
+  props.schema.elements.forEach((element) => {
+    if (element.type !== 'text') return
+    const rawFontSize = element.style?.fontSize
+    const fontSize =
+      typeof rawFontSize === 'number' ? rawFontSize : Number.parseFloat(String(rawFontSize ?? ''))
+    if (!Number.isFinite(fontSize)) return
+    const minHeight = fontSize * 1.3
+    if (typeof element.height !== 'number' || element.height < minHeight) {
+      element.height = minHeight
+    }
+  })
+}
 
 const snapEnabled = ref(props.enableSnap !== false)
 const toggleSnap = () => {
@@ -116,6 +130,17 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown)
   window.removeEventListener('keyup', handleKeyUp)
 })
+
+watch(
+  () =>
+    props.schema.elements.map((el) => ({
+      id: el.id,
+      fontSize: el.style?.fontSize,
+      height: el.height
+    })),
+  ensureTextMinHeights,
+  { deep: true, immediate: true }
+)
 </script>
 
 <template>
@@ -262,6 +287,8 @@ onBeforeUnmount(() => {
   font-weight: 500;
   user-select: none;
   line-height: 1.3;
+  overflow: hidden;
+  white-space: pre-line;
 }
 
 .card-element--image img {
