@@ -1,6 +1,6 @@
 {
   "name": "km-card-layout-h5-component",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Responsive business card layout component for Vue 3",
   "type": "module",
   "main": "./dist/card-layout.umd.cjs",
@@ -24,7 +24,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "km-card-schema": "^0.1.0"
+    "km-card-schema": "^0.1.5"
   },
   "peerDependencies": {
     "vue": "^3.3.0"

@@ -1,11 +1,11 @@
 # km-card-layout-h5-component
 
-A responsive Vue 3 component that renders business-card layouts defined by `@km/card-schema`.
+A responsive Vue 3 component that renders business-card layouts defined by `km-card-schema`.
 
 ## Usage
 
 ```bash
-pnpm add km-card-layout-h5-component @km/card-schema vue
+pnpm add km-card-layout-h5-component km-card-schema vue
 ```
 
 ```vue

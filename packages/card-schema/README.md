@@ -1,4 +1,4 @@
-﻿# @km/card-schema
+﻿# km-card-schema
 
 Shared TypeScript declarations for the draggable business card layout schema.
 

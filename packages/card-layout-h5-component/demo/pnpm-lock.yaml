@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       km-card-layout-h5-component:
-        specifier: ^0.1.2
-        version: 0.1.2(vue@3.5.24(typescript@5.6.3))
+        specifier: ^0.1.3
+        version: 0.1.3(vue@3.5.24(typescript@5.6.3))
       vue:
         specifier: ^3.5.0
         version: 3.5.24(typescript@5.6.3)
@@ -354,13 +354,13 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  km-card-layout-h5-component@0.1.2:
-    resolution: {integrity: sha512-RV4LmQyKBsi+oVJHwuIlOJBrSmiNidLcHYE+F+wR03dqSJdqgj80NsPNQLYkp9Nj57wh5m3IGkr5IKh/cOGVsw==}
+  km-card-layout-h5-component@0.1.3:
+    resolution: {integrity: sha512-W7ke7zIavSQFg5o/CI0DVHh+y/VV4j1NiZxHfQW1X/1dlAVNldHLxMnvl8DadfUYZsRsSCQ/jJArr5Y6usW61Q==}
     peerDependencies:
       vue: ^3.3.0
 
-  km-card-schema@0.1.0:
-    resolution: {integrity: sha512-JQlMsbi7UobyXP+zA8BxgcR7Q8lGhVRRlpGSVtQnW7gjv8Jh+n6jd3gWJG6ilHxxg3QiCpBuOGoSJ0iXvo8qvQ==}
+  km-card-schema@0.1.5:
+    resolution: {integrity: sha512-LxnpISPi4a23Crs7I4LtE4jBUkCO469OzBL18jTn9vQGnDHUiWJNG30smCkqU9h21IsKQT+z+I0ommTA7nnaew==}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -678,12 +678,12 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  km-card-layout-h5-component@0.1.2(vue@3.5.24(typescript@5.6.3)):
+  km-card-layout-h5-component@0.1.3(vue@3.5.24(typescript@5.6.3)):
     dependencies:
-      km-card-schema: 0.1.0
+      km-card-schema: 0.1.5
       vue: 3.5.24(typescript@5.6.3)
 
-  km-card-schema@0.1.0: {}
+  km-card-schema@0.1.5: {}
 
   magic-string@0.30.21:
     dependencies:

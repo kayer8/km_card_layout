@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       km-card-schema:
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.5
+        version: 0.1.5
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.1.2
@@ -393,8 +393,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  km-card-schema@0.1.0:
-    resolution: {integrity: sha512-JQlMsbi7UobyXP+zA8BxgcR7Q8lGhVRRlpGSVtQnW7gjv8Jh+n6jd3gWJG6ilHxxg3QiCpBuOGoSJ0iXvo8qvQ==}
+  km-card-schema@0.1.5:
+    resolution: {integrity: sha512-LxnpISPi4a23Crs7I4LtE4jBUkCO469OzBL18jTn9vQGnDHUiWJNG30smCkqU9h21IsKQT+z+I0ommTA7nnaew==}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -773,7 +773,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  km-card-schema@0.1.0: {}
+  km-card-schema@0.1.5: {}
 
   magic-string@0.30.21:
     dependencies:

@@ -177,10 +177,12 @@ const renderedElements = computed<RenderedElement[]>(() => {
 
     if (element.type === "text") {
       const align = element.style?.textAlign
-      const justify =
-        align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start"
-      style.textAlign = align
-      style.justifyContent = justify
+      if (typeof align === "string") {
+        style.textAlign = align as any;
+        style.justifyContent = align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start"
+      } else {
+        style.textAlign = undefined
+      }
       if (!("lineHeight" in (element.style ?? {}))) {
         style.lineHeight = "1.3"
       }

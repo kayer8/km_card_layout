@@ -1,9 +1,9 @@
 const layout = {
-  "id": "kuanmai-left-avatar",
+  "id": "kuanmai-black-gold",
   "width": 686,
   "height": 420,
   "padding": 40,
-  "fontColor": "#333333",
+  "fontColor": "#ffffff",
   "metadata": {
     "template": "black-gold",
     "version": "1.0.0"
@@ -12,14 +12,14 @@ const layout = {
     {
       "id": "company",
       "type": "text",
-      "x": 280,
-      "y": 145,
+      "x": 36,
+      "y": 32,
       "width": 360,
-      "height": 37,
+      "height": 41.6,
       "binding": "user.company",
       "style": {
-        "fontSize": 26,
-        "color": "#333",
+        "fontSize": 32,
+        "color": "#ffffff",
         "letterSpacing": 1,
         "fontWeight": "400"
       }
@@ -27,28 +27,28 @@ const layout = {
     {
       "id": "name",
       "type": "text",
-      "x": 280,
-      "y": 37,
+      "x": 36,
+      "y": 95,
       "width": 280,
-      "height": 39,
+      "height": 52,
       "binding": "user.name",
       "style": {
         "fontSize": 40,
-        "color": "#333",
+        "color": "#ffffff",
         "fontWeight": 700
       }
     },
     {
       "id": "title",
       "type": "text",
-      "x": 280,
-      "y": 98,
+      "x": 36,
+      "y": 163,
       "width": 220,
       "height": 37,
       "binding": "user.title",
       "style": {
         "fontSize": 26,
-        "color": "#333",
+        "color": "#ffffff",
         "fontWeight": 400
       }
     },
@@ -61,21 +61,22 @@ const layout = {
       "width": 16,
       "height": 16,
       "style": {
-        "backgroundColor": "#333",
-        "borderRadius": "50%"
+        "backgroundColor": "#ffffff",
+        "borderRadius": "50%",
+        "color": "#ffffff"
       }
     },
     {
       "id": "phone",
       "type": "text",
-      "x": 73,
+      "x": 74,
       "y": 263,
       "width": 300,
       "height": 37,
       "binding": "user.phone",
       "style": {
         "fontSize": 26,
-        "color": "#333",
+        "color": "#ffffff",
         "fontWeight": "400"
       }
     },
@@ -88,21 +89,22 @@ const layout = {
       "width": 16,
       "height": 16,
       "style": {
-        "backgroundColor": "#333",
-        "borderRadius": "50%"
+        "backgroundColor": "#ffffff",
+        "borderRadius": "50%",
+        "color": "#ffffff"
       }
     },
     {
       "id": "email",
       "type": "text",
-      "x": 77,
-      "y": 308,
+      "x": 74,
+      "y": 305,
       "width": 320,
       "height": 37,
       "binding": "user.email",
       "style": {
         "fontSize": 26,
-        "color": "#333",
+        "color": "#ffffff",
         "fontWeight": "400"
       }
     },
@@ -115,21 +117,22 @@ const layout = {
       "width": 16,
       "height": 16,
       "style": {
-        "backgroundColor": "#333",
-        "borderRadius": "50%"
+        "backgroundColor": "#ffffff",
+        "borderRadius": "50%",
+        "color": "#ffffff"
       }
     },
     {
       "id": "address",
       "type": "text",
-      "x": 71,
-      "y": 349,
+      "x": 74,
+      "y": 350,
       "width": 542,
       "height": 37,
       "binding": "user.address",
       "style": {
         "fontSize": 26,
-        "color": "#333",
+        "color": "#ffffff",
         "lineHeight": 28,
         "fontWeight": "400"
       }
@@ -137,17 +140,18 @@ const layout = {
     {
       "id": "avatar",
       "type": "image",
-      "x": 50,
-      "y": 41,
+      "x": 492,
+      "y": 32,
       "width": 160,
       "height": 160,
       "binding": "user.avatar",
       "style": {
-        "borderRadius": "50%"
+        "borderRadius": "50%",
+        "color": "#ffffff"
       }
     }
   ],
-  "backgroundImage": "https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_01.png"
+  "backgroundImage": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=60"
 }
 
 

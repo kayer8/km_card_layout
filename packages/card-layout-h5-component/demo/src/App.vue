@@ -39,7 +39,7 @@ const layout = {
       "x": 280,
       "y": 37,
       "width": 280,
-      "height": 39,
+      "height": 52,
       "binding": "user.name",
       "style": {
         "fontSize": 40,

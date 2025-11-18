@@ -47,7 +47,7 @@ const handleBackgroundChange = (value: string | number) => {
     <div>
       <p class="designer-badge">KM · Layout Lab</p>
       <h1>可拖拽式名片布局</h1>
-      <p class="muted">拖拽头像/文字，实时生成遵循 @km/card-schema 的 JSON</p>
+      <p class="muted">拖拽头像/文字，实时生成遵循 km-card-schema 的 JSON</p>
     </div>
     <t-space size="small" align="center">
       <t-select
