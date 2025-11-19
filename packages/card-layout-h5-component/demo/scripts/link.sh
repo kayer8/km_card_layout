@@ -1,0 +1,1 @@
+pnpm link --global "km-card-schema"
