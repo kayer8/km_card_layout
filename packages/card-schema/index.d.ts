@@ -11,7 +11,6 @@ export interface CardElementBase {
   y: number;
   width?: number;
   height?: number;
-  rotation?: number;
   zIndex?: number;
   /**
    * Whether the element is visible. Defaults to true when omitted.

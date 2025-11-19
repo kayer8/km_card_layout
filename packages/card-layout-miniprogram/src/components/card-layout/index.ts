@@ -240,7 +240,6 @@ Component({
         ]
         if (element.width !== undefined) styles.push(`width:${formatLengthValue(element.width)}`)
         if (element.height !== undefined) styles.push(`height:${formatLengthValue(element.height)}`)
-        if (element.rotation) styles.push(`transform:rotate(${element.rotation}deg)`)
         if (element.zIndex !== undefined) styles.push(`z-index:${element.zIndex}`)
 
         const styleEntries = element.style ? Object.keys(element.style) : []

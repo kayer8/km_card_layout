@@ -172,7 +172,6 @@ const renderedElements = computed<RenderedElement[]>(() => {
       top: createCssValue(element.y),
       width: createCssValue(element.width),
       height: createCssValue(element.height),
-      transform: element.rotation ? `rotate(${element.rotation}deg)` : undefined,
       zIndex: element.zIndex
     }
 
