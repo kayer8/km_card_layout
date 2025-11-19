@@ -35,7 +35,7 @@ const handleMenuChange = (value: MenuValue) => {
           </div>
         </div>
 
-        <t-menu :value="activeMenu" theme="light" @change="handleMenuChange">
+        <t-menu :value="activeMenu" class="app-menu"  theme="light" @change="handleMenuChange">
           <t-menu-item value="styles">样式管理</t-menu-item>
           <t-menu-item value="background">背景管理</t-menu-item>
           <t-menu-item value="elements">元素管理</t-menu-item>
@@ -69,6 +69,11 @@ const handleMenuChange = (value: MenuValue) => {
     background: #ffffff;
     border-right: 1px solid rgba(90, 107, 255, 0.1);
     box-shadow: 12px 0 40px rgba(90, 107, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+  }
+  .app-menu {
+    flex:1;
   }
 
   .brand {

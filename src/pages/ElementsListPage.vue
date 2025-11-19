@@ -129,6 +129,7 @@ const submitElement = () => {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    height: 100%;
   }
 
   .page__header {
@@ -148,6 +149,7 @@ const submitElement = () => {
     padding: 32px;
     box-shadow: 0 18px 40px rgba(90, 107, 255, 0.12);
     border: 1px solid rgba(90, 107, 255, 0.08);
+    flex-grow: 1;
   }
 
   .card__header {
