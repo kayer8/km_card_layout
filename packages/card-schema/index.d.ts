@@ -37,9 +37,18 @@ export interface ImageElement extends CardElementBase {
 
 export interface IconElement extends CardElementBase {
   type: 'icon';
+  /**
+   * Iconfont name/class (e.g. icon-buy-vip-13 or buy-vip-13).
+   */
   name: string;
-  size?: number;
-  src?: string;
+  /**
+   * Icon color; when omitted, fall back to style.color.
+   */
+  color?: string;
+  /**
+   * Icon font size (px). Consumers may derive defaults from element height/width when missing.
+   */
+  fontSize?: number;
 }
 
 export type CardElement = TextElement | ImageElement | IconElement;

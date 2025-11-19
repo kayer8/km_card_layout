@@ -31,6 +31,8 @@ export interface ImageElement extends CardElementBase {
 
 export interface IconElement extends CardElementBase {
   type: 'icon'
+  color?: string
+  fontSize?: number
 }
 
 export type CardElement = TextElement | ImageElement | IconElement
@@ -98,6 +100,9 @@ const scaleElement = (
   }
   if (typeof element.height === 'number') {
     next.height = roundValue(element.height * heightScale, round)
+  }
+  if (typeof (element as any).fontSize === 'number') {
+    ;(next as any).fontSize = roundValue((element as any).fontSize * widthScale, round)
   }
   next.style = scaleStyle(element.style, widthScale, heightScale, round)
   return next

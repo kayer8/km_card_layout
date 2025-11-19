@@ -3,6 +3,7 @@ import TDesign from 'tdesign-vue-next'
 import 'tdesign-vue-next/es/style/index.css'
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 import './style.css'
+import './assets/iconfont.css'
 import App from './App.vue'
 import router from './router'
 

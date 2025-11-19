@@ -44,7 +44,6 @@ const {
   serializedSchema,
   activeElementId,
   activeElement,
-  elementStyle,
   getElementPreview,
   setActiveElement,
   handleDragEnd,
@@ -115,7 +114,6 @@ onMounted(() => {
           <CardStage
             :schema="cardSchema"
             :active-element-id="activeElementId"
-            :element-style="elementStyle"
             :get-element-preview="getElementPreview"
             @activate-element="setActiveElement"
             @drag-end="handleDragEnd"

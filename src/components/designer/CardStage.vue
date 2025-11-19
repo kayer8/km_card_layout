@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-import type { CardElement, CardElementStyle, CardLayoutSchema } from 'km-card-schema'
+import type { CardElement, CardLayoutSchema } from 'km-card-schema'
+import LayoutText from '../layout-element/LayoutText.vue'
+import LayoutIcon from '../layout-element/LayoutIcon.vue'
+import LayoutImage from '../layout-element/LayoutImage.vue'
 import { useGuides, type DragPayload } from './useGuides'
 
 type ResizePayload = DragPayload & { w: number; h: number }
@@ -10,7 +13,6 @@ const props = withDefaults(
   defineProps<{
     schema: CardLayoutSchema
     activeElementId: string
-    elementStyle: (style?: CardElementStyle) => Record<string, string | number>
     getElementPreview: (element: CardElement) => string
     enableSnap?: boolean
     snapHotkey?: string
@@ -214,24 +216,21 @@ watch(
         @drag-end="handleDragEnd(element.id, $event)"
         @resize-end="createResizeHandler(element.id)"
       >
-        <template v-if="element.type === 'text'">
-          <div class="card-element card-element--text" :style="props.elementStyle(element.style)">
-            {{ props.getElementPreview(element) }}
-          </div>
-        </template>
-        <template v-else-if="element.type === 'image'">
-          <div class="card-element card-element--image">
-            <img :src="props.getElementPreview(element)" :alt="element.id" :style="props.elementStyle(element.style)" />
-          </div>
-        </template>
-        <template v-else>
-          <div class="card-element card-element--icon">
-            <template v-if="element.src">
-              <img class="icon-image" :src="element.src" :alt="element.id" />
-            </template>
-            <span v-else class="icon-dot" :style="props.elementStyle(element.style)" />
-          </div>
-        </template>
+        <LayoutText
+          v-if="element.type === 'text'"
+          :element="element"
+          :value="props.getElementPreview(element)"
+        />
+        <LayoutImage
+          v-else-if="element.type === 'image'"
+          :element="element"
+          :value="props.getElementPreview(element)"
+        />
+        <LayoutIcon
+          v-else
+          :element="element"
+          :value="props.getElementPreview(element)"
+        />
       </Vue3DraggableResizable>
     </div>
   </div>
@@ -274,46 +273,6 @@ watch(
 .draggable-node.is-active.active{
   box-shadow: 0 0 4px #1da9ff;
   border-color: transparent;
-}
-.card-element {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  font-family: 'Segoe UI', 'PingFang SC', sans-serif;
-}
-
-.card-element--text {
-  display: block;
-  font-weight: 500;
-  user-select: none;
-  line-height: 1.3;
-  overflow: hidden;
-  white-space: pre-line;
-}
-
-.card-element--image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-element--icon {
-  align-items: center;
-  justify-content: center;
-}
-
-.icon-dot {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-}
-
-.icon-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 .guide-line {

@@ -7,7 +7,6 @@ import {
 } from '../modules/layout/store';
 import {
   createElementPreviewResolver,
-  createElementStyleFormatter,
 } from '../modules/layout/rendering';
 
 export const useCardDesigner = () => {
@@ -39,7 +38,6 @@ export const useCardDesigner = () => {
   const activeElement = computed(() =>
     cardSchema.elements.find(element => element.id === activeElementId.value)
   );
-  const elementStyle = createElementStyleFormatter();
   const getElementPreview = createElementPreviewResolver(resolveBinding);
 
   const copySchema = async () => {
@@ -79,7 +77,6 @@ export const useCardDesigner = () => {
     activeElementId,
     activeElement,
     serializedSchema,
-    elementStyle,
     getElementPreview,
     setActiveElement,
     mutateElement,

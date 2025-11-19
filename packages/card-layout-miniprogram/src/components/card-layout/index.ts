@@ -8,6 +8,7 @@ interface RenderElement {
   style: string
   text: string
   src?: string
+  iconChar?: string
 }
 
 const formatLengthValue = (value: string | number | undefined): string | undefined => {
@@ -58,6 +59,121 @@ const resolveBinding = (binding: string | undefined, data: LayoutData) => {
     }
     return undefined
   }, data)
+}
+
+const ICON_MAP: Record<string, string> = {
+  'buy-vip-13': '\ue66a',
+  'buy-vip-11': '\ue669',
+  'buy-vip-12': '\ue668',
+  'contact-wechat': '\ue667',
+  'contact-phone': '\ue666',
+  'column-group': '\ue664',
+  minichat: '\ue617',
+  'remove-module': '\ue660',
+  'add-module': '\ue662',
+  drag: '\ue661',
+  'switch-company': '\ue65f',
+  'switch-person': '\ue65e',
+  'manual-entry': '\ue65d',
+  play: '\ue65c',
+  plus: '\ue659',
+  'file-pdf': '\ue65b',
+  'file-video': '\ue65a',
+  upload: '\ue650',
+  'cert-company': '\ue64f',
+  'qr-code': '\ue658',
+  'company-card': '\ue657',
+  'card-import': '\ue64e',
+  camera: '\ue655',
+  'card-apply': '\ue632',
+  'check-2': '\ue616',
+  check: '\ue614',
+  'buy-vip-4': '\ue613',
+  'buy-vip-10': '\ue656',
+  'weixin-2': '\ue653',
+  'qrcode-1': '\ue654',
+  local: '\ue652',
+  'cert-job': '\ue64d',
+  'cert-name': '\ue651',
+  'card-style-1': '\ue64c',
+  'add-pic': '\ue646',
+  'add-text': '\ue647',
+  'buy-vip-2': '\ue648',
+  'company-upload-logo': '\ue649',
+  'Headset-one': '\ue64a',
+  'edit-info': '\ue64b',
+  'more-action': '\ue645',
+  'upload-video': '\ue644',
+  'upload-image': '\ue643',
+  'company-info': '\ue62a',
+  contact: '\ue642',
+  'notice-1': '\ue641',
+  visitor: '\ue640',
+  'mobile-2': '\ue63e',
+  'weixin-1': '\ue63f',
+  share: '\ue63d',
+  'refund-mistake': '\ue637',
+  'buy-vip-7': '\ue63b',
+  'table-import': '\ue63c',
+  misService: '\ue63a',
+  'buy-vip-6': '\ue634',
+  import: '\ue638',
+  download: '\ue639',
+  image: '\ue636',
+  'buy-vip-9': '\ue635',
+  'buy-vip-5': '\ue62f',
+  'buy-vip-3': '\ue630',
+  'buy-vip-1': '\ue631',
+  'buy-vip-8': '\ue633',
+  companyWx: '\ue62b',
+  dingding: '\ue62c',
+  shui: '\ue62d',
+  gongzhang: '\ue62e',
+  wait: '\ue629',
+  addImg: '\ue628',
+  copy: '\ue625',
+  'mobile-1': '\ue627',
+  'functional-config': '\ue604',
+  'module-config': '\ue601',
+  'select-right': '\ue626',
+  like: '\ue624',
+  weixin: '\ue620',
+  'column-user': '\ue621',
+  'column-card': '\ue622',
+  'column-company-card': '\ue623',
+  'on-job': '\ue61e',
+  person: '\ue61f',
+  wallet: '\ue615',
+  opinion: '\ue618',
+  'sys-set': '\ue619',
+  'sys-msg': '\ue61d',
+  add: '\ue61a',
+  search: '\ue61b',
+  delete: '\ue61c',
+  enter: '\ue60f',
+  'card-style': '\ue610',
+  switch: '\ue612',
+  'card-edit': '\ue60a',
+  close: '\ue60d',
+  notice: '\ue611',
+  edit: '\ue60b',
+  'help-info': '\ue60c',
+  'tag-filtering': '\ue60e',
+  'kuanmai-logo': '\ue603',
+  company: '\ue606',
+  email: '\ue607',
+  round: '\ue608',
+  address: '\ue609',
+  mobile: '\ue602',
+  helper: '\ue663',
+  bag: '\ue605',
+  group: '\ue665'
+}
+
+const getIconChar = (name?: string) => {
+  if (!name) return ''
+  const key = name.startsWith('icon-') ? name.replace(/^icon-/, '') : name
+  return ICON_MAP[key] ?? ''
 }
 
 Component({
@@ -159,7 +275,11 @@ Component({
           type: element.type,
           style: styles.join(';'),
           text: textual,
-          src: element.type === 'image' && typeof boundValue === 'string' && boundValue ? boundValue : undefined
+          src: element.type === 'image' && typeof boundValue === 'string' && boundValue ? boundValue : undefined,
+          iconChar:
+            element.type === 'icon' && (!element.src || element.src === '')
+              ? getIconChar(element.name)
+              : undefined
         }
       })
 

@@ -13,7 +13,13 @@
           v-else-if="element.type === 'icon'"
           class="km-card-element km-card-element--icon"
           :style="element.style"
-        ></div>
+        >
+          <template v-if="element.src">
+            <img class="km-card-icon-image" :src="element.src" :alt="element.alt || ''" />
+          </template>
+          <span v-else-if="element.iconChar" class="km-card-iconfont">{{ element.iconChar }}</span>
+          <span v-else class="km-card-icon-dot"></span>
+        </div>
         <div
           v-else
           class="km-card-element km-card-element--text"
@@ -152,7 +158,7 @@ interface RenderedElement {
   type: CardElement["type"]
   style: CSSProperties
   text: string
-  src?: string
+  iconClass?: string
   alt?: string
 }
 
@@ -199,7 +205,10 @@ const renderedElements = computed<RenderedElement[]>(() => {
       text,
       src:
         element.type === "image" && typeof boundValue === "string" && boundValue ? boundValue : undefined,
-      alt: element.type === "image" ? element.alt : undefined
+      alt: element.type === "image" ? element.alt : undefined,
+      iconChar: element.type === "icon" && (!element.src || element.src === "")
+        ? getIconChar(element.name)
+        : undefined
     }
   })
 })
@@ -241,5 +250,28 @@ const renderedElements = computed<RenderedElement[]>(() => {
 
 .km-card-element--icon {
   justify-content: center;
+}
+
+.km-card-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.km-card-iconfont {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: 'km-icon' !important;
+  font-size: 100%;
+  line-height: 1;
+}
+
+.km-card-icon-dot {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
 }
 </style>

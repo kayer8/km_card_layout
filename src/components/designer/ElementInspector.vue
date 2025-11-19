@@ -142,17 +142,36 @@ const visibleValue = computed({
 
 const iconSrcValue = computed({
 
-  get: () => (props.element?.type === 'icon' ? props.element.src ?? '' : ''),
+  get: () => '',
 
-  set: (value: string) => {
+  set: () => {}
+
+})
+
+const iconFontSizeValue = computed({
+
+  get: () =>
+
+    props.element?.type === 'icon'
+
+      ? props.element.fontSize ?? 20
+
+      : 0,
+
+  set: (value: number | null) => {
 
     if (!props.element || props.element.type !== 'icon') return
+
+    const numeric = typeof value === 'number' ? value : 0
 
     mutate((draft) => {
 
       if (draft.type === 'icon') {
 
-        draft.src = value || undefined
+        const nextSize = numeric || 0
+        draft.fontSize = nextSize || undefined
+        draft.width = nextSize
+        draft.height = nextSize
 
       }
 
@@ -334,7 +353,7 @@ const applyStyleText = () => {
 
 
 
-      <t-form-item label="尺寸">
+      <t-form-item v-if="!isIconElement" label="尺寸">
 
         <t-space>
 
@@ -429,10 +448,43 @@ const applyStyleText = () => {
 
       <template v-if="isIconElement">
 
-        <t-form-item label="图标图片">
+        <t-form-item label="图标名称">
 
-          <t-input v-model="iconSrcValue" placeholder="https://example.com/icon.png" clearable />
+          <t-input
+            :value="props.element?.name || ''"
+            placeholder="icon-buy-vip-13"
+            @change="(val) => mutate((draft) => { if (draft.type === 'icon') draft.name = val || undefined })"
+            clearable
+          />
 
+        </t-form-item>
+        <t-form-item label="图标颜色">
+          <t-color-picker
+            :value="props.element?.color || props.element?.style?.color || ''"
+            size="small"
+            :popup-props="{ placement: 'bottom' }"
+            :show-primary-color-preview="false"
+            clearable
+            @change="(val) =>
+              mutate((draft) => {
+                if (draft.type === 'icon') {
+                  draft.color = val || undefined
+                  draft.style = { ...(draft.style ?? {}), color: val || undefined }
+                  if (!draft.style.color) delete draft.style.color
+                }
+              })"
+          />
+        </t-form-item>
+        <t-form-item label="图标字号">
+          <t-input-number
+            :value="props.element?.type === 'icon' ? (props.element.fontSize ?? 20) : null"
+            size="small"
+            :min="0"
+            @change="(val) =>
+              mutate((draft) => {
+                if (draft.type === 'icon') draft.fontSize = val ?? undefined
+              })"
+          />
         </t-form-item>
 
       </template>

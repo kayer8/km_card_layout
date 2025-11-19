@@ -11,7 +11,17 @@
       wx:elif="{{item.type === 'icon'}}"
       class="clm-card-element clm-card-element--icon"
       style="{{item.style}}"
-    ></view>
+    >
+      <block wx:if="{{item.src}}">
+        <image class="clm-card-icon-image" src="{{item.src}}" mode="aspectFit" />
+      </block>
+      <block wx:elif="{{item.iconChar}}">
+        <text class="clm-card-iconfont">{{item.iconChar}}</text>
+      </block>
+      <block wx:else>
+        <text class="clm-card-icon-dot"></text>
+      </block>
+    </view>
     <view
       wx:else
       class="clm-card-element clm-card-element--text"
