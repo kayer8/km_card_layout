@@ -105,7 +105,7 @@ const submitElement = () => {
         <t-input v-model="newElement.name" placeholder="例如：职位、电话" />
 
         <label>绑定属性</label>
-        <t-input v-model="newElement.binding" placeholder="例如：user.title" />
+        <t-input v-model="newElement.binding" placeholder="例如：user.duty" />
 
         <label>类型</label>
         <t-radio-group v-model="newElement.type">

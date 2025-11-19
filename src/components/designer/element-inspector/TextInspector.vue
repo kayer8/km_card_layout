@@ -71,7 +71,7 @@ const toggleUnderline = () => {
             size="small"
             :min="8"
             :max="120"
-            :step="2"
+            :step="1"
             style="width: 120px"
           />
         </div>
@@ -128,7 +128,7 @@ const toggleUnderline = () => {
             :theme="textAlignValue === 'left' ? 'primary' : 'default'"
             @click="textAlignValue = 'left'"
           >
-            L
+           左
           </t-button>
           <t-button
             size="small"
@@ -136,7 +136,7 @@ const toggleUnderline = () => {
             :theme="textAlignValue === 'center' ? 'primary' : 'default'"
             @click="textAlignValue = 'center'"
           >
-            C
+            居中
           </t-button>
           <t-button
             size="small"
@@ -144,7 +144,7 @@ const toggleUnderline = () => {
             :theme="textAlignValue === 'right' ? 'primary' : 'default'"
             @click="textAlignValue = 'right'"
           >
-            R
+            右
           </t-button>
         </div>
       </div>

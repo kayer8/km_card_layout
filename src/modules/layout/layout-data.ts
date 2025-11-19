@@ -3,7 +3,7 @@ import { computed, reactive } from 'vue'
 export interface UserProfile {
   company: string
   name: string
-  title: string
+  duty: string
   phone: string
   email: string
   address: string
@@ -18,7 +18,7 @@ export interface LayoutBindingContext {
 const createDefaultProfile = (): UserProfile => ({
   company: '合肥魅客网络有限公司',
   name: '名片示例',
-  title: '高级产品经理',
+  duty: '高级产品经理',
   phone: '189****4399',
   email: 'km@kuanmai.com',
   address: '上海市浦东新区世纪大道210号企业中心15F',

@@ -39,13 +39,13 @@ const layout = {
       }
     },
     {
-      "id": "title",
+      "id": "duty",
       "type": "text",
       "x": 36,
       "y": 163,
       "width": 220,
       "height": 37,
-      "binding": "user.title",
+      "binding": "user.duty",
       "style": {
         "fontSize": 26,
         "color": "#ffffff",
@@ -159,7 +159,7 @@ const cardData = {
   user: {
     company: '合肥魅客网络有限公司',
     name: '名片君',
-    title: '销售经理',
+    duty: '销售经理',
     phone: '189****4399',
     email: 'km@kuanmai.com',
     address: '上海市静安区天目西路企业中心第一座15F',

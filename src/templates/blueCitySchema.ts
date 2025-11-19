@@ -25,13 +25,13 @@ export const blueCitySchema: CardLayoutSchema = {
       },
     },
     {
-      id: 'title',
+      id: 'duty',
       type: 'text',
       x: 60,
       y: 122,
       width: 360,
       height: 72,
-      binding: 'user.title',
+      binding: 'user.duty',
       style: {
         fontSize: 18,
         color: '#4f5e8a',

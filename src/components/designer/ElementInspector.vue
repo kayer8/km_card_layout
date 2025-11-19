@@ -123,6 +123,7 @@ const applyStyleText = () => {
           <t-input-number v-model:value="xModel" size="small" :min="0" :max="props.cardWidth" />
           <t-input-number v-model:value="yModel" size="small" :min="0" :max="props.cardHeight" />
         </t-space>
+
       </t-form-item>
 
       <t-form-item label="尺寸">
@@ -148,7 +149,7 @@ const applyStyleText = () => {
         :mutate="mutateCurrent"
       />
 
-      <t-form-item label="Style JSON">
+      <!-- <t-form-item label="Style JSON">
         <div class="style-editor">
           <t-textarea
             v-model="styleText"
@@ -161,7 +162,7 @@ const applyStyleText = () => {
             <span v-if="styleError" class="style-error">{{ styleError }}</span>
           </div>
         </div>
-      </t-form-item>
+      </t-form-item> -->
     </t-form>
   </section>
 </template>

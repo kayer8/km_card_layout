@@ -41,13 +41,13 @@ export const blackGoldSchema: CardLayoutSchema = {
       },
     },
     {
-      id: 'title',
+      id: 'duty',
       type: 'text',
       x: 36,
       y: 163,
       width: 220,
       height: 37,
-      binding: 'user.title',
+      binding: 'user.duty',
       style: {
         fontSize: 26,
         color: '#fff',
