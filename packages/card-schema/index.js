@@ -1,6 +1,4 @@
-﻿export const schemaVersion = "0.1.0";
-
-const HEIGHT_STYLE_KEYS = new Set(['lineHeight', 'top', 'bottom', 'height'])
+﻿const HEIGHT_STYLE_KEYS = new Set(['lineHeight', 'top', 'bottom', 'height'])
 
 const cloneStyle = (style) => {
   if (!style) return undefined

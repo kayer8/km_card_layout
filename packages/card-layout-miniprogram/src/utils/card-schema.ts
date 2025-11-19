@@ -48,7 +48,6 @@ export interface CardLayoutSchema {
   metadata?: Record<string, unknown>
 }
 
-export const schemaVersion = '0.1.0'
 
 const HEIGHT_STYLE_KEYS = new Set(['lineHeight', 'top', 'bottom', 'height'])
 
