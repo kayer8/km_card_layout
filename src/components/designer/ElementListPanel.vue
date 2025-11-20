@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import type { CardElement } from 'km-card-schema'
 import type { TreeNodeModel, TreeNodeValue } from 'tdesign-vue-next'
+import { ensurePanelChildModes } from '../../modules/layout/tree-utils'
 
 type AnyElement = CardElement & { children?: AnyElement[] }
 
@@ -153,6 +154,7 @@ const syncSchemaFromTree = () => {
   const root = treeData.value[0]
   if (!root?.children) return
   const next = toElements(root.children)
+  ensurePanelChildModes(next)
   props.elements.splice(0, props.elements.length, ...next)
 }
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { CardElement } from 'km-card-schema'
+import type { CardElement, LayoutPanelElement } from 'km-card-schema'
 import IconInspector from './element-inspector/IconInspector.vue'
 import TextInspector from './element-inspector/TextInspector.vue'
 import ImageInspector from './element-inspector/ImageInspector.vue'
+import LayoutPanelInspector from './element-inspector/LayoutPanelInspector.vue'
 
 const props = defineProps<{
   element?: CardElement
@@ -146,6 +147,12 @@ const applyStyleText = () => {
       <IconInspector
         v-else-if="props.element?.type === 'icon'"
         :element="props.element"
+        :mutate="mutateCurrent"
+      />
+
+      <LayoutPanelInspector
+        v-else-if="props.element?.type === 'layout-panel'"
+        :element="props.element as LayoutPanelElement"
         :mutate="mutateCurrent"
       />
 

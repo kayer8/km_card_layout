@@ -1,4 +1,4 @@
-import type { CardElement, LayoutPanelElement } from 'km-card-schema'
+import type { CardElement, LayoutPanelElement, LayoutMode } from 'km-card-schema'
 
 export interface ElementLocation {
   element: CardElement
@@ -74,4 +74,31 @@ export const collectElements = (
     }
   })
   return acc
+}
+
+const applyModeToChildren = (element: CardElement, mode: LayoutMode) => {
+  element.layout.mode = mode
+  if (element.type === 'layout-panel') {
+    applyContainerLayoutMode(element, mode)
+  }
+}
+
+export const applyContainerLayoutMode = (
+  panel: LayoutPanelElement,
+  mode: LayoutMode = panel.container?.mode ?? 'absolute'
+) => {
+  const children = panel.children ?? []
+  children.forEach((child) => {
+    applyModeToChildren(child, mode)
+  })
+}
+
+export const ensurePanelChildModes = (elements: CardElement[]) => {
+  walkElements(elements, (element) => {
+    if (element.type === 'layout-panel') {
+      const mode = element.container?.mode ?? 'absolute'
+      applyContainerLayoutMode(element, mode)
+    }
+  })
+  return elements
 }
