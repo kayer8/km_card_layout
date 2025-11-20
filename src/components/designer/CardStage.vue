@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import Vue3DraggableResizable from 'vue3-draggable-resizable'
-import type { CardElement, CardLayoutSchema } from 'km-card-schema'
-import LayoutText from '../layout-element/LayoutText.vue'
-import LayoutIcon from '../layout-element/LayoutIcon.vue'
-import LayoutImage from '../layout-element/LayoutImage.vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import type { CardElement, CardLayoutSchema, TextElement } from 'km-card-schema'
+import CardElementNode from './CardElementNode.vue'
 import { useGuides, type DragPayload } from './useGuides'
+import { collectElements, findElementById } from '../../modules/layout/tree-utils'
 
 type ResizePayload = DragPayload & { w: number; h: number }
 
@@ -31,32 +29,23 @@ const emit = defineEmits<{
   (e: 'resize-end', payload: { id: string; x: number; y: number; w: number; h: number }): void
 }>()
 
-const visibleElements = computed(() =>
-  props.schema.children.filter((element) => element.visible !== false)
-)
-
-const ensureTextMinHeights = () => {
-  props.schema.children.forEach((element) => {
-    if (element.type !== 'text') return
-    const rawFontSize = element.style?.fontSize
-    const fontSize =
-      typeof rawFontSize === 'number' ? rawFontSize : Number.parseFloat(String(rawFontSize ?? ''))
-    if (!Number.isFinite(fontSize)) return
-    const minHeight = fontSize * 1.3
-    if (typeof element.layout.height !== 'number' || element.layout.height < minHeight) {
-      element.layout.height = minHeight
-    }
-  })
-}
-
 const snapEnabled = ref(props.enableSnap !== false)
 const toggleSnap = () => {
   snapEnabled.value = !snapEnabled.value
 }
 
-// 对齐/辅助线与吸附计算独立封装，减少组件内耦合
-const { guideLines, clearGuides, computeGuides, applySnap } = useGuides({ schema: props.schema })
+const { guideLines, clearGuides, computeGuides, applySnap } = useGuides({
+  schema: props.schema
+})
 const snapKeyPressed = ref(false)
+
+const handleDragStart = () => {
+  clearGuides()
+}
+
+const handleResizeStart = () => {
+  clearGuides()
+}
 
 const createDragHandler =
   (elementId: string) =>
@@ -64,34 +53,22 @@ const createDragHandler =
     emit('drag-end', { id: elementId, x: payload.x, y: payload.y })
   }
 
-const createResizeHandler =
-  (elementId: string) =>
-  (payload: ResizePayload) => {
-    emit('resize-end', {
-      id: elementId,
-      x: payload.x,
-      y: payload.y,
-      w: payload.w,
-      h: payload.h
-    })
-    clearGuides()
-  }
-
 const handleDragging = (elementId: string, payload: DragPayload) => {
-  const element = props.schema.children.find((item) => item.id === elementId)
+  const element = findElementById(props.schema.children, elementId)
   if (!element) return
-  // 拖动中仅更新辅助线，不做吸附
   computeGuides(element, payload)
 }
 
 const handleDragEnd = (elementId: string, payload: DragPayload) => {
-  const element = props.schema.children.find((item) => item.id === elementId)
+  const element = findElementById(props.schema.children, elementId)
   if (element) {
-    // Refresh guides on release so alignments stay visible before clearing
     computeGuides(element, payload)
   }
   const shouldSnap =
-    element && props.enableSnap && snapEnabled.value && (props.snapOnRelease || snapKeyPressed.value)
+    element &&
+    props.enableSnap &&
+    snapEnabled.value &&
+    (props.snapOnRelease || snapKeyPressed.value)
 
   if (element && shouldSnap) {
     const snapped = applySnap(element, payload)
@@ -106,9 +83,20 @@ const handleDragEnd = (elementId: string, payload: DragPayload) => {
 }
 
 const handleResizing = (elementId: string, payload: ResizePayload) => {
-  const element = props.schema.children.find((item) => item.id === elementId)
+  const element = findElementById(props.schema.children, elementId)
   if (!element) return
   computeGuides(element, payload)
+}
+
+const handleResizeEnd = (elementId: string, payload: ResizePayload) => {
+  emit('resize-end', {
+    id: elementId,
+    x: payload.x,
+    y: payload.y,
+    w: payload.w,
+    h: payload.h
+  })
+  clearGuides()
 }
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -133,12 +121,32 @@ onBeforeUnmount(() => {
   window.removeEventListener('keyup', handleKeyUp)
 })
 
+const ensureTextMinHeights = () => {
+  collectElements(
+    props.schema.children,
+    (element) => element.type === 'text'
+  ).forEach((element) => {
+    const textElement = element as TextElement
+    const rawFontSize = textElement.style?.fontSize
+    const fontSize =
+      typeof rawFontSize === 'number' ? rawFontSize : Number.parseFloat(String(rawFontSize ?? ''))
+    if (!Number.isFinite(fontSize)) return
+    const minHeight = fontSize * 1.3
+    if (typeof textElement.layout.height !== 'number' || textElement.layout.height < minHeight) {
+      textElement.layout.height = minHeight
+    }
+  })
+}
+
 watch(
   () =>
-    props.schema.children.map((el) => ({
-      id: el.id,
-      fontSize: el.style?.fontSize,
-      height: el.style?.height,
+    collectElements(
+      props.schema.children,
+      (element) => element.type === 'text'
+    ).map((element) => ({
+      id: element.id,
+      fontSize: element.style?.fontSize,
+      height: element.layout.height
     })),
   ensureTextMinHeights,
   { deep: true, immediate: true }
@@ -191,52 +199,25 @@ watch(
         :style="{ top: line.pos + 'px', left: line.start + 'px', width: line.end - line.start + 'px' }"
       />
 
-      <Vue3DraggableResizable
-        v-for="element in visibleElements"
+      <CardElementNode
+        v-for="element in props.schema.children"
         :key="element.id"
-        :initW="element.layout!.width!"
-        :initH="element.layout!.height!"
-        :minW="0"
-        :minH="0"
-        v-model:x="element.layout.x"
-        v-model:y="element.layout.y"
-        v-model:w="element.layout.width"
-        v-model:h="element.layout.height"
-        :parent="true"
-        :lock-aspect-ratio="element.type === 'image'"
-        :resizable="element.type !== 'icon'"
-        :draggable="true"
-        :active="props.activeElementId === element.id"
-        :class="['draggable-node', { 'is-active': props.activeElementId === element.id }]"
-        @drag-start="clearGuides"
-        @dragging="handleDragging(element.id, $event)"
-        @resize-start="clearGuides"
-        @resizing="handleResizing(element.id, $event)"
-        @activated="emit('activate-element', element.id)"
-        @drag-end="handleDragEnd(element.id, $event)"
-        @resize-end="createResizeHandler(element.id)"
-      >
-        <LayoutText
-          v-if="element.type === 'text'"
-          :element="element"
-          :value="props.getElementPreview(element)"
-        />
-        <LayoutImage
-          v-else-if="element.type === 'image'"
-          :element="element"
-          :value="props.getElementPreview(element)"
-        />
-        <LayoutIcon
-          v-else
-          :element="element"
-          :value="props.getElementPreview(element)"
-        />
-      </Vue3DraggableResizable>
+        :element="element"
+        :active-element-id="props.activeElementId"
+        :get-element-preview="props.getElementPreview"
+        :on-activate="(id) => emit('activate-element', id)"
+        :on-drag-start="handleDragStart"
+        :on-dragging="handleDragging"
+        :on-drag-end="handleDragEnd"
+        :on-resize-start="handleResizeStart"
+        :on-resizing="handleResizing"
+        :on-resize-end="handleResizeEnd"
+      />
     </div>
   </div>
 </template>
 
-<style >
+<style>
 .card-stage {
   padding: 20px;
   border-radius: 20px;
@@ -297,6 +278,4 @@ watch(
 .guide-line--spacing {
   background: rgba(245, 108, 108, 0.9);
 }
-
 </style>
-

@@ -8,6 +8,7 @@ import {
 import {
   createElementPreviewResolver,
 } from '../modules/layout/rendering';
+import { findElementById } from '../modules/layout/tree-utils';
 
 export const useCardDesigner = () => {
   const layoutStore = createLayoutStore();
@@ -36,7 +37,7 @@ export const useCardDesigner = () => {
   const copyState = ref<'idle' | 'copied'>('idle');
   const serializedSchema = computed(() => JSON.stringify(cardSchema, null, 2));
   const activeElement = computed(() =>
-    cardSchema.children.find(element => element.id === activeElementId.value)
+    findElementById(cardSchema.children, activeElementId.value)
   );
   const getElementPreview = createElementPreviewResolver(resolveBinding);
 

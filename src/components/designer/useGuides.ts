@@ -1,5 +1,6 @@
 import { reactive } from 'vue';
 import type { CardElement, CardLayoutSchema } from 'km-card-schema';
+import { collectElements } from '../../modules/layout/tree-utils';
 
 export type DragPayload = { x: number; y: number; w?: number; h?: number };
 export type SpacingLine = { start: number; end: number; pos: number };
@@ -28,7 +29,10 @@ export const useGuides = ({
     spacingH: [],
   });
   const getVisibleElements = () =>
-    schema.children.filter(element => element.visible !== false);
+    collectElements(
+      schema.children,
+      element => element.visible !== false && element.layout.mode === 'absolute'
+    );
   const normalize = (value: number) => Math.round(value); // 保持与组件内部取整一致，避免 1-2px 偏移
 
   const clearGuides = () => {

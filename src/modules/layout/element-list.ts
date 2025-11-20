@@ -4,6 +4,7 @@ import type {
   CardElementType,
   CardLayoutSchema,
 } from 'km-card-schema';
+import { collectElements, findElementById, findElementLocation } from './tree-utils';
 
 const createElementId = (type: CardElementType) =>
   `${type}-${Math.random().toString(36).slice(2, 7)}`;
@@ -132,33 +133,41 @@ export const createElementListController = (cardSchema: CardLayoutSchema) => {
   // 删除当前激活元素，并自动选择邻近元素
   const removeActiveElement = () => {
     if (!activeElementId.value) return;
-    const index = cardSchema.children.findIndex(
+    const location = findElementLocation(cardSchema.children, activeElementId.value);
+    if (!location) return;
+    const { parentChildren } = location;
+    const index = parentChildren.findIndex(
       (element: CardElement) => element.id === activeElementId.value
     );
     if (index === -1) return;
-    cardSchema.children.splice(index, 1);
-    const fallback =
-      cardSchema.children[index - 1] ??
-      cardSchema.children[index] ??
-      cardSchema.children[0];
+    parentChildren.splice(index, 1);
+    const fallback = collectElements(
+      cardSchema.children,
+      (element) => element.visible !== false
+    )[0];
     setActiveElement(fallback?.id ?? '');
   };
 
   const setElementVisibility = (id: string, visible: boolean) => {
-    const target = cardSchema.children.find(element => element.id === id);
+    const target = findElementById(cardSchema.children, id);
     if (!target) return;
     target.visible = visible;
     if (!visible && activeElementId.value === id) {
-      const next = cardSchema.children.find(
-        el => el.visible !== false && el.id !== id
-      );
+      const next = collectElements(
+        cardSchema.children,
+        (element) => element.visible !== false && element.id !== id
+      )[0];
       setActiveElement(next?.id ?? '');
     }
   };
 
   // 外部替换 schema 时需要重新同步激活项
   const syncActiveElement = () => {
-    setActiveElement(cardSchema.children[0]?.id ?? '');
+    const next = collectElements(
+      cardSchema.children,
+      (element) => element.visible !== false
+    )[0];
+    setActiveElement(next?.id ?? '');
   };
 
   return {

@@ -1,10 +1,11 @@
 import type { CardElement, CardLayoutSchema } from 'km-card-schema'
+import { findElementById } from './tree-utils'
 
 // 元素控制器：封装对单个元素的几何/属性修改
 export const createElementController = (cardSchema: CardLayoutSchema) => {
   // 通用 mutate
   const mutateElement = (id: string, mutator: (element: CardElement) => void) => {
-    const target = cardSchema.children.find(el => el.id === id)
+    const target = findElementById(cardSchema.children, id)
     if (!target) return
     mutator(target)
   }
