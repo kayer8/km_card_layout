@@ -21,8 +21,14 @@ const mutateCurrent = (mutator: (draft: any) => void) => {
 const updateRect = (field: 'x' | 'y' | 'width' | 'height', value: string | number | null) => {
   const numericValue = typeof value === 'number' ? value : Number(value ?? 0)
   mutateCurrent((draft) => {
-    // fall back to 0 when input is invalid
-    ;(draft as any)[field] = Number.isNaN(numericValue) ? 0 : numericValue
+    if (!draft.layout) {
+      draft.layout = { mode: 'absolute', x: 0, y: 0 }
+    }
+    const layout = draft.layout
+    if (!Object.prototype.hasOwnProperty.call(layout, field)) {
+      layout[field] = 0
+    }
+    layout[field] = Number.isNaN(numericValue) ? 0 : numericValue
   })
 }
 
@@ -36,7 +42,7 @@ type RectField = 'x' | 'y' | 'width' | 'height'
 
 const rectProxy = (field: RectField) =>
   computed({
-    get: () => (props.element ? (props.element as any)[field] ?? 0 : 0),
+    get: () => (props.element && props.element.layout ? (props.element.layout as any)[field] ?? 0 : 0),
     set: (value: number | null) => updateRect(field, value)
   })
 
@@ -55,6 +61,7 @@ const visibleValue = computed({
 
 const xModel = rectProxy('x')
 const yModel = rectProxy('y')
+const isFlexChild = computed(() => props.element?.layout.mode === 'flex')
 const widthModel = rectProxy('width')
 const heightModel = rectProxy('height')
 
@@ -121,10 +128,21 @@ const applyStyleText = () => {
 
       <t-form-item label="位置">
         <t-space>
-          <t-input-number v-model:value="xModel" size="small" :min="0" :max="props.cardWidth" />
-          <t-input-number v-model:value="yModel" size="small" :min="0" :max="props.cardHeight" />
+          <t-input-number
+            v-model:value="xModel"
+            size="small"
+            :min="0"
+            :max="props.cardWidth"
+            :disabled="isFlexChild"
+          />
+          <t-input-number
+            v-model:value="yModel"
+            size="small"
+            :min="0"
+            :max="props.cardHeight"
+            :disabled="isFlexChild"
+          />
         </t-space>
-
       </t-form-item>
 
       <t-form-item label="尺寸">
@@ -195,5 +213,10 @@ const applyStyleText = () => {
 .style-error {
   font-size: 0.8rem;
   color: #ff8a8a;
+}
+.helper-text {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #8590a6;
 }
 </style>
