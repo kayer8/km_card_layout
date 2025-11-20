@@ -20,6 +20,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'select', id: string): void
   (e: 'toggle-visible', payload: { id: string; visible: boolean }): void
+  (e: 'create-panel'): void
 }>()
 
 const buildTree = (list: AnyElement[]): ElementTreeNode[] =>
@@ -95,6 +96,7 @@ const isContainerNode = (node?: ElementTreeNode | null) => {
 const allowDrop = (context: { dropNode?: TreeNodeModel; dropPosition: number }) => {
   const { dropNode, dropPosition } = context
   if (!dropNode) return false
+  if (dropNode.value === 'root' && dropPosition !== 0) return false
   if (dropPosition === 0) {
     return isContainerNode(dropNode.data as ElementTreeNode)
   }
@@ -141,6 +143,19 @@ const insertNode = (
   return false
 }
 
+const syncSchemaFromTree = () => {
+  const toElements = (nodes: ElementTreeNode[]): AnyElement[] =>
+    nodes.map((node) => {
+      const el = node.element as AnyElement
+      el.children = node.children ? toElements(node.children) : undefined
+      return el
+    })
+  const root = treeData.value[0]
+  if (!root?.children) return
+  const next = toElements(root.children)
+  props.elements.splice(0, props.elements.length, ...next)
+}
+
 const handleDrop = (context: { dragNode: TreeNodeModel; dropNode: TreeNodeModel; dropPosition: number }) => {
   const { dragNode, dropNode, dropPosition } = context
   const dragValue = dragNode.value as string
@@ -149,6 +164,7 @@ const handleDrop = (context: { dragNode: TreeNodeModel; dropNode: TreeNodeModel;
   if (!moved) return
   insertNode(treeData.value, dropValue, dropPosition, moved)
   expanded.value = collectValues(treeData.value)
+  syncSchemaFromTree()
 }
 </script>
 
@@ -159,6 +175,7 @@ const handleDrop = (context: { dragNode: TreeNodeModel; dropNode: TreeNodeModel;
         <h3>元素列表</h3>
         <p>当前 {{ props.elements.length }} 个元素</p>
       </div>
+      <t-button size="small" variant="outline" @click="emit('create-panel')">新建布局面板</t-button>
     </div>
 
     <t-tree

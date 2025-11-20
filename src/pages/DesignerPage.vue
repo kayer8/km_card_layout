@@ -57,6 +57,7 @@ const {
   setBackgroundImage,
   setFontColor,
   setElementVisibility,
+  addElement,
 } = useCardDesigner();
 
 const handleBackgroundChange = (value: string) => {
@@ -69,6 +70,13 @@ const handleBackgroundChange = (value: string) => {
 
 const handleToggleElement = (payload: { id: string; visible: boolean }) => {
   setElementVisibility(payload.id, payload.visible);
+};
+
+const handleCreateLayoutPanel = () => {
+  const created = addElement('layout-panel');
+  if (created) {
+    setActiveElement(created.id);
+  }
 };
 
 onMounted(() => {
@@ -99,7 +107,8 @@ onMounted(() => {
           :elements="cardSchema.elements"
           :active-element-id="activeElementId"
           @select="setActiveElement"
-          @toggle-visible="handleToggleElement" />
+          @toggle-visible="handleToggleElement"
+          @create-panel="handleCreateLayoutPanel" />
       </aside>
 
       <section class="canvas-panel">

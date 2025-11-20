@@ -48,6 +48,21 @@ const elementBuilders: Record<CardElementType, (ctx: ElementBuilderContext) => C
       backgroundColor: '#2B6CB0',
       borderRadius: '50%'
     }
+  }),
+  'layout-panel': ({ id, baseX, cardWidth }) => ({
+    id,
+    type: 'layout-panel',
+    x: baseX,
+    y: 40,
+    width: cardWidth * 0.6,
+    height: 160,
+    visible: false,
+    style: {
+      border: '1px dashed #a0aec0',
+      backgroundColor: 'rgba(160, 174, 192, 0.08)',
+      borderRadius: 12
+    },
+    children: []
   })
 }
 
