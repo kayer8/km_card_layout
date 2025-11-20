@@ -139,11 +139,13 @@ export type CardElement =
 /** -------------------- 顶级 Schema：顶级画板（绝对定位根容器） -------------------- */
 
 export interface CardLayoutSchema {
+  id: string;
   /** 顶级画布是绝对定位容器 */
   container: {
     mode: 'absolute';
   };
-
+  width: number;
+  height: number;
   /** 背景图片地址 */
   backgroundImage?: string;
   /** 全局字体颜色 */
@@ -152,7 +154,6 @@ export interface CardLayoutSchema {
   borderRadius?: number;
   /** 卡片内边距 */
   padding?: number;
-
   /** 顶层元素（只能是绝对定位子项） */
   children: CardElement[];
 }
