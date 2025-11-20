@@ -1,151 +1,149 @@
-﻿/** 卡片元素支持的类型 */
-export type CardElementType = 'text' | 'image' | 'icon' | 'custom' | 'layout-panel';
+﻿/** 不要删除注释 */
 
-/** 数据绑定路径表达式 */
+/** -------------------- 基础通用类型 -------------------- */
+
+export type CardElementType =
+  | 'text'
+  | 'image'
+  | 'icon'
+  | 'custom'
+  | 'layout-panel';
+
 export type BindingPath = string;
 
-/** 样式键值对集合 */
 export type CardElementStyle = Record<string, string | number>;
 
-/** 布局方式，同 absolute 与 flex */
 export type LayoutMode = 'absolute' | 'flex';
 
-/** Flex 子项属性配置 */
+/** -------------------- Flex 子项 与 容器 -------------------- */
+
 export interface FlexItemOptions {
-  /** item 在剩余空间中的放大比例 */
   flexGrow?: number;
-  /** item 允许被压缩的比例 */
   flexShrink?: number;
-  /** item 的基础尺寸，可为数字或长度字符串 */
   flexBasis?: number | string;
-  /** item 在主轴中的排序顺序 */
   order?: number;
-  /** item 在交叉轴上的对齐方式 */
   alignSelf?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
 }
 
-/** Flex 容器属性配置 */
 export interface FlexContainerOptions {
-  /** 主轴方向 */
   direction?: 'row' | 'column';
-  /** 是否换行 */
   wrap?: 'nowrap' | 'wrap';
-  /** 主轴上的对齐方式 */
-  justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly';
-  /** 交叉轴上的对齐方式 */
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
-  /** 行列间距，支持统一数值或行列对象 */
   gap?: number | { row: number; column: number };
-  /** 容器的内边距，可为单值、双值或四值数组 */
   padding?: number | [number, number] | [number, number, number, number];
 }
 
-/** 绝对定位布局定义 */
+/** -------------------- 子项布局（自身在父容器里） -------------------- */
+
+/** 作为绝对定位子项（可拖动） */
 export interface AbsoluteLayoutDefinition {
-  /** 布局模式，固定为 absolute */
   mode: 'absolute';
-  /** 相对于父容器的 X 坐标 */
   x: number;
-  /** 相对于父容器的 Y 坐标 */
   y: number;
-  /** 元素宽度 */
   width?: number;
-  /** 元素高度 */
   height?: number;
-  /** 叠放顺序 */
   zIndex?: number;
 }
 
-/** Flex 布局定义 */
-export interface FlexLayoutDefinition {
-  /** 布局模式，固定为 flex */
+/** 作为 Flex 子项（不可拖动，不允许 x/y） */
+export interface FlexItemLayoutDefinition {
   mode: 'flex';
-  /** 元素宽度 */
-  width?: number;
-  /** 元素高度 */
-  height?: number;
-  /** 作为 flex 容器时的设置 */
-  container?: FlexContainerOptions;
-  /** 作为 flex 子项时的设置 */
   item?: FlexItemOptions;
+  width?: number;
+  height?: number;
 }
 
-/** 元素的统一布局描述 */
-export type ElementLayout = AbsoluteLayoutDefinition | FlexLayoutDefinition;
+/** 元素的“自身布局方式” */
+export type ElementLayout = AbsoluteLayoutDefinition | FlexItemLayoutDefinition;
 
-/** 卡片元素通用基础字段 */
+/** -------------------- 元素基础字段 -------------------- */
+
 export interface CardElementBase {
-  /** 元素唯一标识 */
   id: string;
-  /** 元素类型 */
   type: CardElementType;
-  /** 布局信息 */
+
+  /**
+   * 子项布局（基于父容器）
+   * - 若父为 flex → mode 必须为 flex（不可拖动）
+   * - 若父为 absolute → mode 为 absolute（可以拖动）
+   */
   layout: ElementLayout;
-  /** 元素是否可见，默认 true */
+
   visible?: boolean;
-  /** 数据绑定路径 */
   binding?: BindingPath;
-  /** 样式配置 */
   style?: CardElementStyle;
 }
 
-/** 文本元素定义 */
+/** -------------------- 具体元素类型 -------------------- */
+
 export interface TextElement extends CardElementBase {
-  /** 固定值：text */
   type: 'text';
-  /** 文本对齐方式 */
   align?: 'left' | 'center' | 'right';
-  /** 是否为多行文本 */
   multiline?: boolean;
 }
 
-/** 图片元素定义 */
 export interface ImageElement extends CardElementBase {
-  /** 固定值：image */
   type: 'image';
-  /** 图片宽度 */
-  width: number;
-  /** 图片高度 */
-  height: number;
-  /** 图片替代文本 */
   alt?: string;
-  /** 图片缩放方式 */
   fit?: 'cover' | 'contain';
 }
 
-/** 图标元素定义 */
 export interface IconElement extends CardElementBase {
-  /** 固定值：icon */
   type: 'icon';
-  /** iconfont 名称，例如 icon-buy-vip-13 */
   name: string;
-  /** 图标颜色，缺省时使用 style.color */
   color?: string;
-  /** 图标字体大小（px），可由高度/宽度推导 */
   fontSize?: number;
 }
 
-/** 自定义元素定义 */
 export interface CustomElement extends CardElementBase {
-  /** 固定值：custom */
   type: 'custom';
 }
 
-/** 可嵌套子元素的布局面板 */
+/** -------------------- 布局容器（可作为父容器） -------------------- */
+
+/**
+ * 布局面板既是元素，也可以作为父容器
+ * 所以除了 layout（自身作为子项）以外，还拥有 container（自身作为父，对子项的布局）
+ */
 export interface LayoutPanelElement extends CardElementBase {
-  /** 固定值：layout-panel */
   type: 'layout-panel';
-  /** 子元素集合 */
-  children: CardElement[];
+
+  /**
+   * 容器布局（父容器属性）
+   * 若 container.mode = 'absolute' → 子项 layout.mode 应为 absolute
+   * 若 container.mode = 'flex' → 子项 layout.mode 强制为 flex
+   */
+  container: {
+    mode: LayoutMode; // absolute | flex
+    options?: FlexContainerOptions; // 当 mode = flex 时生效
+  };
+
+  /** 该容器的子元素 */
+  children?: CardElement[];
 }
 
-/** 叶子和布局元素的统一联合类型 */
-export type CardElement = TextElement | ImageElement | IconElement | CustomElement | LayoutPanelElement;
+export type CardElement =
+  | TextElement
+  | ImageElement
+  | IconElement
+  | CustomElement
+  | LayoutPanelElement;
 
-/** 卡片布局 Schema，顶级布局面板 */
-export interface CardLayoutSchema extends LayoutPanelElement {
-  /** 带有画布尺寸的根布局信息 */
-  layout: ElementLayout & { width: number; height: number };
+/** -------------------- 顶级 Schema：顶级画板（绝对定位根容器） -------------------- */
+
+export interface CardLayoutSchema {
+  /** 顶级画布是绝对定位容器 */
+  container: {
+    mode: 'absolute';
+  };
+
   /** 背景图片地址 */
   backgroundImage?: string;
   /** 全局字体颜色 */
@@ -154,16 +152,13 @@ export interface CardLayoutSchema extends LayoutPanelElement {
   borderRadius?: number;
   /** 卡片内边距 */
   padding?: number;
-  /** 额外元信息 */
-  metadata?: Record<string, unknown>;
+
+  /** 顶层元素（只能是绝对定位子项） */
+  children: CardElement[];
 }
 
-/** 数据绑定上下文结构 */
-export interface BindingContext {
-  /** 递归的数据绑定字典 */
-  [key: string]: string | number | boolean | null | BindingContext;
-}
-
+/** Schema 版本号 */
+export const schemaVersion: '0.1.0';
 
 /** 缩放卡片布局时的配置项 */
 export interface ScaleCardLayoutOptions {
@@ -176,4 +171,7 @@ export interface ScaleCardLayoutOptions {
 }
 
 /** 将 Schema 按比例缩放 */
-export function scaleCardLayout(schema: CardLayoutSchema, options: ScaleCardLayoutOptions): CardLayoutSchema;
+export function scaleCardLayout(
+  schema: CardLayoutSchema,
+  options: ScaleCardLayoutOptions
+): CardLayoutSchema;
