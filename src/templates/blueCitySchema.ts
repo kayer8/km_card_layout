@@ -2,98 +2,131 @@ import type { CardLayoutSchema } from 'km-card-schema';
 
 export const blueCitySchema: CardLayoutSchema = {
   id: 'kuanmai-blue-city',
+
+  container: {
+    mode: 'absolute',
+  },
+
   width: 343,
   height: 210,
   padding: 24,
   fontColor: '#1B2B65',
-  elements: [
+
+  children: [
     {
       id: 'name',
       type: 'text',
       binding: 'user.name',
-      x: 30,
-      y: 39,
-      width: 140,
-      height: 24,
+      layout: {
+        mode: 'absolute',
+        x: 30,
+        y: 39,
+        width: 140,
+        height: 24,
+      },
       style: {
         fontSize: 16,
         color: '#1B2B65',
         fontWeight: 350,
       },
     },
+
     {
       id: 'duty',
       type: 'text',
       binding: 'user.duty',
-      x: 30,
-      y: 61,
-      width: 180,
-      height: 36,
+      layout: {
+        mode: 'absolute',
+        x: 30,
+        y: 61,
+        width: 180,
+        height: 36,
+      },
       style: {
         fontSize: 9,
         color: '#4f5e8a',
         lineHeight: 13,
       },
     },
+
     {
       id: 'blue-panel',
       type: 'image',
       binding: 'user.avatar',
-      x: 210,
-      y: 30,
-      width: 93,
-      height: 120,
+      layout: {
+        mode: 'absolute',
+        x: 210,
+        y: 30,
+        width: 93,
+        height: 120,
+      },
       style: {
         borderRadius: 12,
       },
     },
+
     {
       id: 'phone',
       type: 'text',
       binding: 'user.phone',
-      x: 30,
-      y: 110,
-      width: 130,
-      height: 16,
+      layout: {
+        mode: 'absolute',
+        x: 30,
+        y: 110,
+        width: 130,
+        height: 16,
+      },
       style: {
         fontSize: 9,
         color: '#1B2B65',
       },
     },
+
     {
       id: 'email',
       type: 'text',
       binding: 'user.email',
-      x: 30,
-      y: 127,
-      width: 180,
-      height: 16,
+      layout: {
+        mode: 'absolute',
+        x: 30,
+        y: 127,
+        width: 180,
+        height: 16,
+      },
       style: {
         fontSize: 9,
         color: '#1B2B65',
       },
     },
+
     {
       id: 'company',
       type: 'text',
       binding: 'user.company',
-      x: 30,
-      y: 144,
-      width: 180,
-      height: 16,
+      layout: {
+        mode: 'absolute',
+        x: 30,
+        y: 144,
+        width: 180,
+        height: 16,
+      },
       style: {
         fontSize: 9,
         color: '#1B2B65',
       },
     },
+
     {
       id: 'address',
       type: 'text',
       binding: 'user.address',
-      x: 30,
-      y: 161,
-      width: 180,
-      height: 16,
+      layout: {
+        mode: 'absolute',
+        x: 30,
+        y: 161,
+        width: 180,
+        height: 16,
+      },
       style: {
         fontSize: 8,
         color: '#5f6d98',

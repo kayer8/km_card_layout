@@ -53,11 +53,10 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
     cardSchema.backgroundImage = next.backgroundImage
     cardSchema.fontColor = next.fontColor || '#ffffff'
     cardSchema.borderRadius = next.borderRadius
-    cardSchema.metadata = next.metadata
-    cardSchema.elements.splice(
+    cardSchema.children.splice(
       0,
-      cardSchema.elements.length,
-      ...next.elements.map((element: CardElement) => ({ ...element }))
+      cardSchema.children.length,
+      ...next.children.map((element: CardElement) => ({ ...element }))
     )
     notifySchemaChange()
   }
@@ -108,7 +107,7 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
 
     if (!shouldSync) return
 
-    cardSchema.elements.forEach((element: CardElement) => {
+    cardSchema.children.forEach((element: CardElement) => {
       if (!element.style) element.style = {}
       // 文本/图标强制同步颜色，避免旧颜色残留
       element.style.color = nextColor

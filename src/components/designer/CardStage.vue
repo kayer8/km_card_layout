@@ -32,19 +32,19 @@ const emit = defineEmits<{
 }>()
 
 const visibleElements = computed(() =>
-  props.schema.elements.filter((element) => element.visible !== false)
+  props.schema.children.filter((element) => element.visible !== false)
 )
 
 const ensureTextMinHeights = () => {
-  props.schema.elements.forEach((element) => {
+  props.schema.children.forEach((element) => {
     if (element.type !== 'text') return
     const rawFontSize = element.style?.fontSize
     const fontSize =
       typeof rawFontSize === 'number' ? rawFontSize : Number.parseFloat(String(rawFontSize ?? ''))
     if (!Number.isFinite(fontSize)) return
     const minHeight = fontSize * 1.3
-    if (typeof element.height !== 'number' || element.height < minHeight) {
-      element.height = minHeight
+    if (typeof element.layout.height !== 'number' || element.layout.height < minHeight) {
+      element.layout.height = minHeight
     }
   })
 }
@@ -78,14 +78,14 @@ const createResizeHandler =
   }
 
 const handleDragging = (elementId: string, payload: DragPayload) => {
-  const element = props.schema.elements.find((item) => item.id === elementId)
+  const element = props.schema.children.find((item) => item.id === elementId)
   if (!element) return
   // 拖动中仅更新辅助线，不做吸附
   computeGuides(element, payload)
 }
 
 const handleDragEnd = (elementId: string, payload: DragPayload) => {
-  const element = props.schema.elements.find((item) => item.id === elementId)
+  const element = props.schema.children.find((item) => item.id === elementId)
   if (element) {
     // Refresh guides on release so alignments stay visible before clearing
     computeGuides(element, payload)
@@ -95,8 +95,8 @@ const handleDragEnd = (elementId: string, payload: DragPayload) => {
 
   if (element && shouldSnap) {
     const snapped = applySnap(element, payload)
-    element.x = snapped.x
-    element.y = snapped.y
+    element.layout.x = snapped.x
+    element.layout.y = snapped.y
     createDragHandler(elementId)(snapped)
   } else {
     createDragHandler(elementId)(payload)
@@ -106,7 +106,7 @@ const handleDragEnd = (elementId: string, payload: DragPayload) => {
 }
 
 const handleResizing = (elementId: string, payload: ResizePayload) => {
-  const element = props.schema.elements.find((item) => item.id === elementId)
+  const element = props.schema.children.find((item) => item.id === elementId)
   if (!element) return
   computeGuides(element, payload)
 }
@@ -135,10 +135,10 @@ onBeforeUnmount(() => {
 
 watch(
   () =>
-    props.schema.elements.map((el) => ({
+    props.schema.children.map((el) => ({
       id: el.id,
       fontSize: el.style?.fontSize,
-      height: el.height
+      height: el.style?.height,
     })),
   ensureTextMinHeights,
   { deep: true, immediate: true }
@@ -194,14 +194,14 @@ watch(
       <Vue3DraggableResizable
         v-for="element in visibleElements"
         :key="element.id"
-        :initW="element.width"
-        :initH="element.height"
+        :initW="element.layout!.width!"
+        :initH="element.layout!.height!"
         :minW="0"
         :minH="0"
-        v-model:x="element.x"
-        v-model:y="element.y"
-        v-model:w="element.width"
-        v-model:h="element.height"
+        v-model:x="element.layout.x"
+        v-model:y="element.layout.y"
+        v-model:w="element.layout.width"
+        v-model:h="element.layout.height"
         :parent="true"
         :lock-aspect-ratio="element.type === 'image'"
         :resizable="element.type !== 'icon'"

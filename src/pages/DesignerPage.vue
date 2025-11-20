@@ -104,7 +104,7 @@ onMounted(() => {
     <main class="designer-body">
       <aside class="sidebar sidebar--left">
         <ElementListPanel
-          :elements="cardSchema.elements"
+          :elements="cardSchema.children"
           :active-element-id="activeElementId"
           @select="setActiveElement"
           @toggle-visible="handleToggleElement"

@@ -36,7 +36,7 @@ export const useCardDesigner = () => {
   const copyState = ref<'idle' | 'copied'>('idle');
   const serializedSchema = computed(() => JSON.stringify(cardSchema, null, 2));
   const activeElement = computed(() =>
-    cardSchema.elements.find(element => element.id === activeElementId.value)
+    cardSchema.children.find(element => element.id === activeElementId.value)
   );
   const getElementPreview = createElementPreviewResolver(resolveBinding);
 
