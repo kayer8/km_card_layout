@@ -1,103 +1,120 @@
 <template>
-  <div
-    class="zoom-wrapper"
-    @wheel="onWheel"
-  >
+  <div class="zoom-container">
     <div
-      class="zoom-content"
-      :style="contentStyle"
+      class="zoom-content-wrapper"
+      ref="wrapperRef"
+      @wheel.prevent="onWheel"
     >
-      <slot />
+      <div
+        ref="contentRef"
+        class="zoom-content"
+        :style="{
+          transform: `scale(${scale})`,
+        }"
+      >
+        <slot></slot>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="zoom-footer">
+      <input
+        class="zoom-input"
+        type="text"
+        :value="Math.round(scale * 100) + '%'"
+        readonly
+      />
+
+      <button class="zoom-btn" @click="resetScale">100%</button>
+      <button class="zoom-btn" @click="fitWidth">适应宽度</button>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch } from 'vue'
+<script lang="ts" setup>
+import { ref, onMounted, watch } from 'vue';
 
-const props = defineProps({
-  /* 双向绑定用，比如 v-model="scale" */
-  modelValue: {
-    type: Number,
-    default: 1
-  },
-  /* 最小缩放 */
-  minScale: {
-    type: Number,
-    default: 0.3
-  },
-  /* 最大缩放 */
-  maxScale: {
-    type: Number,
-    default: 3
-  },
-  /* 每次滚轮缩放步长 */
-  step: {
-    type: Number,
-    default: 0.1
-  },
-  /* 是否必须按住 Ctrl 才缩放，避免影响页面滚动 */
-  requireCtrl: {
-    type: Boolean,
-    default: false
-  },
-  /* 缩放基点，默认左上角，你也可以传 'center center' 等 */
-  transformOrigin: {
-    type: String,
-    default: 'top left'
-  }
-})
+type Props = {
+  initialScale?: number;
+  minScale?: number;
+  maxScale?: number;
+  step?: number;
+};
 
-const emit = defineEmits(['update:modelValue', 'scale-change'])
+const props = defineProps<Props>();
 
-const scale = ref(props.modelValue)
+const scale = ref(props.initialScale ?? 1);
+const minScale = props.minScale ?? 0.2;
+const maxScale = props.maxScale ?? 3;
+const step = props.step ?? 0.1;
 
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (val !== scale.value) {
-      scale.value = val
-    }
-  }
-)
+const wrapperRef = ref<HTMLDivElement | null>(null);
+const contentRef = ref<HTMLDivElement | null>(null);
 
-const contentStyle = computed(() => ({
-  transform: `scale(${scale.value})`,
-  transformOrigin: props.transformOrigin,
-  willChange: 'transform'
-}))
+const onWheel = (e: WheelEvent) => {
+  const delta = e.deltaY < 0 ? step : -step;
+  scale.value = Math.min(maxScale, Math.max(minScale, scale.value + delta));
+};
 
-const onWheel = (e) => {
-  // 如果需要按住 Ctrl 才缩放
-  if (props.requireCtrl && !e.ctrlKey) return
+const resetScale = () => {
+  scale.value = 1;
+};
 
-  e.preventDefault()
-
-  const delta = e.deltaY > 0 ? -props.step : props.step
-  let next = scale.value + delta
-  next = Math.min(props.maxScale, Math.max(props.minScale, next))
-
-  scale.value = next
-  emit('update:modelValue', next)
-  emit('scale-change', next)
-}
+const fitWidth = () => {
+  if (!wrapperRef.value || !contentRef.value) return;
+  const containerWidth = wrapperRef.value.clientWidth;
+  const contentWidth = contentRef.value.scrollWidth;
+  const newScale = containerWidth / contentWidth;
+  scale.value = newScale;
+};
 </script>
 
 <style scoped>
-.zoom-wrapper {
-  width: 100%;
+.zoom-container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  background: #f5f5f5;
+  border-radius: 12px;
   overflow: hidden;
-  position: relative;
+}
 
-  /* 你也可以这里用 flex 居中 slot 内容 */
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
+.zoom-content-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  background: #fafafa;
 }
 
 .zoom-content {
-  /* 内容本身的宽高由 slot 里控制，组件不管 */
-  transform-origin: top left;
+  width: fit-content;
+}
+
+.zoom-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  background: white;
+}
+
+.zoom-input {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f8f8f8;
+}
+
+.zoom-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+.zoom-btn:hover {
+  background: #f0f0f0;
 }
 </style>

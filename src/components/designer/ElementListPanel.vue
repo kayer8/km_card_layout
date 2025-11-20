@@ -177,7 +177,7 @@ const handleDrop = (context: { dragNode: TreeNodeModel; dropNode: TreeNodeModel;
         <h3>元素列表</h3>
         <p>当前 {{ props.elements.length }} 个元素</p>
       </div>
-      <t-button size="small" variant="outline" @click="emit('create-panel')">新建布局面板</t-button>
+      <t-button size="small" variant="outline" @click="emit('create-panel')">新建容器</t-button>
     </div>
 
     <t-tree
