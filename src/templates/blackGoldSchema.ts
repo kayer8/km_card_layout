@@ -64,8 +64,7 @@ export const blackGoldSchema: CardLayoutSchema = {
     },
     {
       id: 'phone-dot',
-      type: 'icon',
-      name: 'company',
+      type: 'custom',
       layout: {
         mode: 'absolute',
         x: 18,
@@ -78,7 +77,6 @@ export const blackGoldSchema: CardLayoutSchema = {
         borderRadius: '50%',
         color: '#ffffff',
       },
-      fontSize: 12,
     },
     {
       id: 'phone',
@@ -99,8 +97,7 @@ export const blackGoldSchema: CardLayoutSchema = {
     },
     {
       id: 'email-dot',
-      type: 'icon',
-      name: 'company',
+      type: 'custom',
       layout: {
         mode: 'absolute',
         x: 18,
@@ -113,7 +110,6 @@ export const blackGoldSchema: CardLayoutSchema = {
         borderRadius: '50%',
         color: '#ffffff',
       },
-      fontSize: 12,
     },
     {
       id: 'email',
@@ -134,8 +130,7 @@ export const blackGoldSchema: CardLayoutSchema = {
     },
     {
       id: 'address-dot',
-      type: 'icon',
-      name: 'company',
+      type: 'custom',
       layout: {
         mode: 'absolute',
         x: 18,
@@ -148,7 +143,6 @@ export const blackGoldSchema: CardLayoutSchema = {
         borderRadius: '50%',
         color: '#ffffff',
       },
-      fontSize: 12,
     },
     {
       id: 'address',

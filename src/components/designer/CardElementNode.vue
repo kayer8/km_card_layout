@@ -8,6 +8,7 @@ import type {
 import LayoutText from '../layout-element/LayoutText.vue'
 import LayoutImage from '../layout-element/LayoutImage.vue'
 import LayoutIcon from '../layout-element/LayoutIcon.vue'
+import LayoutCustom from '../layout-element/LayoutCustom.vue'
 import LayoutPanel from '../layout-element/LayoutPanel.vue'
 import type { DragPayload } from './useGuides'
 
@@ -53,6 +54,8 @@ const handleActivate = () => props.onActivate(props.element.id)
       v-model:y="props.element.layout.y"
       v-model:w="props.element.layout.width"
       v-model:h="props.element.layout.height"
+      :min-h="0"
+      :min-w="0"
       :parent="true"
       :lock-aspect-ratio="lockAspectRatio"
       :resizable="props.element.type !== 'icon'"
@@ -97,6 +100,11 @@ const handleActivate = () => props.onActivate(props.element.id)
           :value="previewText"
         />
         <LayoutIcon
+          v-else-if="props.element.type === 'icon'"
+          :element="props.element"
+          :value="previewText"
+        />
+        <LayoutCustom
           v-else
           :element="props.element"
           :value="previewText"
@@ -140,6 +148,11 @@ const handleActivate = () => props.onActivate(props.element.id)
           :value="previewText"
         />
         <LayoutIcon
+          v-else-if="props.element.type === 'icon'"
+          :element="props.element"
+          :value="previewText"
+        />
+        <LayoutCustom
           v-else
           :element="props.element"
           :value="previewText"

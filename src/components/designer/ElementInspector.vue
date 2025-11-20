@@ -118,8 +118,8 @@ const applyStyleText = () => {
         <t-tag theme="default" variant="outline">{{ props.element.type }}</t-tag>
       </t-form-item>
 
-      <t-form-item label="绑定字段">
-        <t-input v-model="bindingValue" placeholder="user.name" clearable readonly disabled />
+      <t-form-item label="绑定字段" v-if="props.element.binding">
+        <t-input v-model="bindingValue" placeholder="" clearable readonly disabled />
       </t-form-item>
 
       <t-form-item label="显示">
@@ -174,7 +174,7 @@ const applyStyleText = () => {
         :mutate="mutateCurrent"
       />
 
-      <!-- <t-form-item label="Style JSON">
+       <t-form-item label="Style JSON">
         <div class="style-editor">
           <t-textarea
             v-model="styleText"
@@ -187,7 +187,7 @@ const applyStyleText = () => {
             <span v-if="styleError" class="style-error">{{ styleError }}</span>
           </div>
         </div>
-      </t-form-item> -->
+      </t-form-item>
     </t-form>
   </section>
 </template>
