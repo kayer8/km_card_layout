@@ -10,6 +10,7 @@
         class="zoom-content"
         :style="{
           transform: `scale(${scale})`,
+          transformOrigin: 'center center',
         }"
       >
         <slot></slot>
@@ -32,20 +33,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 type Props = {
   initialScale?: number;
   minScale?: number;
-  maxScale?: number;
   step?: number;
 };
 
 const props = defineProps<Props>();
 
 const scale = ref(props.initialScale ?? 1);
-const minScale = props.minScale ?? 0.2;
-const maxScale = props.maxScale ?? 3;
+const minScale = props.minScale ?? 0.5;
 const step = props.step ?? 0.1;
 
 const wrapperRef = ref<HTMLDivElement | null>(null);
@@ -53,7 +52,7 @@ const contentRef = ref<HTMLDivElement | null>(null);
 
 const onWheel = (e: WheelEvent) => {
   const delta = e.deltaY < 0 ? step : -step;
-  scale.value = Math.min(maxScale, Math.max(minScale, scale.value + delta));
+  scale.value = Math.min(props.initialScale ??1, Math.max(minScale, scale.value + delta));
 };
 
 const resetScale = () => {
@@ -65,8 +64,18 @@ const fitWidth = () => {
   const containerWidth = wrapperRef.value.clientWidth;
   const contentWidth = contentRef.value.scrollWidth;
   const newScale = containerWidth / contentWidth;
-  scale.value = newScale;
+  // 适应宽度 = 最大比例
+  scale.value = Math.min(props.initialScale ??1, newScale);
 };
+
+watch(
+  () => props.initialScale,
+  (value) => {
+    if (typeof value === 'number' && !Number.isNaN(value)) {
+      scale.value = Math.min(props.initialScale ??1, Math.max(minScale, value));
+    }
+  }
+);
 </script>
 
 <style scoped>
@@ -84,6 +93,9 @@ const fitWidth = () => {
   overflow: auto;
   padding: 12px;
   background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .zoom-content {

@@ -2,16 +2,13 @@ import type { CardLayoutSchema } from 'km-card-schema';
 
 export const blackGoldSchema: CardLayoutSchema = {
   id: 'kuanmai-black-gold',
-
   container: {
     mode: 'absolute',
   },
-
   width: 343,
   height: 210,
   fontColor: '#ffffff',
   padding: 20,
-
   children: [
     {
       id: 'company',
@@ -22,16 +19,15 @@ export const blackGoldSchema: CardLayoutSchema = {
         x: 18,
         y: 16,
         width: 180,
-        height: 18.5,
+        height: 20.8,
       },
       style: {
         fontSize: 16,
-        color: '#fff',
+        color: '#ffffff',
         letterSpacing: 0.5,
         fontWeight: 400,
       },
     },
-
     {
       id: 'name',
       type: 'text',
@@ -39,17 +35,16 @@ export const blackGoldSchema: CardLayoutSchema = {
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 47.5,
+        y: 45,
         width: 140,
-        height: 19.5,
+        height: 26,
       },
       style: {
         fontSize: 20,
-        color: '#fff',
+        color: '#ffffff',
         fontWeight: 350,
       },
     },
-
     {
       id: 'duty',
       type: 'text',
@@ -57,123 +52,122 @@ export const blackGoldSchema: CardLayoutSchema = {
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 81.5,
+        y: 81,
         width: 110,
-        height: 18.5,
+        height: 20,
       },
       style: {
         fontSize: 13,
-        color: '#fff',
+        color: '#ffffff',
         fontWeight: 200,
       },
     },
-
     {
       id: 'phone-dot',
       type: 'icon',
-      name: 'dot',
+      name: 'company',
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 137.5,
-        width: 8,
-        height: 8,
+        y: 130,
+        width: 20,
+        height: 20,
       },
       style: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         borderRadius: '50%',
+        color: '#ffffff',
       },
+      fontSize: 12,
     },
-
     {
       id: 'phone',
       type: 'text',
       binding: 'user.phone',
       layout: {
         mode: 'absolute',
-        x: 37,
-        y: 131.5,
+        x: 40,
+        y: 131,
         width: 150,
-        height: 18.5,
+        height: 20,
       },
       style: {
         fontSize: 13,
-        color: '#fff',
+        color: '#ffffff',
         fontWeight: 400,
       },
     },
-
     {
       id: 'email-dot',
       type: 'icon',
-      name: 'dot',
+      name: 'company',
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 160.5,
-        width: 8,
-        height: 8,
+        y: 151,
+        width: 20,
+        height: 20,
       },
       style: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         borderRadius: '50%',
+        color: '#ffffff',
       },
+      fontSize: 12,
     },
-
     {
       id: 'email',
       type: 'text',
       binding: 'user.email',
       layout: {
         mode: 'absolute',
-        x: 37,
-        y: 152.5,
+        x: 40,
+        y: 152,
         width: 160,
-        height: 18.5,
+        height: 20,
       },
       style: {
         fontSize: 13,
-        color: '#fff',
+        color: '#ffffff',
         fontWeight: 400,
       },
     },
-
     {
       id: 'address-dot',
       type: 'icon',
-      name: 'dot',
+      name: 'company',
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 180.5,
-        width: 8,
-        height: 8,
+        y: 173,
+        width: 20,
+        height: 20,
       },
       style: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         borderRadius: '50%',
+        color: '#ffffff',
       },
+      fontSize: 12,
     },
-
     {
       id: 'address',
       type: 'text',
       binding: 'user.address',
       layout: {
         mode: 'absolute',
-        x: 37,
+        x: 40,
         y: 175,
         width: 271,
-        height: 18.5,
+        height: 20,
       },
       style: {
         fontSize: 13,
-        color: '#fff',
+        color: '#ffffff',
         lineHeight: 14,
         fontWeight: 400,
       },
     },
-
     {
       id: 'avatar',
       type: 'image',
@@ -187,8 +181,10 @@ export const blackGoldSchema: CardLayoutSchema = {
       },
       style: {
         borderRadius: '50%',
+        color: '#ffffff',
       },
     },
   ],
+  backgroundImage:
+    'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=60',
 };
-

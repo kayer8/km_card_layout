@@ -17,7 +17,7 @@ const props = withDefaults(
     snapOnRelease?: boolean
   }>(),
   {
-    enableSnap: true,
+    enableSnap: false,
     snapHotkey: 'Shift',
     snapOnRelease: true
   }
@@ -155,11 +155,11 @@ watch(
 
 <template>
   <div class="card-stage">
-    <div class="snap-toggle">
+    <!-- <div class="snap-toggle">
       <t-button size="small" variant="outline" :theme="snapEnabled ? 'primary' : 'default'" @click="toggleSnap">
         吸附：{{ snapEnabled ? '开' : '关' }}
       </t-button>
-    </div>
+    </div> -->
     <div
       class="card-stage__inner"
       :style="{

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import DesignerHeader from '../components/designer/DesignerHeader.vue';
 import CardStage from '../components/designer/CardStage.vue';
 import SchemaPreview from '../components/designer/SchemaPreview.vue';
 import ElementListPanel from '../components/designer/ElementListPanel.vue';
 import ElementInspector from '../components/designer/ElementInspector.vue';
 import BindingDataPanel from '../components/designer/BindingDataPanel.vue';
+import ZoomContainer from '../components/common/ZoomContainer.vue';
 import { useCardDesigner } from '../composables/useCardDesigner';
 
 const backgroundOptions = [
@@ -72,6 +73,48 @@ const handleToggleElement = (payload: { id: string; visible: boolean }) => {
   setElementVisibility(payload.id, payload.visible);
 };
 
+const wrapperRef = ref<HTMLDivElement | null>(null);
+const wrapperWidth = ref(0);
+const wrapperHeight = ref(0);
+let resizeObserver: ResizeObserver | null = null;
+
+const updateWrapperSize = (rect: DOMRectReadOnly) => {
+  wrapperWidth.value = rect.width;
+  wrapperHeight.value = rect.height;
+};
+
+onMounted(() => {
+  if (wrapperRef.value) {
+    updateWrapperSize(wrapperRef.value.getBoundingClientRect());
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver((entries) => {
+        const entry = entries[0];
+        if (entry) {
+          updateWrapperSize(entry.contentRect);
+        }
+      });
+      resizeObserver.observe(wrapperRef.value);
+    }
+  }
+});
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+});
+
+const fitScale = computed(() => {
+  const stageWidth = cardSchema.width || 1;
+  if (!wrapperWidth.value) {
+    return 1;
+  }
+  const sideGap = 200; // provide padding on both sides when fitting
+  const availableWidth = Math.max(wrapperWidth.value - sideGap, 0);
+  const ratio = availableWidth / stageWidth;
+  return Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
+});
+
+const maxScale = computed(() => Math.max(5, fitScale.value * 5));
+
 const handleCreateLayoutPanel = () => {
   const created = addElement('layout-panel');
   if (created) {
@@ -119,14 +162,16 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="card-stage-wrapper">
-          <CardStage
-            :schema="cardSchema"
-            :active-element-id="activeElementId"
-            :get-element-preview="getElementPreview"
-            @activate-element="setActiveElement"
-            @drag-end="handleDragEnd"
-            @resize-end="handleResizeEnd" />
+        <div class="card-stage-wrapper" ref="wrapperRef">
+          <ZoomContainer :initial-scale="fitScale" :max-scale="maxScale">
+            <CardStage
+              :schema="cardSchema"
+              :active-element-id="activeElementId"
+              :get-element-preview="getElementPreview"
+              @activate-element="setActiveElement"
+              @drag-end="handleDragEnd"
+              @resize-end="handleResizeEnd" />
+          </ZoomContainer>
 
           <div class="schema-toggle">
             <t-button
@@ -185,6 +230,8 @@ onMounted(() => {
   padding: 24px;
   box-shadow: 0 8px 24px rgba(43, 108, 176, 0.1);
   border: 1px solid rgba(66, 153, 225, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-title {
@@ -237,6 +284,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* flex-grow: 1; */
+  min-height: 0;
+  flex-shrink: 0;
+  height: calc(100vh - 128px);
 }
 
 @media (max-width: 1200px) {
