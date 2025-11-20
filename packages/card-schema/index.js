@@ -42,6 +42,8 @@ const scaleElement = (element, widthScale, heightScale, round) => {
   return next
 }
 
+export const schemaVersion = '0.1.0'
+
 /**
  * Scale a card layout schema to a specific width/height while keeping relative positions.
  * @param {import('./index.d.ts').CardLayoutSchema} schema

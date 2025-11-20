@@ -1,159 +1,157 @@
 import type { CardLayoutSchema } from 'km-card-schema';
 
 export const crimsonWaveSchema: CardLayoutSchema = {
-  "id": "kuanmai-crimson-wave",
-  "width": 686,
-  "height": 420,
-  "padding": 40,
-  "fontColor": "#2b2b2b",
-  "metadata": {
-    "template": "crimson-wave"
-  },
-  "elements": [
+  id: 'kuanmai-crimson-wave',
+  width: 343,
+  height: 210,
+  padding: 20,
+  fontColor: '#2b2b2b',
+  backgroundImage:
+    'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_15.png',
+  elements: [
     {
-      "id": "name",
-      "type": "text",
-      "x": 20,
-      "y": 129,
-      "width": 167,
-      "height": 41.6,
-      "binding": "user.name",
-      "style": {
-        "fontSize": 32,
-        "color": "#A67D27",
-        "fontWeight": 700,
-        "textAlign": "right"
-      }
-    },
-    {
-      "id": "phone-dot",
-      "type": "icon",
-      "name": "mobile ",
-      "x": 290,
-      "y": 100,
-      "width": 16,
-      "height": 16,
-      "fontSize": 20,
-      "color": "#A67D27",
-      "style": {
-        "color": "#A67D27"
-      }
-    },
-    {
-      "id": "email-dot",
-      "type": "icon",
-      "name": "email",
-      "x": 290,
-      "y": 142,
-      "width": 16,
-      "height": 16,
-      "style": {
-        "backgroundColor": "#fff",
-        "borderRadius": "50%",
-        "color": "#A67D27"
+      id: 'name',
+      type: 'text',
+      binding: 'user.name',
+      x: 10,
+      y: 64.5,
+      width: 83.5,
+      height: 20.8,
+      style: {
+        fontSize: 16,
+        color: '#A67D27',
+        fontWeight: 350,
+        textAlign: 'right',
       },
-      "color": "#A67D27"
     },
     {
-      "id": "address-dot",
-      "type": "icon",
-      "name": "address",
-      "x": 290,
-      "y": 233,
-      "width": 16,
-      "height": 16,
-      "fontSize": 20,
-      "style": {
-        "color": "#A67D27"
+      id: 'phone-dot',
+      type: 'icon',
+      name: 'mobile',
+      fontSize: 10,
+      color: '#A67D27',
+      x: 145,
+      y: 50,
+      width: 8,
+      height: 8,
+      style: {
+        color: '#A67D27',
       },
-      "color": "#A67D27"
     },
     {
-      "id": "company-dot",
-      "type": "icon",
-      "name": "company",
-      "x": 290,
-      "y": 190,
-      "width": 16,
-      "height": 16,
-      "fontSize": 20,
-      "color": "#A67D27",
-      "style": {
-        "color": "#A67D27"
-      }
+      id: 'email-dot',
+      type: 'icon',
+      name: 'email',
+      color: '#A67D27',
+      x: 145,
+      y: 71,
+      width: 8,
+      height: 8,
+      style: {
+        backgroundColor: '#fff',
+        borderRadius: '50%',
+        color: '#A67D27',
+      },
     },
     {
-      "id": "duty",
-      "type": "text",
-      "x": 17,
-      "y": 182,
-      "width": 170,
-      "height": 65,
-      "binding": "user.duty",
-      "style": {
-        "fontSize": 22,
-        "color": "#858585",
-        "textAlign": "right",
-        "fontWeight": "normal"
-      }
+      id: 'address-dot',
+      type: 'icon',
+      name: 'address',
+      fontSize: 10,
+      color: '#A67D27',
+      x: 145,
+      y: 116.5,
+      width: 8,
+      height: 8,
+      style: {
+        color: '#A67D27',
+      },
     },
     {
-      "id": "phone",
-      "type": "text",
-      "x": 323,
-      "y": 92,
-      "width": 326,
-      "height": 32,
-      "binding": "user.phone",
-      "style": {
-        "fontSize": 22,
-        "color": "#858585",
-        "fontWeight": "normal"
-      }
+      id: 'company-dot',
+      type: 'icon',
+      name: 'company',
+      fontSize: 10,
+      color: '#A67D27',
+      x: 145,
+      y: 95,
+      width: 8,
+      height: 8,
+      style: {
+        color: '#A67D27',
+      },
     },
     {
-      "id": "email",
-      "type": "text",
-      "x": 325,
-      "y": 134,
-      "width": 308,
-      "height": 32,
-      "binding": "user.email",
-      "style": {
-        "fontSize": 22,
-        "color": "#858585",
-        "fontWeight": "normal"
-      }
+      id: 'duty',
+      type: 'text',
+      binding: 'user.duty',
+      x: 8.5,
+      y: 91,
+      width: 85,
+      height: 32.5,
+      style: {
+        fontSize: 11,
+        color: '#858585',
+        textAlign: 'right',
+        fontWeight: 'normal',
+      },
     },
     {
-      "id": "company",
-      "type": "text",
-      "x": 323,
-      "y": 182,
-      "width": 328,
-      "height": 32,
-      "binding": "user.company",
-      "style": {
-        "fontSize": 22,
-        "color": "#858585",
-        "fontWeight": "normal"
-      }
+      id: 'phone',
+      type: 'text',
+      binding: 'user.phone',
+      x: 161.5,
+      y: 46,
+      width: 163,
+      height: 16,
+      style: {
+        fontSize: 11,
+        color: '#858585',
+        fontWeight: 'normal',
+      },
     },
     {
-      "id": "address",
-      "type": "text",
-      "x": 322,
-      "y": 226,
-      "width": 340,
-      "height": 61,
-      "binding": "user.address",
-      "style": {
-        "fontSize": 22,
-        "color": "#858585",
-        "lineHeight": 26,
-        "fontWeight": "normal"
-      }
-    }
+      id: 'email',
+      type: 'text',
+      binding: 'user.email',
+      x: 162.5,
+      y: 67,
+      width: 154,
+      height: 16,
+      style: {
+        fontSize: 11,
+        color: '#858585',
+        fontWeight: 'normal',
+      },
+    },
+    {
+      id: 'company',
+      type: 'text',
+      binding: 'user.company',
+      x: 161.5,
+      y: 91,
+      width: 164,
+      height: 16,
+      style: {
+        fontSize: 11,
+        color: '#858585',
+        fontWeight: 'normal',
+      },
+    },
+    {
+      id: 'address',
+      type: 'text',
+      binding: 'user.address',
+      x: 161,
+      y: 113,
+      width: 170,
+      height: 30.5,
+      style: {
+        fontSize: 11,
+        color: '#858585',
+        lineHeight: 13,
+        fontWeight: 'normal',
+      },
+    },
   ],
-  "backgroundImage": "https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_15.png"
-}
+};
