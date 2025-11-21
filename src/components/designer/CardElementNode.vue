@@ -1,47 +1,44 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import Vue3DraggableResizable from 'vue3-draggable-resizable'
-import type {
-  CardElement,
-  LayoutPanelElement,
-} from 'km-card-schema'
-import LayoutText from '../layout-element/LayoutText.vue'
-import LayoutImage from '../layout-element/LayoutImage.vue'
-import LayoutIcon from '../layout-element/LayoutIcon.vue'
-import LayoutCustom from '../layout-element/LayoutCustom.vue'
-import LayoutPanel from '../layout-element/LayoutPanel.vue'
-import type { DragPayload } from './useGuides'
+import { computed } from 'vue';
+import Vue3DraggableResizable from 'vue3-draggable-resizable';
+import type { CardElement, LayoutPanelElement } from 'km-card-schema';
+import LayoutText from '../layout-element/LayoutText.vue';
+import LayoutImage from '../layout-element/LayoutImage.vue';
+import LayoutIcon from '../layout-element/LayoutIcon.vue';
+import LayoutCustom from '../layout-element/LayoutCustom.vue';
+import LayoutPanel from '../layout-element/LayoutPanel.vue';
+import type { DragPayload } from './useGuides';
 
 defineOptions({
-  name: 'CardElementNode'
-})
+  name: 'CardElementNode',
+});
 
-type ResizePayload = DragPayload & { w: number; h: number }
+type ResizePayload = DragPayload & { w: number; h: number };
 
 const props = defineProps<{
-  element: CardElement
-  activeElementId: string
-  getElementPreview: (element: CardElement) => string
-  onActivate: (id: string) => void
-  onDragStart: () => void
-  onDragging: (id: string, payload: DragPayload) => void
-  onDragEnd: (id: string, payload: DragPayload) => void
-  onResizeStart: () => void
-  onResizing: (id: string, payload: ResizePayload) => void
-  onResizeEnd: (id: string, payload: ResizePayload) => void
-}>()
+  element: CardElement;
+  activeElementId: string;
+  getElementPreview: (element: CardElement) => string;
+  onActivate: (id: string) => void;
+  onDragStart: () => void;
+  onDragging: (id: string, payload: DragPayload) => void;
+  onDragEnd: (id: string, payload: DragPayload) => void;
+  onResizeStart: () => void;
+  onResizing: (id: string, payload: ResizePayload) => void;
+  onResizeEnd: (id: string, payload: ResizePayload) => void;
+}>();
 
-const isActive = computed(() => props.activeElementId === props.element.id)
-const isDraggable = computed(() => props.element.layout.mode === 'absolute')
-const lockAspectRatio = computed(() => props.element.type === 'image')
-const previewText = computed(() => props.getElementPreview(props.element))
+const isActive = computed(() => props.activeElementId === props.element.id);
+const isDraggable = computed(() => props.element.layout.mode === 'absolute');
+const lockAspectRatio = computed(() => props.element.type === 'image');
+const previewText = computed(() => props.getElementPreview(props.element));
 const panelChildren = computed(() =>
   props.element.type === 'layout-panel'
     ? (props.element as LayoutPanelElement).children ?? []
     : []
-)
+);
 
-const handleActivate = () => props.onActivate(props.element.id)
+const handleActivate = () => props.onActivate(props.element.id);
 </script>
 
 <template>
@@ -63,13 +60,12 @@ const handleActivate = () => props.onActivate(props.element.id)
       :active="isActive"
       :class="['draggable-node', { 'is-active': isActive }]"
       @drag-start="props.onDragStart"
-      @dragging="(payload) => props.onDragging(props.element.id, payload)"
+      @dragging="(payload:any) => props.onDragging(props.element.id, payload)"
       @resize-start="props.onResizeStart"
-      @resizing="(payload) => props.onResizing(props.element.id, payload)"
+      @resizing="(payload:any) => props.onResizing(props.element.id, payload)"
       @activated="handleActivate"
-      @drag-end="(payload) => props.onDragEnd(props.element.id, payload)"
-      @resize-end="(payload) => props.onResizeEnd(props.element.id, payload)"
-    >
+      @drag-end="(payload:any) => props.onDragEnd(props.element.id, payload)"
+      @resize-end="(payload:any) => props.onResizeEnd(props.element.id, payload)">
       <template v-if="props.element.type === 'layout-panel'">
         <LayoutPanel :element="props.element as LayoutPanelElement">
           <CardElementNode
@@ -84,31 +80,23 @@ const handleActivate = () => props.onActivate(props.element.id)
             :on-drag-end="props.onDragEnd"
             :on-resize-start="props.onResizeStart"
             :on-resizing="props.onResizing"
-            :on-resize-end="props.onResizeEnd"
-          />
+            :on-resize-end="props.onResizeEnd" />
         </LayoutPanel>
       </template>
       <template v-else>
         <LayoutText
           v-if="props.element.type === 'text'"
           :element="props.element"
-          :value="previewText"
-        />
+          :value="previewText" />
         <LayoutImage
           v-else-if="props.element.type === 'image'"
           :element="props.element"
-          :value="previewText"
-        />
+          :value="previewText" />
         <LayoutIcon
           v-else-if="props.element.type === 'icon'"
           :element="props.element"
-          :value="previewText"
-        />
-        <LayoutCustom
-          v-else
-          :element="props.element"
-          :value="previewText"
-        />
+          :value="previewText" />
+        <LayoutCustom v-else :element="props.element" :value="previewText" />
       </template>
     </Vue3DraggableResizable>
 
@@ -116,8 +104,7 @@ const handleActivate = () => props.onActivate(props.element.id)
       v-else
       class="flex-child"
       :class="{ 'is-active': isActive }"
-      @click.stop="handleActivate"
-    >
+      @click.stop="handleActivate">
       <template v-if="props.element.type === 'layout-panel'">
         <LayoutPanel :element="props.element as LayoutPanelElement">
           <CardElementNode
@@ -132,8 +119,7 @@ const handleActivate = () => props.onActivate(props.element.id)
             :on-drag-end="props.onDragEnd"
             :on-resize-start="props.onResizeStart"
             :on-resizing="props.onResizing"
-            :on-resize-end="props.onResizeEnd"
-          />
+            :on-resize-end="props.onResizeEnd" />
         </LayoutPanel>
       </template>
       <template v-else>
@@ -141,26 +127,22 @@ const handleActivate = () => props.onActivate(props.element.id)
           v-if="props.element.type === 'text'"
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
-        />
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
         <LayoutImage
           v-else-if="props.element.type === 'image'"
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
-        />
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
         <LayoutIcon
           v-else-if="props.element.type === 'icon'"
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
-        />
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
         <LayoutCustom
           v-else
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
-        />
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
       </template>
     </div>
   </template>
