@@ -91,7 +91,7 @@ const elementBuilders: Record<
   'layout-panel': ({ id, baseX, cardWidth }) => ({
     id,
     type: 'layout-panel',
-    visible: false,
+    visible: true,
     layout: {
       mode: 'absolute',
       x: baseX,
@@ -105,7 +105,7 @@ const elementBuilders: Record<
       borderRadius: 12,
     },
     container: {
-      mode: 'absolute', // 关键点：layout-panel 必须声明容器模式
+      mode: 'flex', // 默认容器布局使用 flex 便于直接排布子元素
     },
     children: [],
   }),

@@ -13,11 +13,10 @@
           transformOrigin: 'center center',
         }"
       >
-        <slot></slot>
+        <slot />
       </div>
     </div>
 
-    <!-- Footer -->
     <div class="zoom-footer">
       <input
         class="zoom-input"
@@ -33,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { provide, ref, watch } from 'vue';
 
 type Props = {
   initialScale?: number;
@@ -43,20 +42,30 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const scale = ref(props.initialScale ?? 1);
 const minScale = props.minScale ?? 0.5;
 const step = props.step ?? 0.1;
+
+const clampScale = (value: number) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return Number(minScale.toFixed(2));
+  return Number(Math.max(minScale, numeric).toFixed(2)); // enforce integer or two decimals
+};
+
+const scale = ref(clampScale(props.initialScale ?? 1));
+
+provide('parentScaleX', scale);
+provide('parentScaleY', scale);
 
 const wrapperRef = ref<HTMLDivElement | null>(null);
 const contentRef = ref<HTMLDivElement | null>(null);
 
 const onWheel = (e: WheelEvent) => {
   const delta = e.deltaY < 0 ? step : -step;
-  scale.value = Math.min(props.initialScale ??1, Math.max(minScale, scale.value + delta));
+  scale.value = clampScale(scale.value + delta);
 };
 
 const resetScale = () => {
-  scale.value = 1;
+  scale.value = clampScale(1);
 };
 
 const fitWidth = () => {
@@ -64,15 +73,14 @@ const fitWidth = () => {
   const containerWidth = wrapperRef.value.clientWidth;
   const contentWidth = contentRef.value.scrollWidth;
   const newScale = containerWidth / contentWidth;
-  // 适应宽度 = 最大比例
-  scale.value = Math.min(props.initialScale ??1, newScale);
+  scale.value = clampScale(newScale);
 };
 
 watch(
   () => props.initialScale,
   (value) => {
     if (typeof value === 'number' && !Number.isNaN(value)) {
-      scale.value = Math.min(props.initialScale ??1, Math.max(minScale, value));
+      scale.value = clampScale(value);
     }
   }
 );
@@ -126,6 +134,7 @@ watch(
   background: #fff;
   cursor: pointer;
 }
+
 .zoom-btn:hover {
   background: #f0f0f0;
 }

@@ -8,7 +8,7 @@ import type {
 import CardElementNode from './CardElementNode.vue';
 import { type DragPayload } from './useGuides';
 import { collectElements } from '../../modules/layout/tree-utils';
-import { DraggableContainer } from 'vue3-draggable-resizable';
+import { DraggableContainer } from 'km-vue3-draggable-resizable';
 
 type ResizePayload = DragPayload & { w: number; h: number };
 

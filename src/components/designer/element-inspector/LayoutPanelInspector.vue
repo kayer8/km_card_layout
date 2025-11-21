@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const ensureContainer = (draft: LayoutPanelElement) => {
   if (!draft.container) {
-    draft.container = { mode: 'absolute' }
+    draft.container = { mode: 'flex' }
   }
   if (!draft.container.options) {
     draft.container.options = {}

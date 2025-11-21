@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import Vue3DraggableResizable from 'vue3-draggable-resizable';
+import { computed, inject } from 'vue';
+import Vue3DraggableResizable from 'km-vue3-draggable-resizable';
 import type { CardElement, LayoutPanelElement } from 'km-card-schema';
 import LayoutText from '../layout-element/LayoutText.vue';
 import LayoutImage from '../layout-element/LayoutImage.vue';
@@ -39,6 +39,41 @@ const panelChildren = computed(() =>
 );
 
 const handleActivate = () => props.onActivate(props.element.id);
+
+const formatSize = (value?: number | string) => {
+  if (value === undefined || value === null) return undefined;
+  return typeof value === 'number' ? `${value}px` : value;
+};
+
+const injectedScaleX = inject<{ value: number } | null>('parentScaleX', null);
+const injectedScaleY = inject<{ value: number } | null>('parentScaleY', null);
+const parentScaleX = computed(() => injectedScaleX?.value ?? 1);
+const parentScaleY = computed(() => injectedScaleY?.value ?? 1);
+
+const calcFlexStyle = (
+  element: CardElement
+): Record<string, string | number> => {
+  if (element.layout.mode !== 'flex') return {};
+
+  const style: Record<string, string | number> = {};
+  const width = formatSize(element.layout.width);
+  const height = formatSize(element.layout.height);
+
+  if (width !== undefined) style.width = width;
+  if (height !== undefined) style.height = height;
+
+  const item = element.layout.item;
+  if (item) {
+    if (item.flexGrow !== undefined) style.flexGrow = item.flexGrow;
+    if (item.flexShrink !== undefined) style.flexShrink = item.flexShrink;
+    const basis = formatSize(item.flexBasis);
+    if (basis !== undefined) style.flexBasis = basis;
+    if (item.order !== undefined) style.order = item.order;
+    if (item.alignSelf !== undefined) style.alignSelf = item.alignSelf;
+  }
+
+  return style;
+};
 </script>
 
 <template>
@@ -53,6 +88,8 @@ const handleActivate = () => props.onActivate(props.element.id);
       v-model:h="props.element.layout.height"
       :min-h="0"
       :min-w="0"
+      :parentScaleX="parentScaleX"
+      :parentScaleY="parentScaleY"
       :parent="true"
       :lock-aspect-ratio="lockAspectRatio"
       :resizable="props.element.type !== 'icon'"
@@ -99,14 +136,9 @@ const handleActivate = () => props.onActivate(props.element.id);
         <LayoutCustom v-else :element="props.element" :value="previewText" />
       </template>
     </Vue3DraggableResizable>
-
-    <div
-      v-else
-      class="flex-child"
-      :class="{ 'is-active': isActive }"
-      @click.stop="handleActivate">
+    <template v-else>
       <template v-if="props.element.type === 'layout-panel'">
-        <LayoutPanel :element="props.element as LayoutPanelElement">
+        <LayoutPanel :style="calcFlexStyle(props.element)" :element="props.element as LayoutPanelElement" >
           <CardElementNode
             v-for="child in panelChildren"
             :key="child.id"
@@ -127,31 +159,29 @@ const handleActivate = () => props.onActivate(props.element.id);
           v-if="props.element.type === 'text'"
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
+          :style="calcFlexStyle(props.element)" />
         <LayoutImage
           v-else-if="props.element.type === 'image'"
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
+          :style="calcFlexStyle(props.element)" />
         <LayoutIcon
           v-else-if="props.element.type === 'icon'"
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
+          :style="calcFlexStyle(props.element)" />
         <LayoutCustom
           v-else
           :element="props.element"
           :value="previewText"
-          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`" />
+          :style="calcFlexStyle(props.element)" />
       </template>
-    </div>
+    </template>
   </template>
 </template>
 
 <style scoped>
 .flex-child {
-  width: 100%;
-  height: 100%;
   cursor: pointer;
 }
 
