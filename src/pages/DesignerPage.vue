@@ -9,33 +9,6 @@ import BindingDataPanel from '../components/designer/BindingDataPanel.vue';
 import ZoomContainer from '../components/common/ZoomContainer.vue';
 import { useCardDesigner } from '../composables/useCardDesigner';
 
-const backgroundOptions = [
-  {
-    label: '星空紫',
-    fontColor: '#ffffff',
-    value:
-      'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=60',
-  },
-  {
-    label: '渐变蓝',
-    fontColor: '#ffffff',
-    value:
-      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60',
-  },
-  {
-    label: '商务黑',
-    fontColor: '#666',
-    value:
-      'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=60',
-  },
-  {
-    label: '雪山',
-    fontColor: '#1a1a1a',
-    value:
-      'https://images.unsplash.com/photo-1508264165352-258859e62245?auto=format&fit=crop&w=900&q=60',
-  },
-];
-
 const schemaExpanded = ref(false);
 const {
   cardSchema,
@@ -61,8 +34,22 @@ const {
   addElement,
 } = useCardDesigner();
 
+const backgroundOptions = computed(() => {
+  const template = templates.find(
+    item => item.id === selectedTemplateId.value
+  );
+  if (!template?.backgroundOptions?.length) {
+    return [];
+  }
+  return template.backgroundOptions.map((option, index) => ({
+    label: option.id || `背景 ${index + 1}`,
+    fontColor: option.mainFontColor,
+    value: option.image,
+  }));
+});
+
 const handleBackgroundChange = (value: string) => {
-  const option = backgroundOptions.find(item => item.value === value);
+  const option = backgroundOptions.value.find(item => item.value === value);
   setBackgroundImage(value);
   if (option?.fontColor) {
     setFontColor({ value: option.fontColor, syncChildren: true });
@@ -123,9 +110,9 @@ const handleCreateLayoutPanel = () => {
 };
 
 onMounted(() => {
-  if (!cardSchema.backgroundImage && backgroundOptions.length) {
-    const first = backgroundOptions[0];
-    handleBackgroundChange(first!.value);
+  if (!cardSchema.backgroundImage && backgroundOptions.value.length) {
+    const first = backgroundOptions.value[0];
+    handleBackgroundChange(first.value);
   }
 });
 </script>

@@ -134,3 +134,65 @@ export const blueCitySchema: CardLayoutSchema = {
     },
   ],
 };
+export const blueCitySchemaBackgroundOptions = [
+  {
+    id: 'bg-1',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_01.png',
+    mainFontColor: '#333333',
+    fontColors: [],
+  },
+  {
+    id: 'bg-2',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_08.png',
+    mainFontColor: '#ffffff',
+    fontColors: [],
+  },
+  {
+    id: 'bg-3',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_09.png',
+    mainFontColor: '#ffffff',
+    fontColors: [],
+  },
+  {
+    id: 'bg-4',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_02.png',
+    mainFontColor: '#333333',
+    fontColors: [],
+  },
+  {
+    id: 'bg-5',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_05.png',
+    mainFontColor: '#333333',
+    fontColors: [],
+  },
+  {
+    id: 'bg-6',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_03.png',
+    mainFontColor: '#333333',
+    fontColors: [],
+  },
+  {
+    id: 'bg-7',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_04.png',
+    mainFontColor: '#ffffff',
+    fontColors: [],
+  },
+  {
+    id: 'bg-8',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_06.png',
+    mainFontColor: '#ffffff',
+    fontColors: [],
+  },
+  {
+    id: 'bg-9',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_07.png',
+    mainFontColor: '#ffffff',
+    fontColors: [],
+  },
+  {
+    id: 'bg-10',
+    image: 'https://km-1257079185.cos.ap-chengdu.myqcloud.com/static/cardstyleV3/bg_big_17.png',
+    mainFontColor: '#333333',
+    fontColors: [],
+  },
+];

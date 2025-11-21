@@ -1,6 +1,6 @@
 import { reactive, ref } from 'vue'
 import type { CardElement, CardLayoutSchema } from 'km-card-schema'
-import type { CardTemplate } from '../../templates/cardTemplates'
+import type { CardTemplate, TemplateBackgroundOption } from '../../templates/cardTemplates'
 import { builtinTemplates } from '../../templates/cardTemplates'
 
 export type FontColorPayload = string | { value: string; syncChildren?: boolean }
@@ -14,13 +14,25 @@ export interface LayoutManagerOptions {
 const cloneSchema = (schema: CardLayoutSchema): CardLayoutSchema =>
   JSON.parse(JSON.stringify(schema)) as CardLayoutSchema
 
+const cloneBackgroundOptions = (
+  options: TemplateBackgroundOption[] = []
+): TemplateBackgroundOption[] =>
+  options.map((option) => ({
+    ...option,
+    fontColors: [...(option.fontColors || [])]
+  }))
+
 // 布局管理器负责管理模板集合与画布 schema 的核心属性
 export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
   const { initialTemplates = builtinTemplates, onSchemaChange } = options
 
   // 模板列表存储用户可选卡片模板
   const templateStore = reactive<CardTemplate[]>(
-    initialTemplates.map((template) => ({ ...template, schema: cloneSchema(template.schema) }))
+    initialTemplates.map((template) => ({
+      ...template,
+      schema: cloneSchema(template.schema),
+      backgroundOptions: cloneBackgroundOptions(template.backgroundOptions || [])
+    }))
   )
 
   if (!templateStore.length) {
@@ -82,11 +94,13 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
       return null
     }
     const id = `template-${Date.now().toString(36)}`
+    const currentTemplate = templateStore.find((item) => item.id === selectedTemplateId.value)
     const newTemplate: CardTemplate = {
       id,
       name: trimmedName,
       description: '自定义模版',
-      schema: cloneSchema(cardSchema)
+      schema: cloneSchema(cardSchema),
+      backgroundOptions: cloneBackgroundOptions(currentTemplate?.backgroundOptions || [])
     }
     templateStore.push(newTemplate)
     selectedTemplateId.value = id
@@ -111,9 +125,9 @@ export const createLayoutManager = (options: LayoutManagerOptions = {}) => {
       if (!element.style) element.style = {}
       // 文本/图标强制同步颜色，避免旧颜色残留
       element.style.color = nextColor
-      if (element.type === 'icon') {
-        element.style.backgroundColor = nextColor
-      }
+      // if (element.type === 'icon') {
+      //   element.style.backgroundColor = nextColor
+      // }
     })
   }
 
