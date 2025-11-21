@@ -24,7 +24,6 @@ export const blackGoldSchema: CardLayoutSchema = {
       style: {
         fontSize: 16,
         color: '#ffffff',
-        letterSpacing: 0.5,
         fontWeight: 400,
       },
     },
@@ -42,7 +41,7 @@ export const blackGoldSchema: CardLayoutSchema = {
       style: {
         fontSize: 20,
         color: '#ffffff',
-        fontWeight: 350,
+        fontWeight: 'bold',
       },
     },
     {
@@ -59,7 +58,7 @@ export const blackGoldSchema: CardLayoutSchema = {
       style: {
         fontSize: 13,
         color: '#ffffff',
-        fontWeight: 200,
+        fontWeight: 'normal',
       },
     },
     {
