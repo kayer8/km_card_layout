@@ -93,21 +93,25 @@ const handleActivate = () => props.onActivate(props.element.id)
           v-if="props.element.type === 'text'"
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
         <LayoutImage
           v-else-if="props.element.type === 'image'"
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
         <LayoutIcon
           v-else-if="props.element.type === 'icon'"
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
         <LayoutCustom
           v-else
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
       </template>
     </Vue3DraggableResizable>
@@ -141,21 +145,25 @@ const handleActivate = () => props.onActivate(props.element.id)
           v-if="props.element.type === 'text'"
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
         <LayoutImage
           v-else-if="props.element.type === 'image'"
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
         <LayoutIcon
           v-else-if="props.element.type === 'icon'"
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
         <LayoutCustom
           v-else
           :element="props.element"
           :value="previewText"
+          :style="`width: ${props.element.layout.width}px; height: ${props.element.layout.height}px;`"
         />
       </template>
     </div>

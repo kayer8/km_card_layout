@@ -194,6 +194,7 @@ onMounted(() => {
           :element="activeElement"
           :card-width="cardSchema.width"
           :card-height="cardSchema.height"
+          :elements="cardSchema.children"
           :mutate-element="mutateElement" />
 
         <BindingDataPanel :entries="bindingEntries" />

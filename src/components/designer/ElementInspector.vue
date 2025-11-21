@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { CardElement, LayoutPanelElement } from 'km-card-schema'
+import type { CardElement, FlexItemLayoutDefinition, FlexItemOptions, LayoutPanelElement } from 'km-card-schema'
 import IconInspector from './element-inspector/IconInspector.vue'
 import TextInspector from './element-inspector/TextInspector.vue'
 import ImageInspector from './element-inspector/ImageInspector.vue'
 import LayoutPanelInspector from './element-inspector/LayoutPanelInspector.vue'
+import { findElementLocation } from '../../modules/layout/tree-utils'
 
 const props = defineProps<{
   element?: CardElement
   cardWidth: number
   cardHeight: number
   mutateElement: (id: string, mutator: (draft: any) => void) => void
+  elements: CardElement[]
 }>()
 
 const mutateCurrent = (mutator: (draft: any) => void) => {
@@ -64,6 +66,63 @@ const yModel = rectProxy('y')
 const isFlexChild = computed(() => props.element?.layout.mode === 'flex')
 const widthModel = rectProxy('width')
 const heightModel = rectProxy('height')
+const location = computed(() => (props.element ? findElementLocation(props.elements, props.element.id) : null))
+const isParentFlex = computed(() => location.value?.parent?.container?.mode === 'flex')
+
+const ensureItem = (draft: any) => {
+  if (!draft.layout) {
+    draft.layout = { mode: 'absolute' }
+  }
+  if (draft.layout.mode !== 'flex') {
+    draft.layout.mode = 'flex'
+  }
+  if (!('item' in draft.layout) || !draft.layout.item) {
+    ;(draft.layout as FlexItemLayoutDefinition).item = {}
+  }
+  return (draft.layout as FlexItemLayoutDefinition).item!
+}
+
+const updateFlexItem = (field: keyof FlexItemOptions, value: unknown | null) => {
+  mutateCurrent((draft) => {
+    const item = ensureItem(draft)
+    if (value === null || value === undefined || value === '') {
+      delete item[field]
+    } else {
+      ;(item as any)[field] = value
+    }
+  })
+}
+
+const numberModel = (field: keyof FlexItemOptions, defaultValue = 0) =>
+  computed({
+    get: () => {
+      const value = (props.element?.layout as FlexItemLayoutDefinition | undefined)?.item?.[field]
+      return typeof value === 'number' ? value : defaultValue
+    },
+    set: (value: number | null) => updateFlexItem(field, value ?? defaultValue)
+  })
+
+const flexGrowModel = numberModel('flexGrow', 0)
+const flexShrinkModel = numberModel('flexShrink', 1)
+const flexOrderModel = numberModel('order', 0)
+
+const flexBasisModel = computed({
+  get: () => (props.element?.layout as FlexItemLayoutDefinition | undefined)?.item?.flexBasis ?? '',
+  set: (value: string | null) => updateFlexItem('flexBasis', value)
+})
+
+const alignSelfModel = computed({
+  get: () => (props.element?.layout as FlexItemLayoutDefinition | undefined)?.item?.alignSelf ?? 'stretch',
+  set: (value: FlexItemOptions['alignSelf'] | null) => updateFlexItem('alignSelf', value ?? undefined)
+})
+
+const alignSelfOptions: { label: string; value: FlexItemOptions['alignSelf'] }[] = [
+  { label: '继承（stretch）', value: 'stretch' },
+  { label: '顶端（flex-start）', value: 'flex-start' },
+  { label: '底端（flex-end）', value: 'flex-end' },
+  { label: '居中（center）', value: 'center' },
+  { label: 'baseline', value: 'baseline' }
+]
 
 const styleText = ref('')
 const styleError = ref('')
@@ -151,6 +210,24 @@ const applyStyleText = () => {
           <t-input-number v-model:value="heightModel" size="small" :min="0" :max="props.cardHeight" />
         </t-space>
       </t-form-item>
+
+      <template v-if="isParentFlex">
+        <t-form-item label="flex-grow">
+          <t-input-number v-model:value="flexGrowModel" size="small" :min="0" />
+        </t-form-item>
+        <t-form-item label="flex-shrink">
+          <t-input-number v-model:value="flexShrinkModel" size="small" :min="0" />
+        </t-form-item>
+        <t-form-item label="flex-basis">
+          <t-input v-model="flexBasisModel" size="small" placeholder="auto / 100px" />
+        </t-form-item>
+        <t-form-item label="order">
+          <t-input-number v-model:value="flexOrderModel" size="small" :step="1" />
+        </t-form-item>
+        <t-form-item label="align-self">
+          <t-select v-model="alignSelfModel" size="small" :options="alignSelfOptions" />
+        </t-form-item>
+      </template>
 
       <TextInspector
         v-if="props.element?.type === 'text'"

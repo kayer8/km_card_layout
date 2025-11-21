@@ -1,32 +1,41 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 
+type FontColorEntry = {
+  field: string
+  color: string
+}
+
 interface TableRow {
   id: string
-  name: string
-  description: string
-  fontColor?: string
-  image?: string
+  image: string
+  mainFontColor: string
+  fontColors: FontColorEntry[]
 }
+
+const createFontColorEntry = (field = '默认文本', color = '#ffffff'): FontColorEntry => ({
+  field,
+  color
+})
 
 const tableData = reactive<TableRow[]>([
   {
     id: 'bg-1',
-    name: 'Cobalt 渐变',
-    description: '蓝紫渐变，适合科技/咨询',
-    fontColor: '#ffffff'
+    mainFontColor: '#ffffff',
+    image:'',
+    fontColors: [createFontColorEntry('默认文本', '#ffffff')]
   },
   {
     id: 'bg-2',
-    name: 'Grid Pattern',
-    description: '浅色栅格纹理，适配金融行业',
-    fontColor: '#1a202c'
+    image:'',
+    mainFontColor: '#1a202c',
+    fontColors: [createFontColorEntry('默认文本', '#1a202c')]
   },
   {
     id: 'bg-3',
-    name: 'Signature Photo',
-    description: '客户提供的实景图',
-    fontColor: '#ffffff'
+    image:'',
+    mainFontColor: '#ffffff',
+    fontColors: [createFontColorEntry('默认文本', '#ffffff')]
   }
 ])
 
@@ -34,24 +43,38 @@ const previewDialogVisible = ref(false)
 const previewImage = ref<string | undefined>()
 
 const columns = computed(() => [
-  { colKey: 'name', title: '名称', width: 220 },
-  { colKey: 'fontColor', title: '字体颜色', width: 200, align: 'center' },
-  { colKey: 'preview', title: '背景预览', width: 200, align: 'center' }
+  { colKey: 'preview', title: '背景预览', width: 220, align: 'center' },
+  { colKey: 'mainFontColor', title: '主字体色', width: 240, align: 'center' }
 ])
 
 const dialogVisible = ref(false)
 const uploadFiles = ref<any[]>([])
-const newBackground = reactive<{ name: string; image?: string; fontColor: string }>({
-  name: '',
+const newBackground = reactive<{
+  image?: string
+  fontColors: FontColorEntry[]
+  mainFontColor: string
+}>({
   image: undefined,
-  fontColor: '#ffffff'
+  fontColors: [createFontColorEntry()],
+  mainFontColor: '#ffffff'
 })
 
 const resetDialog = () => {
-  newBackground.name = ''
   newBackground.image = undefined
-  newBackground.fontColor = '#ffffff'
+  newBackground.fontColors.splice(0, newBackground.fontColors.length, createFontColorEntry())
+  newBackground.mainFontColor = '#ffffff'
   uploadFiles.value = []
+}
+
+const addFontColorEntry = () => {
+  newBackground.fontColors.push(createFontColorEntry('', '#ffffff'))
+}
+
+const removeFontColorEntry = (index: number) => {
+  if (newBackground.fontColors.length <= 1) {
+    return
+  }
+  newBackground.fontColors.splice(index, 1)
 }
 
 const createId = () => `bg-${Math.random().toString(36).slice(2, 8)}`
@@ -71,14 +94,14 @@ const handleUploadChange = (files: any) => {
 }
 
 const submitBackground = () => {
-  if (!newBackground.image || !newBackground.name.trim()) {
+  if (!newBackground.image) {
     return
   }
+
   tableData.push({
     id: createId(),
-    name: newBackground.name.trim(),
-    description: `字体颜色 ${newBackground.fontColor}`,
-    fontColor: newBackground.fontColor,
+    mainFontColor: newBackground.mainFontColor,
+    fontColors: newBackground.fontColors.map((entry) => ({ ...entry })),
     image: newBackground.image
   })
   dialogVisible.value = false
@@ -101,19 +124,22 @@ const submitBackground = () => {
         </div>
       </header>
 
-      <t-table
-        row-key="id"
-        :data="tableData"
-        :columns="columns"
-        hover
-        table-layout="auto"
-      >
-        <template #fontColor="{ row }">
-          <div class="color-chip">
-            <span class="color-chip__preview" :style="{ backgroundColor: row.fontColor || '#ffffff' }" />
-            <span>{{ row.fontColor }}</span>
-          </div>
-        </template>
+    <t-table
+      row-key="id"
+      :data="tableData"
+      :columns="columns"
+      hover
+      table-layout="auto"
+    >
+      <template #mainFontColor="{ row }">
+        <div class="color-chip">
+          <span
+            class="color-chip__preview"
+            :style="{ backgroundColor: row.mainFontColor || '#ffffff' }"
+          />
+          <span>{{ row.mainFontColor || '—' }}</span>
+        </div>
+      </template>
         <template #preview="{ row }">
           <button
             class="preview-trigger"
@@ -140,9 +166,6 @@ const submitBackground = () => {
       @closed="resetDialog"
     >
       <div class="dialog-form">
-        <label>名称</label>
-        <t-input v-model="newBackground.name" placeholder="例如：品牌蓝渐变" />
-
         <label>背景图</label>
         <t-upload
           theme="image"
@@ -152,20 +175,61 @@ const submitBackground = () => {
           @change="handleUploadChange"
         />
 
-        <label>字体颜色</label>
+        <label>主字体色</label>
         <t-color-picker
-          class="color-picker"
+          class="main-color-picker"
+          v-model="newBackground.mainFontColor"
           :color-modes="['monochrome']"
           :swatch-colors="['#ffffff', '#1a202c', '#2b6cb0', '#f4f4f5']"
-          v-model="newBackground.fontColor"
         />
+
+        <label>字段颜色</label>
+        <div class="font-color-inputs">
+          <div
+            class="font-color-input"
+            v-for="(entry, index) in newBackground.fontColors"
+            :key="`field-color-${index}`"
+          >
+            <t-input
+              class="field-input"
+              v-model="entry.field"
+              placeholder="字段名称"
+              size="small"
+            />
+            <t-color-picker
+              class="field-color-picker"
+              v-model="entry.color"
+              size="small"
+              :color-modes="['monochrome']"
+              :swatch-colors="['#ffffff', '#1a202c', '#2b6cb0', '#f4f4f5']"
+            />
+            <t-button
+              size="small"
+              variant="outline"
+              theme="danger"
+              :disabled="newBackground.fontColors.length === 1"
+              @click="removeFontColorEntry(index)"
+            >
+              移除
+            </t-button>
+          </div>
+          <t-button
+            size="small"
+            theme="primary"
+            variant="outline"
+            class="add-field-button"
+            @click="addFontColorEntry"
+          >
+            添加字段颜色
+          </t-button>
+        </div>
       </div>
 
       <template #footer>
         <t-button variant="outline" @click="dialogVisible = false">取消</t-button>
         <t-button
           theme="primary"
-          :disabled="!newBackground.image || !newBackground.name.trim()"
+          :disabled="!newBackground.image"
           @click="submitBackground"
         >
           确认创建
@@ -234,8 +298,36 @@ const submitBackground = () => {
     color: #4a5568;
   }
 
-  .color-picker {
+  .font-color-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    
+  }
+
+  .font-color-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .field-input {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .field-color-picker {
+    width: 160px;
+  }
+
+  .add-field-button {
+    align-self: flex-start;
+  }
+
+  .main-color-picker {
     width: 220px;
+    margin-bottom: -8px;
   }
 
   .color-chip {

@@ -68,9 +68,9 @@ export const blackGoldSchema: CardLayoutSchema = {
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 130,
-        width: 20,
-        height: 20,
+        y: 135,
+        width: 10,
+        height: 10,
       },
       style: {
         backgroundColor: '#ffffff',
@@ -101,9 +101,9 @@ export const blackGoldSchema: CardLayoutSchema = {
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 151,
-        width: 20,
-        height: 20,
+        y: 156,
+        width: 10,
+        height: 10,
       },
       style: {
         backgroundColor: '#ffffff',
@@ -134,9 +134,9 @@ export const blackGoldSchema: CardLayoutSchema = {
       layout: {
         mode: 'absolute',
         x: 18,
-        y: 173,
-        width: 20,
-        height: 20,
+        y: 178,
+        width: 10,
+        height: 10,
       },
       style: {
         backgroundColor: '#ffffff',
